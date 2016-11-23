@@ -29,4 +29,5 @@ echo "${GREEN} [ok] ${NORMAL}Remove others project initialisation files"
 if [ `git config --get remote.origin.url | cut -d / -f 2` != "project-skeleton.git" ]; then
     git add .
     git commit -m "Initialisation ${PROJECT_TYPE} project"
+    git push origin master
 fi
