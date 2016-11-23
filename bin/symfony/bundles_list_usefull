@@ -1,0 +1,9 @@
+friendsofsymfony/user-bundle
+friendsofsymfony/jsrouting-bundle
+nelmio/security-bundle
+vich/uploader-bundle
+jms/serializer-bundle
+simplethings/entity-audit-bundle
+symfony/console
+symfony/var-dumper
+doctrine/data-fixtures
