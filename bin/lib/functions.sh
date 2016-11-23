@@ -6,24 +6,24 @@ remove_project_init(){
 
     case $TYPE in
         "symfony")
-            rm bin/drupal7-init.sh
-            rm bin/drupal8-init.sh
-            rm bin/wordpress-init.sh
+            rm -Rf bin/drupal7
+            rm -Rf bin/drupal8
+            rm -Rf bin/wordpress
         ;;
         "wordpress")
-            rm bin/symfony-init.sh
-            rm bin/drupal7-init.sh
-            rm bin/drupal8-init.sh
+            rm -Rf bin/symfony
+            rm -Rf bin/drupal7
+            rm -Rf bin/drupal8
         ;;
         "drupal7")
-            rm bin/symfony-init.sh
-            rm bin/drupal8-init.sh
-            rm bin/wordpress-init.sh
+            rm -Rf bin/symfony
+            rm -Rf bin/drupal8
+            rm -Rf bin/wordpress
         ;;
         "drupal8")
-            rm bin/symfony-init.sh
-            rm bin/drupal7-init.sh
-            rm bin/wordpress-init.sh
+            rm -Rf bin/symfony
+            rm -Rf bin/drupal7
+            rm -Rf bin/wordpress
         ;;
     esac
 }
