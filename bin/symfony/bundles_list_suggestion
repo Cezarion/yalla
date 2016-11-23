@@ -1,4 +1,5 @@
 knplabs/knp-markdown-bundle
 knplabs/knp-menu-bundle
+jms/serializer-bundle
 friendsofsymfony/rest-bundle
 nelmio/api-doc-bundle
