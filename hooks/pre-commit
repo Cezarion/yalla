@@ -37,7 +37,7 @@ if [ -n "$files" ]; then
 		output=`php -l $file | grep 'Errors parsing'`
 
 		# check only file with dir in var `authorized_directory` in there path
-		authorized_directory="dir1/|dir2/|dir3/"
+		authorized_directory="app/"
 		if ! [[ $file =~ $authorized_directory ]]; then continue; fi
 
 		# if it did contain errors, we have output
@@ -47,7 +47,7 @@ if [ -n "$files" ]; then
 		fi
 
 		# checks if the phpcs output contains '| ERROR |'
-		output=`php ~/.composer/vendor/bin/phpcs --standard=PSR2 --extensions=php --encoding=utf8 --report=full $file`
+		output=`php ~/.composer/vendor/bin/phpcs --standard=PSR2 --extensions=php --encoding=utf8 --report=full $file | grep '| ERROR'`
 
 		# if it did contain errors, we have output
 		if [ -n "$output" ]; then
