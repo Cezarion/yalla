@@ -1,0 +1,7 @@
+
+
+#ignore logs / backup files and folders, expect .gitkeep
+logs/*
+backup/*
+!logs/.gitkeep
+!backup/.gitkeep
