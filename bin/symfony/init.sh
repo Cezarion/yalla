@@ -30,4 +30,5 @@ if [ `git config --get remote.origin.url | cut -d / -f 2` != "project-skeleton.g
     git add .
     git commit -m "Initialisation ${PROJECT_TYPE} project"
     git push origin master
+    echo "${GREEN} [ok] ${NORMAL}Push first commit with project init"
 fi
