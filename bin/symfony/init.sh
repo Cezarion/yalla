@@ -24,3 +24,9 @@ ln ../app/app/config/parameters.yml shared/local.yml
 #remove all other initialisation project
 remove_other_project_init $PROJECT_TYPE
 echo "${GREEN} [ok] ${NORMAL}Remove others project initialisation files"
+
+#first commit with app content, only if current repo not skeleton
+if [ `git config --get remote.origin.url | cut -d / -f 2` != "project-skeleton.git" ]; then
+    git add .
+    git commit -m "Initialisation ${PROJECT_TYPE} project"
+fi
