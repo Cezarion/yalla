@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # remove other initialize project
-remove_project_init(){
+remove_other_project_init(){
     TYPE=$1
 
     case $TYPE in

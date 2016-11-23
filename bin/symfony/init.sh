@@ -22,5 +22,5 @@ echo "${GREEN} [ok] ${NORMAL}Create symlink local.yml from symfony parameters.ym
 ln ../app/app/config/parameters.yml shared/local.yml
 
 #remove all other initialisation project
-remove_project_init $PROJECT_TYPE
+remove_other_project_init $PROJECT_TYPE
 echo "${GREEN} [ok] ${NORMAL}Remove others project initialisation files"
