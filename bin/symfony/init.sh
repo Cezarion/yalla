@@ -1,11 +1,12 @@
 #!/bin/bash
 
-PROJECT_TYPE = symfony
+PROJECT_TYPE=symfony
 
 SRC=$(cd $(dirname "$0"); pwd)
 
 . "${SRC}/lib/variables.sh"
 . "${SRC}/lib/helpers.sh"
+. "${SRC}/lib/functions.sh"
 
 # Download symfony sources
 rm -Rf app/

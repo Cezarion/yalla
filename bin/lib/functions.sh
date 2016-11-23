@@ -25,4 +25,5 @@ remove_project_init(){
             rm bin/drupal7-init.sh
             rm bin/wordpress-init.sh
         ;;
+    esac
 }
