@@ -1,4 +1,6 @@
 
+#ignore env file
+shared/local.yml
 
 #ignore logs / backup files and folders, expect .gitkeep
 logs/*
