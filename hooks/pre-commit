@@ -1,0 +1,69 @@
+#! /bin/bash
+#
+# Script de pre-commit Buzzaka
+
+# INSPIRED BY :
+# This script checks if all added, copied, modified or renamed files are valid against the PSR2 coding standards
+# and if there are no php, javascript or css errors
+# dependencies:
+# 	codesniffer (http://pear.php.net/package/PHP_CodeSniffer)
+#
+# @version	1.1.0
+# @author	Wouter Sioen <wouter.sioen@wijs.be>
+
+# create empty errors array
+declare -a errors
+
+# Check if we're on a semi-secret empty tree
+if git rev-parse --verify HEAD
+then
+	against=HEAD
+else
+	# Initial commit: diff against an empty tree object
+	against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+# fetch all changed php files and validate them
+files=$(git diff-index --name-only --diff-filter=ACMR $against | grep '\.php$')
+if [ -n "$files" ]; then
+
+	echo 'Checking PHP Files'
+	echo '------------------'
+	echo
+
+	for file in $files; do
+
+		# first check if they are valid php files
+		output=`php -l $file | grep 'Errors parsing'`
+
+		# check only file with dir in var `authorized_directory` in there path
+		authorized_directory="dir1/|dir2/|dir3/"
+		if ! [[ $file =~ $authorized_directory ]]; then continue; fi
+
+		# if it did contain errors, we have output
+		if [ -n "$output" ]; then
+			echo "$file contains php syntax errors"
+			errors=("${errors[@]}" "$output")
+		fi
+
+		# checks if the phpcs output contains '| ERROR |'
+		output=`php ~/.composer/vendor/bin/phpcs --standard=PSR2 --extensions=php --encoding=utf8 --report=full $file`
+
+		# if it did contain errors, we have output
+		if [ -n "$output" ]; then
+			echo "$file fails coding standards"
+			php ~/.composer/vendor/bin/phpcs --standard=PSR2 --extensions=php --encoding=utf8 --report=full $file
+			errors=("${errors[@]}" "$output")
+
+			# exit commit with value 1, if at least one custom file obtained errors
+			exit 1
+		fi
+	done
+fi
+
+# if we have errors, exit with 1
+if [ -n "$errors" ]; then
+	exit 1
+fi
+
+echo '-- No errors found!'
