@@ -19,7 +19,7 @@ ln -s web app/htdocs
 
 # Create symlink parameters.yml to shared/local.yml
 echo "${GREEN} [ok] ${NORMAL}Create symlink local.yml from symfony parameters.yml"
-ln ../app/app/config/parameters.yml shared/local.yml
+ln -s ../app/app/config/parameters.yml shared/local.yml
 
 #remove all other initialisation project
 remove_other_project_init $PROJECT_TYPE
