@@ -24,7 +24,7 @@ Package needed
         Create a specific user with write rights only on this database
         Run an install initialisation script
             sh bin/symfony/init.sh
-        Merge the commands from /bin/symfony/composer-commands-sample.json to your /app/composer.json (specially 'build' command)
+        Merge the commands from /bin/symfony/composer-commands-sample.json to your /app/composer.json (specially 'build' command and depandencies)
         Run build script
             sh bin/symfony/build.sh
 
