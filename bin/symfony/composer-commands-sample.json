@@ -1,80 +1,52 @@
 {
     // ...
     "scripts": {
-        // ...
-
         /**
-        * Composer install, and add front dependencies
+        * Suite of composer command that you can copy/paster in your composer.json on yoursymfony project
         */
+
         "dependencies": [
             "@composer install",
             "npm install",
             "bower install",
             "gulp build"
         ],
-        /**
-        * Drop all tables from database
-        */
         "db-uninstall": [
             "php bin/console doctrine:database:drop --if-exists --force"
         ],
-        /**
-        * Update database schema
-        */
         "db-update": [
             "php bin/console doctrine:database:create --if-not-exists",
             "php bin/console doctrine:schema:update --force"
         ],
-        /**
-        * Remove all table and reload database schema
-        */
         "db-reinstall": [
             "@db-uninstall",
             "@db-update"
         ],
-        /**
-        * Load fixtures
-        */
         "fixtures": [
             "php bin/console fixtures:load -n"
         ],
-        /**
-        * Clear cache
-        */
         "cc": [
             "php bin/console cache:clear",
             "php bin/console cache:clear -e prod"
         ],
-        /**
-        * Load bundle assets in web/
-        */
         "sfassets": [
             "php bin/console assets:install --symlink"
         ],
-        /**
-        * Run build project
-        */
         "build": [
             "@dependencies",
             "@db-update",
             "@cc",
             "@sf-checks"
         ],
-        /**
-        * Look if schema is correctly defined and check bundle needs security update
-        */
         "sf-checks": [
             "php bin/console doctrine:schema:validate",
             "php bin/console security:check"
         ],
-        /**
-        * Run unit tests
-        */
         "tests": [
             "php phpunit.phar"
         ]
 
         // ...
-    },
+    }
     // ...
 }
