@@ -1,3 +1,5 @@
+@TODO : Mettre en place les process front. Les tâches d'install sont à placer dans le composer build.
+
 ### REQUIREMENT ###
 Package needed
     SF

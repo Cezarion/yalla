@@ -71,7 +71,7 @@
         * Run unit tests
         */
         "tests": [
-            "php phpunit.phar"
+            "phpunit -c phpunit.xml.dist tests"
         ]
 
         // ...
