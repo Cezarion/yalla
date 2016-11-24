@@ -1,0 +1,1 @@
+# For SYMFONY stack, unit tests are defined in /app/tests/ and runing by PHPUnit
