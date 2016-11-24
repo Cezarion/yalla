@@ -1,3 +1,5 @@
+nelmio/security-bundle
+simplethings/entity-audit-bundle
 knplabs/knp-markdown-bundle
 knplabs/knp-menu-bundle
 jms/serializer-bundle

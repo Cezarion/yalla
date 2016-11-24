@@ -25,7 +25,9 @@ ln -s ../app/app/config/parameters.yml shared/local.yml
 remove_other_project_init $PROJECT_TYPE
 echo "${GREEN} [ok] ${NORMAL}Remove others project initialisation files"
 
-sh bundles.sh
+sh "${SRC}/bundles.sh"
+
+sh "${SRC}/unit-tests.sh"
 
 # First commit with app content, only if current repo not skeleton
 if [ `git config --get remote.origin.url | cut -d / -f 2` != "project-skeleton.git" ]; then

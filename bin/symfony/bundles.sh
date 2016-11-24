@@ -9,6 +9,7 @@ for entry in $BUNDLES_LIST_USEFULL
 do
     composer require $entry
 done
+echo "${GREEN} [ok] ${NORMAL}Usefull bundles installed"
 
 # Ask developer to add some suggested bundles
 BUNDLES_LIST_SUGGESTION=`cat ../bin/symfony/bundles_list_suggestion`
@@ -22,3 +23,4 @@ do
     fi
 done
 cd ..
+echo "${GREEN} [ok] ${NORMAL}Bundles suggested"

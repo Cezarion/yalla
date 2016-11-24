@@ -6,11 +6,20 @@ Package needed
     Drupal 8
     WordPress
 
-### USAGE SF ###
+### SYMFONY ###
 
-Make a fork from skeleton repo to your project repo via Bitbucket
-create an empty database
-create a specific user with write rights only on this database
-run an install script between
-    > sh bin/symfony/init.sh
+# What the script do
+    Install Symfony core
+    Install usefull bundles
+    Prompt for suggested bundles
+    Donwload and install globally PHPUnit
+    Run unit tests (defined in /app/tests/)
+
+# Usage
+    Make a fork from skeleton repo to your project repo via Bitbucket
+    Create an empty database
+    Create a specific user with write rights only on this database
+    Run an install initialisation script
+        sh bin/symfony/init.sh
+    Merge the commands from bin/symfony/composer-commands-sample.json to your composer.json
 
