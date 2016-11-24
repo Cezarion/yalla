@@ -9,6 +9,7 @@ Package needed
 ### SYMFONY ###
 
 # What the script do
+
     Install Symfony core
     Install usefull bundles
     Prompt for suggested bundles
@@ -24,6 +25,8 @@ Package needed
         Run an install initialisation script
             sh bin/symfony/init.sh
         Merge the commands from /bin/symfony/composer-commands-sample.json to your /app/composer.json (specially 'build' command)
+        Run build script
+            sh bin/symfony/build.sh
 
     ## Regular install by common dev
         Create an empty database

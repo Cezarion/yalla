@@ -36,5 +36,3 @@ if [ `git config --get remote.origin.url | cut -d / -f 2` != "project-skeleton.g
     git push origin master
     echo "${GREEN} [ok] ${NORMAL}Push first commit with project init"
 fi
-
-sh "${SRC}/build.sh"
