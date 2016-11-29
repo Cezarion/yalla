@@ -4,7 +4,7 @@
 ### REQUIREMENT ###
 Package needed
 * SF
-    composer installed globally
+  * composer installed globally
 * Drupal 7
 * Drupal 8
 * WordPress
