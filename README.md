@@ -4,7 +4,7 @@
 ### REQUIREMENT ###
 Package needed
 * SF
-  * composer installed globally
+composer installed globally
 * Drupal 7
 * Drupal 8
 * WordPress
@@ -43,7 +43,7 @@ sh bin/symfony/build.sh
 ```
 
 
-## Regular install by common dev
+## Regular install by dev
 * Create an empty database
 * Create a specific user with write rights only on this database
 * Run build script
