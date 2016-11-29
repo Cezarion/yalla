@@ -10,7 +10,7 @@ Package needed
 
 ### SYMFONY ###
 
-# What the script do
+# What the script does
 
     Install Symfony core
     Install usefull bundles
@@ -35,4 +35,3 @@ Package needed
         Create a specific user with write rights only on this database
         Run build script
             sh bin/symfony/build.sh
-
