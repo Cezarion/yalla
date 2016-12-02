@@ -1,6 +1,12 @@
-@TODO : Mettre en place les process front. Les t√¢ches d'install sont √† placer dans le composer build.
+@TODO : Mettre en place les process front. Les t‚ches d'install sont ‡ placer dans le composer build.
 
 @TODO : Mettre en place les scripts d'initialisation D7 / D8 / WP
+
+@TODO : Update main [wiki](https://bitbucket.org/buzzaka/project-skeleton/wiki/Home) 
+
+### FOLDER ARCHITECTURE ###
+
+see [wiki](https://bitbucket.org/buzzaka/project-skeleton/wiki/Home) 
 
 ### REQUIREMENT ###
 Package needed
