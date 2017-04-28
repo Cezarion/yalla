@@ -60,3 +60,12 @@ sh bin/symfony/build.sh
 
 sh bin/symfony/build.sh
 ```
+
+## Proxy distant files
+There is an script that can retrieve the distant version of a local url.
+As of 2017-04-28, in order to make it work, you have to:
+1. Add the following lines to your .htaccess file as follow :
+```
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ([^.]+\.(jpe?g|gif|bmp|png))$ media-proxy.php?f=$1  [R=301,L,NC]
+```
