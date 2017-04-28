@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Retrieve a distant file according to the current request.
  * The distant URL is queried according to the given host (seee constructor)
  * and the current request parameter f (see run() method).
+ * @see https://github.com/gonzalo123/rest-proxy [Inspiration library]
  *
  * @author Bastien Gatellier <bastien.gatellier@fabernovel.com>
  */
