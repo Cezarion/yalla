@@ -61,11 +61,22 @@ sh bin/symfony/build.sh
 sh bin/symfony/build.sh
 ```
 
-## Proxy distant files
-There is an script that can retrieve the distant version of a local url.
-As of 2017-04-28, in order to make it work, you have to:
-1. Add the following lines to your .htaccess file as follow :
+## Proxy distant files from your local machine
+A PHP script is available for you to display the distant version of a file if it is absent form your local filesystem.
+This script is agnostic about the CMS or framework you use.
+As of 2017-05-01, in order to make it work, you have to:
+1. Add a file-proxy.php symbolic link to /hooks/file-proxy/index.php inside the directory where your .htaccess file is located
+2. Add the following lines to your .htaccess file, before any other redirection:
 ```
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ([^.]+\.(jpe?g|gif|bmp|png))$ media-proxy.php?f=$1  [R=301,L,NC]
+RewriteRule ([^.]+\.(jpe?g|png|gif))$ file-proxy.php?url=http://www.my-distant-url-from-where-i-want-to-retrieve-the-file.com/$1  [R=301,L,NC]
 ```
+3. Install the script dependencies using `composer install` from the /hooks/file-proxy/ directory.
+
+The PHP script can redirect any kind of request (not only images as suggested by the example), so pay attention to the extensions you specifiy in the RewriteRule.
+Do not forget to remove the two .htaccess lines before committing your code to the production environment!
+
+TODO:
+* Make the distant host (http://www.my-distant-url-from-where-i-want-to-retrieve-the-file.com/ in the example) configurable without editing an application file (currently the .htaccess). For example, using an environment variable.
+* Take into account the current environment (local, staging, production…) in order to automatically disallow the proxy behavior on sensible environments like the production one.
+* Download the distant file on the local filesystem for offline usages and bandwidth saving 

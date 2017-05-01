@@ -1,6 +1,6 @@
 {
-    "name": "fabernovel-code/media-proxy",
-    "description": "Simple rest proxy",
+    "name": "fabernovel-code/file-proxy",
+    "description": "Simple file proxy",
     "authors": [
         {
             "name": "FABERNOVEL CODE",
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MediaProxy\\": "src/"
+            "FileProxy\\": "src/"
         }
     },
     "extra": {

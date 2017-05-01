@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaProxy;
+namespace FileProxy;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Bastien Gatellier <bastien.gatellier@fabernovel.com>
  */
-class MediaProxy
+class FileProxy
 {
     const GET = "GET";
     const POST = "POST";
@@ -34,13 +34,11 @@ class MediaProxy
     /**
      * Create a Request object from the global variables and set configurations
      * @param CurlWrapper $curl
-     * @param string      $distantHost   Example: https://i-love-poney.com/
      */
-    public function __construct(CurlWrapper $curl, $distantHost)
+    public function __construct(CurlWrapper $curl)
     {
         $this->request = Request::createFromGlobals();
         $this->curl = $curl;
-        $this->distantHost = $distantHost;
     }
     
     /**
@@ -48,7 +46,7 @@ class MediaProxy
      */
     public function run()
     {
-        $response = $this->dispatch($this->distantHost . $this->request->query->get('f'));
+        $response = $this->dispatch($this->request->query->get('url'));
         $response->send();
     }
 

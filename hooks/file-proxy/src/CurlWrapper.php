@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaProxy;
+namespace FileProxy;
 
 use Symfony\Component\HttpFoundation\Response;
 

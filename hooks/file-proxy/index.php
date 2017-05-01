@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use MediaProxy\CurlWrapper;
-use MediaProxy\MediaProxy;
+use FileProxy\CurlWrapper;
+use FileProxy\FileProxy;
 
 
 // Example for additional Curl request headers and additional curl options for all requests
@@ -16,5 +16,5 @@ $curlOptions    = [
     CURLOPT_SSL_VERIFYPEER => 0,
     CURLOPT_SSL_VERIFYHOST => 0
 ];
-$proxy = new MediaProxy(new CurlWrapper($requestHeaders, $curlOptions), 'https://www.sharedconvictions.com/');
+$proxy = new FileProxy(new CurlWrapper($requestHeaders, $curlOptions));
 $proxy->run();
