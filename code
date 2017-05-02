@@ -13,7 +13,7 @@ if [ ! -d "${SRC}/bin/${APP_TYPE}" ]
     then
         bad_exit "${APP_TYPE} does not exist. Please set an available value in settings.sh : drupal8,drupal7,symfony,wordpress";
 fi
-echo $APP_TYPE;
+
 # Set Action/Script to run
 ACTION=$1
 
