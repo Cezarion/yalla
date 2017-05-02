@@ -4,9 +4,11 @@
 EMAIL=$(git config user.email)
 if [ -z "${EMAIL}" ]; then EMAIL="admin@local.host"; fi
 
+export EMAIL;
+
 # Colors
-RED=$'\e[31;01m'
-BLUE=$'\e[36;01m'
-YELLOW=$'\e[33;01m'
-NORMAL=$'\e[0m'
-GREEN=$'\e[32;01m'
+export RED=$'\e[31;01m'
+export BLUE=$'\e[36;01m'
+export YELLOW=$'\e[33;01m'
+export NORMAL=$'\e[0m'
+export GREEN=$'\e[32;01m'

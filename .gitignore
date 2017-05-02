@@ -7,3 +7,4 @@ logs/*
 backup/*
 !logs/.gitkeep
 !backup/.gitkeep
+.DS_Store
