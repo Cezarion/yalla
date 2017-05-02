@@ -77,6 +77,7 @@ The PHP script can redirect any kind of request (not only images as suggested by
 Do not forget to remove the two .htaccess lines before committing your code to the production environment!
 
 TODO:
+
 * Make the distant host (http://www.my-distant-url-from-where-i-want-to-retrieve-the-file.com/ in the example) configurable without editing an application file (currently the .htaccess). For example, using an environment variable.
 * Take into account the current environment (local, staging, production…) in order to automatically disallow the proxy behavior on sensible environments like the production one.
 * Download the distant file on the local filesystem for offline usages and bandwidth saving 
