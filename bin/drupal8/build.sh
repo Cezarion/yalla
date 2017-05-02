@@ -8,12 +8,6 @@ PROFILE=$($DRUSH core-status install_profile --pipe --format=list)
 THEME=$($DRUSH config-get system.theme default --pipe --format=list)
 THEME_PATH=$WEBROOT/profiles/$PROFILE/themes/custom/$THEME
 
-# Slack notifications
-PROJECT="Syndex - refonte"
-ENV_URL="syndex-staging.fabernovel.co"
-CHANNEL="syndex"
-SLACK_HOOK="https://hooks.slack.com/services/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"
-
 ENV=$1
 
 
