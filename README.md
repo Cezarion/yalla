@@ -37,7 +37,8 @@ composer installed globally
 ```
 #!sh
 
-sh bin/symfony/init.sh
+./code install
+
 ```
 
 * Merge the commands from /bin/symfony/composer-commands-sample.json to your /app/composer.json (specially 'build' command and depandencies)
@@ -46,7 +47,7 @@ sh bin/symfony/init.sh
 ```
 #!sh
 
-sh bin/symfony/build.sh
+./code build (args)
 ```
 
 
@@ -58,5 +59,5 @@ sh bin/symfony/build.sh
 ```
 #!sh
 
-sh bin/symfony/build.sh
+./code build dev
 ```

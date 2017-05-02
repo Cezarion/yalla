@@ -5,7 +5,9 @@
 # This serves as a wrapper to search for commands in the bin/ folder
 # available values : drupal8,drupal7,symfony,wordpress
 
-export APP_TYPE=""
+APP_TYPE="symfony";
+
+export APP_TYPE;
 
 # Slack notifications
 export PROJECT="project name"
