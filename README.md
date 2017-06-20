@@ -32,6 +32,26 @@ composer installed globally
 * Clone git project on your environment
 * Create an empty database
 * Create a specific user with write rights only on this database
+* Configure project (edit settings.sh)
+```
+#!sh
+
+
+APP_TYPE="symfony";
+
+export APP_TYPE;
+
+# Slack notifications
+export PROJECT="project name"
+export CHANNEL="slack channel"
+export SLACK_HOOK="https://hooks.slack.com/services/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"
+
+# Prod url (use for media proxy) and as default value for build scripts :
+
+export PROD_URL="" # https://fabernovel.com
+
+```
+
 * Run an install initialisation script
 
 ```
