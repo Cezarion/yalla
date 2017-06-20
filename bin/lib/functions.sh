@@ -27,3 +27,5 @@ remove_other_project_init(){
         ;;
     esac
 }
+
+declare -x -f remove_other_project_init;

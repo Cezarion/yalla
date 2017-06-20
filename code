@@ -1,0 +1,30 @@
+#!/bin/bash
+
+SRC=$(cd $(dirname "$0"); pwd)
+
+. "${SRC}/settings.sh"
+. "${SRC}/bin/lib/common.sh"
+
+# This script allow to run current project actions without specify
+# current script path.
+# Just set below app type (drupal8,drupal7,symfony,wordpress):
+
+if [ ! -d "${SRC}/bin/${APP_TYPE}" ]
+    then
+        bad_exit "${APP_TYPE} does not exist. Please set an available value in settings.sh : drupal8,drupal7,symfony,wordpress";
+fi
+
+# Set Action/Script to run
+ACTION=$1
+
+# remove first args and store others
+shift
+ARGS=$@
+
+# Run actions
+if [ ! -f "${SRC}/bin/${APP_TYPE}/${ACTION}.sh" ]
+    then
+        bad_exit "${SRC}/bin/${APP_TYPE}/${ACTION} does not exist.";
+    else
+        bash ${SRC}/bin/$APP_TYPE/$ACTION.sh $ARGS
+fi

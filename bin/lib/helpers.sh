@@ -23,15 +23,17 @@ currentscriptpath () {
 info(){
     echo "${YELLOW} ${1} ${NORMAL}" >&2;
 }
+declare -x -f info;
 
 notice(){
     echo "${BLUE} ${1} ${NORMAL}" >&2;
 }
+declare -x -f notice;
 
 error(){
     echo "${RED} ${1} ${NORMAL}" >&2;
 }
-
+declare -x -f error;
 
 # exit functions
 bad_exit() {
@@ -41,3 +43,4 @@ bad_exit() {
     exit 1;
 }
 
+declare -x -f bad_exit;
