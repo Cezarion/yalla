@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Load params & export local configuration
+set -o allexport
+source ../.devilbox
+source ./project-configuration
+set +o allexport
+
+
+CWD="/shared/httpd"
+CURRENT_DIR_NAME=${PWD##*/}
+
+# Docker shortcuts
+compose_file="${DEVILBOX_LOCAL_PATH}/docker-compose.yml"
+docker_cmd="docker-compose -f ${compose_file}"
+
+#docker-compose -f "${DEVILBOX_LOCAL_PATH}/docker-compose.yml" exec --user devilbox php env TERM=xterm /bin/sh -c "cd ${CWD}; exec bash -l"
+
+ACTION=$1
+
+case "$ACTION" in
+    config)
+        $docker_cmd config
+        ;;
+    up)
+        $docker_cmd up -d $DOCKER_STACK
+        ;;
+    stop)
+        $docker_cmd stop
+        ;;
+    cleanup)
+        $docker_cmd rm -f
+        ;;
+    ssh)
+        $docker_cmd exec --user devilbox php env TERM=xterm /bin/sh -c "cd ${CWD}; exec bash -l"
+        ;;
+    exec)
+        shift
+        ARGS=$@
+        $docker_cmd exec --user devilbox php env TERM=xterm /bin/sh -c "cd ${CWD}/${CURRENT_DIR_NAME}/app; ${ARGS}"
+        ;;
+    code)
+        shift
+        ARGS=$@
+        $docker_cmd exec --user devilbox php env TERM=xterm /bin/sh -c "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code ${ARGS}"
+        ;;
+    shortlist)
+            echo config up stop cleanup exec code ssh shortlist
+        ;;
+    *)
+        echo "${ACTION} is not a registered command"
+        echo "config up stop cleanup ssh are available command"
+        exit 1
+esac
