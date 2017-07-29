@@ -1,4 +1,4 @@
-@TODO : Improve documentaation // Check if devilbox is installed
+@TODO : Improve documentation // Check if devilbox is installed
 
 @TODO : Mettre en place les process front. Les tâches d'install sont à placer dans le composer build.
 
