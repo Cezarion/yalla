@@ -29,7 +29,7 @@ More details see https://bitbucket.org/buzzaka/devilbox/overview#%20usage-as-a-c
 ## Regular install by Dev
 
 Go to `~/Webserver/www-docker`
-```shell
+``` shell
 $ git clone git@bitbucket.org:buzzaka/cnp-caploc.git
 $ cd cnp-caploc
 $ ./devilbox code install
@@ -59,7 +59,7 @@ $ ./devilbox cleanup # When changing some variable in .env you must re-create th
 $ ./devilbox ssh #connect to php container in www-docker path 
 $ ./devilbox exec # run a command into container fwithout connect from ssh. Example : ./devilbox exec composer -v
 $ ./devilbox code # is wrapper to execute ./code args cmd from local path without to connect into container
-$ ./devilbox code install # run ./code install ino conatiner 
+$ ./devilbox code install # run ./code install ino container 
 $ ./devilbox shortlist # show available commands
 ``
 
@@ -114,8 +114,6 @@ $ subl ./project-configuration
 
 Edit ./project-configuration as follow : 
 ```shell
-
-cat 
 # Set the type of application.
 # This serves as a wrapper to search for commands in the bin/ folder
 # available values : drupal8,drupal7,symfony,wordpress
