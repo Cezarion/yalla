@@ -15,7 +15,7 @@ echo '' > app/.gitkeep
 
 # Create symlink htdocs to web/ directory
 echo "${GREEN} [ok] ${NORMAL}Create symlink htdocs/"
-ln -s web app/htdocs
+ln -s app/web htdocs
 
 # Create symlink parameters.yml to shared/local.yml
 echo "${GREEN} [ok] ${NORMAL}Create symlink local.yml from symfony parameters.yml"
@@ -28,6 +28,10 @@ echo "${GREEN} [ok] ${NORMAL}Remove others project initialisation files"
 sh "${SRC}/bundles.sh"
 
 sh "${SRC}/unit-tests.sh"
+
+echo "${GREEN} [ok] ${NORMAL}Install precommit"
+sh "${SRC}/../install-precommit.sh"
+
 
 # First commit with app content, only if current repo not skeleton
 if [ `git config --get remote.origin.url | cut -d / -f 2` != "project-skeleton.git" ]; then
