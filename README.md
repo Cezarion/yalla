@@ -55,7 +55,7 @@ $ .code args # available args : install build
 $ ./devilbox config # Show local config
 $ ./devilbox up # Start required docker container as daemon ( @see project-configuration DOCKER_STACK)
 $ ./devilbox stop # Stop required container
-$ ./devilbox cleanuo # When changing some variable in .env you must re-create the container.Simply remove it, it will be auto-created during the next start:
+$ ./devilbox cleanup # When changing some variable in .env you must re-create the container.Simply remove it, it will be auto-created during the next start:
 $ ./devilbox ssh #connect to php container in www-docker path 
 $ ./devilbox exec # run a command into container fwithout connect from ssh. Example : ./devilbox exec composer -v
 $ ./devilbox code # is wrapper to execute ./code args cmd from local path without to connect into container
