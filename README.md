@@ -45,7 +45,7 @@ $ ./devilbox args # available args : config up stop cleanup exec code ssh
 
 
 ``` shell
-$ .code args # available args : install build 
+$ ./code args # available args : install build 
 ```
 
 
