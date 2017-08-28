@@ -20,8 +20,13 @@ currentscriptpath () {
 # Loging functions
 #
 
+success() {
+  clr_green "[${CHECKMARK}]" -n; clr_reset " ${1}" >&2;
+}
+declare -x -f success;
+
 info(){
-    echo -e "${YELLOW} ${1} ${NORMAL}" >&2;
+    clr_cyan clr_bold "[${INFOMARK}]" -n; clr_reset " ${1}" >&2;
 }
 declare -x -f info;
 

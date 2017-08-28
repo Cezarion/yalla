@@ -53,3 +53,7 @@ args_list(){
 }
 
 declare -x -f args_list;
+
+function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
+
+declare -x -f gi;

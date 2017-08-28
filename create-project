@@ -1,0 +1,33 @@
+#!/bin/bash
+
+##
+## This script creates the necessary directories and files
+## for fabernovel code projects
+##
+
+# Load common vars and functions
+. "$(pwd)/yalla/bin/lib/common.sh"
+
+
+for folder in "${FOLDERS[@]}"
+do
+    mkdir -p $folder;
+    touch $folder/.gitkeep
+done
+
+success "Create directories and add .gitkeep \n"
+
+for file in ./yalla/samples/{*,.*}
+do
+    filename=$(basename $file)
+
+    if [ -f "${file}" ] && [ "$filename" != "README.md" ]
+        then
+            cp $file ./
+            success "Copy sample file ${filename}"
+    fi
+done
+
+info "Create base .gitignore"
+
+gi linux,osx,windows,PhpStorm,SublimeText,VisualStudio > .gitignore
