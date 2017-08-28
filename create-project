@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit immediately on error
+set -e
+
 ##
 ## This script creates the necessary directories and files
 ## for fabernovel code projects
@@ -7,6 +10,10 @@
 
 # Load common vars and functions
 . "$(pwd)/yalla/bin/lib/common.sh"
+
+if ! [ -x "$(command -v yalla)" ]; then
+    install_yalla_bin
+fi
 
 
 for folder in "${FOLDERS[@]}"

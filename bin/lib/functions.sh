@@ -1,5 +1,14 @@
 #!/bin/bash
 
+install_yalla_bin(){
+    info "yalla command is not installed. We install it" >&2
+    cp './yalla/bin/cmd/yalla' /usr/local/bin
+    success 'Test yalla version'
+    echo '---------------------------------------'
+    yalla -v
+    echo '---------------------------------------'
+}
+
 # remove other initialize project
 remove_other_project_init(){
     TYPE=$1
