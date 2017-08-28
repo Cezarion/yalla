@@ -1,0 +1,10 @@
+pipelines:
+  custom:
+    sonar:
+      - step:
+          script:
+            - apt-get update && apt-get install -y unzip
+            - echo "Sonar pipeline"
+            - curl --insecure -OL https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.6.1.zip
+            - unzip sonar-scanner-2.6.1.zip
+            - ./sonar-scanner-2.6.1/bin/sonar-scanner -X -Dsonar.login=$SONAR_QUBE

@@ -3,7 +3,7 @@
 #TODO: mutualiser ce script pour les techno WP, Drupal7, Drupal8, etc.
 
 # Add some usefull bundles
-cd app/
+cd "${APPLICATION_PATH_NAME}/"
 BUNDLES_LIST_USEFULL=`cat ../bin/symfony/bundles_list_usefull`
 for entry in $BUNDLES_LIST_USEFULL
 do

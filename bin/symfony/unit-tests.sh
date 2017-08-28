@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download PHPUnit
-cd app/
+cd "${APPLICATION_PATH_NAME}/"
 composer global require "phpunit/phpunit"
 echo "${GREEN} [ok] ${NORMAL}PHP Unit downloaded"
 

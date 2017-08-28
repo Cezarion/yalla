@@ -4,19 +4,31 @@
 set -o allexport
 source ../.devilbox
 source ./project-configuration
-set +o allexport
 
+# Load common scripts
+source ./bin/lib/common.sh
 
 CWD="/shared/httpd"
 CURRENT_DIR_NAME=${PWD##*/}
+CURRENT_DIR_PATH=${PWD}
+
+LOCAL_DATABASE_PATH="${CURRENT_DIR_PATH}/databases"
+
+# Load devilbox custom scripts
+source ./bin/devilbox/install.sh
+
+
 
 # Docker shortcuts
 compose_file="${DEVILBOX_LOCAL_PATH}/docker-compose.yml"
 docker_cmd="docker-compose -f ${compose_file}"
+docker_exec="${docker_cmd} exec --user devilbox php env TERM=xterm /bin/sh -c"
+docker_mysql_cmd="${docker_cmd} exec --user devilbox php env mysql -h 127.0.0.1 -u root"
 
-#docker-compose -f "${DEVILBOX_LOCAL_PATH}/docker-compose.yml" exec --user devilbox php env TERM=xterm /bin/sh -c "cd ${CWD}; exec bash -l"
+set +o allexport
 
 ACTION=$1
+
 
 case "$ACTION" in
     config)
@@ -25,6 +37,9 @@ case "$ACTION" in
     up)
         $docker_cmd up -d $DOCKER_STACK
         ;;
+    build)
+        $docker_cmd build
+        ;;
     stop)
         $docker_cmd stop
         ;;
@@ -32,17 +47,33 @@ case "$ACTION" in
         $docker_cmd rm -f
         ;;
     ssh)
-        $docker_cmd exec --user devilbox php env TERM=xterm /bin/sh -c "cd ${CWD}; exec bash -l"
+        $docker_exec "cd ${CWD}; exec bash -l"
         ;;
     exec)
         shift
-        ARGS=$@
-        $docker_cmd exec --user devilbox php env TERM=xterm /bin/sh -c "cd ${CWD}/${CURRENT_DIR_NAME}/app; ${ARGS}"
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}; $(args_list "$@")"
         ;;
     code)
         shift
-        ARGS=$@
-        $docker_cmd exec --user devilbox php env TERM=xterm /bin/sh -c "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code ${ARGS}"
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code $(args_list "$@")"
+        ;;
+    # There is a bug with docker compose and pipe, tty, ..
+    # so I use a script to execute a script on the docker container
+    # @see https://github.com/docker/compose/issues/3352
+    mysql)
+        shift
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./bin/devilbox/mysql.sh $(args_list "$@")"
+        ;;
+    install)
+        info "Start docker stack"
+        $docker_cmd up -d $DOCKER_STACK;
+
+        info "\nCreate database or import an existing file"
+        install_actions
+
+
+        info "Install project"
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code install";
         ;;
     shortlist)
             echo config up stop cleanup exec code ssh shortlist
@@ -52,3 +83,4 @@ case "$ACTION" in
         echo "config up stop cleanup ssh are available command"
         exit 1
 esac
+

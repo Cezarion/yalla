@@ -1,0 +1,28 @@
+# Set the type of application.
+# This serves as a wrapper to search for commands in the bin/ folder
+# available values : drupal8,drupal7,symfony,wordpress
+
+APP_TYPE="symfony";
+
+# Docker stack
+# Configure versions in ./.env file
+DOCKER_STACK="httpd php mysql redis"
+
+# Slack notifications
+PROJECT="CNP"
+CHANNEL="cnp"
+SLACK_HOOK="https://hooks.slack.com/services/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"
+
+# Prod url (use for media proxy) and as default value for build scripts :
+# example : https://fabernovel.com
+PROD_URL=""
+
+# Db dev user
+# Automatically create the database and user for dev environments
+
+# User
+DB_DEV_USER=cnp_caploc
+# Pass
+DB_DEV_PASS=cnp_caploc
+# Database name
+DB_DEV_NAME=cnp_caploc

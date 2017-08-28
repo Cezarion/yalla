@@ -2,8 +2,14 @@
 
 SRC=$(cd $(dirname "$0"); pwd)
 
-. "${SRC}/settings.sh"
+# Load project settings
+set -o allexport
+. "${SRC}/project-configuration"
+set +o allexport
+
+# Load common vars and functions
 . "${SRC}/bin/lib/common.sh"
+
 
 # This script allow to run current project actions without specify
 # current script path.
@@ -11,7 +17,7 @@ SRC=$(cd $(dirname "$0"); pwd)
 
 if [ ! -d "${SRC}/bin/${APP_TYPE}" ]
     then
-        bad_exit "${APP_TYPE} does not exist. Please set an available value in settings.sh : drupal8,drupal7,symfony,wordpress";
+        bad_exit "${APP_TYPE} does not exist. Please set an available value in project-configuration : drupal8,drupal7,symfony,wordpress";
 fi
 
 # Set Action/Script to run

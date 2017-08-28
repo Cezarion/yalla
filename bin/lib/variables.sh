@@ -6,6 +6,8 @@ if [ -z "${EMAIL}" ]; then EMAIL="admin@local.host"; fi
 
 export EMAIL;
 
+export APPLICATION_PATH_NAME='app'
+
 # Colors
 export RED=$'\e[31;01m'
 export BLUE=$'\e[36;01m'
