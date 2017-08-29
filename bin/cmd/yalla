@@ -1,10 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Exit immediately on error
+set -o nounset
+set -o errexit
+set -o pipefail
+IFS=$'\n\t'
+trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
 YALLA_VERSION=0.1
 
 # Preserve original arguments with quotes
 # @see : https://stackoverflow.com/questions/3755772/how-to-preserve-double-quotes-in-in-a-shell-script/26733366#26733366
-args_list(){
+_args_list(){
     argList=""
     #iterate on each argument
     for arg in "$@"
@@ -24,16 +31,29 @@ args_list(){
     echo "$argList"
 }
 
-declare -x -f args_list;
+declare -x -f _args_list;
 
 ## Set Variables
 
 export WORKING_DIR=$(pwd)
 
-CMD=$1
+## Exit if not args or not a yalla project
+if [ ! -d "./yalla" ]; then
+    cat <<HEREDOC
+    The "yalla" directory does not appear to be present.
+    Run <yalla create-project> or go to a directory where yall is installed
+HEREDOC
+    exit 1;
+fi
 
-shift
-ARGS=$@
+## Parse args
+CMD=${1:--h}
+
+if ! [ -z "$@" ]
+  then
+    shift
+    ARGS=$@
+fi
 
 case "$CMD" in
     create-project)
