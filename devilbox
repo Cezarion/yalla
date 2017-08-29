@@ -65,14 +65,14 @@ case "$ACTION" in
         $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./bin/devilbox/mysql.sh $(args_list "$@")"
         ;;
     install)
-        info "Start docker stack"
+        _info "Start docker stack"
         $docker_cmd up -d $DOCKER_STACK;
 
-        info "\nCreate database or import an existing file"
+        _info "\nCreate database or import an existing file"
         install_actions
 
 
-        info "Install project"
+        _info "Install project"
         $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code install";
         ;;
     shortlist)

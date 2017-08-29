@@ -4,21 +4,19 @@ PROJECT_TYPE=symfony
 
 SRC=$(cd $(dirname "$0"); pwd)
 
-. "${SRC}/../lib/variables.sh"
-. "${SRC}/../lib/helpers.sh"
-. "${SRC}/../lib/functions.sh"
+. "${SRC}/../lib/common.sh"
 
 
 # Download symfony sources
 while true; do
     read -p "Do you wish to fully re/install, it will delete ${PWD}/application directory ?" yn
     case $yn in
-        [Yy]* ) echo "Ok, let's go !"; break;;
+        [Yy]* ) printf "Ok, let's go ! \n"; break;;
         [Nn]* )
-            echo "Ok, bye !";
+            printf "Ok, bye ! \n";
             exit;
             break;;
-        * ) echo "Please answer yes or no.";;
+        * ) printf "Please answer yes or no. \n";;
     esac
 done
 
@@ -35,9 +33,6 @@ ln -s "${APPLICATION_PATH_NAME}/web" htdocs
 echo "${GREEN} [ok] ${NORMAL}Create symlink local.yml from symfony parameters.yml"
 ln -s "../${application}/app/config/parameters.yml" shared/local.yml
 
-# Remove all other initialisation project
-remove_other_project_init $PROJECT_TYPE
-echo "${GREEN} [ok] ${NORMAL}Remove others project initialisation files"
 
 sh "${SRC}/bundles.sh"
 

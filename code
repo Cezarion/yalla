@@ -17,7 +17,7 @@ set +o allexport
 
 if [ ! -d "${SRC}/bin/${APP_TYPE}" ]
     then
-        bad_exit "${APP_TYPE} does not exist. Please set an available value in project-configuration : drupal8,drupal7,symfony,wordpress";
+        _bad_exit "${APP_TYPE} does not exist. Please set an available value in project-configuration : drupal8,drupal7,symfony,wordpress";
 fi
 
 # Set Action/Script to run
@@ -30,7 +30,7 @@ ARGS=$@
 # Run actions
 if [ ! -f "${SRC}/bin/${APP_TYPE}/${ACTION}.sh" ]
     then
-        bad_exit "${SRC}/bin/${APP_TYPE}/${ACTION} does not exist.";
+        _bad_exit "${SRC}/bin/${APP_TYPE}/${ACTION} does not exist.";
     else
         bash ${SRC}/bin/$APP_TYPE/$ACTION.sh $ARGS
 fi

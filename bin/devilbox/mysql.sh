@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Exit immediately on error
+set -e
 
 # Load common vars and functions
 . "./bin/lib/variables.sh"
@@ -11,7 +14,7 @@ INLINE=
 DATABASE=""
 FILE=""
 
-usage() {
+_usage() {
 notice "\nBad use or missing arguments."
 
 echo '
@@ -25,7 +28,7 @@ Examples :
 
 if [ $# -eq 1 ]
 then
-    usage
+    _usage
     exit
 fi
 
@@ -34,7 +37,7 @@ while getopts h:i:d:f: optname; do
         i ) INLINE="$OPTARG";;
         d ) DATABASE="${OPTARG}" ;;
         f ) FILE="${OPTARG}" ;;
-        h ) usage;;
+        h ) _usage;;
         \?)
             echo "Invalid option: -$OPTARG" >&2
         ;;
@@ -44,7 +47,7 @@ done
 # Import a sql file
 if [[ ! -z $FILE ]]; then
     if [ ! -f "${FILE}" ]; then
-        bad_exit "No ${FILE} file was found in the directory";
+        _bad_exit "No ${FILE} file was found in the directory";
     fi
 
     mysql -u root -h 127.0.0.1 ${DATABASE} < ${FILE};

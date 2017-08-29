@@ -29,22 +29,22 @@ esac
 
 
 if [ ! -d "$RELEASE_DIR" ]; then
-  info "The path ${RELEASE_DIR} does not exist, we create it"
+  _info "The path ${RELEASE_DIR} does not exist, we create it"
   mkdir $RELEASE_DIR
 fi
 
-info "Create release path ${RELEASE_PATH}"
+_info "Create release path ${RELEASE_PATH}"
 mkdir $RELEASE_PATH
 
-info "Backup code"
+_info "Backup code"
 rsync -az --stats --exclude=node_modules/ --exclude=.git --exclude=vendor --exclude=cache/* --exclude=logs/* --exclude=sites/default/files/* "${REPOSITORY}" "$RELEASE_PATH"
 
-info "Backup database"
+_info "Backup database"
 $DRUSH sql-dump --gzip  > "${RELEASE_PATH}/dump-${DATE}.sql.gz"
 
-info "Backups tasks completed"
+_info "Backups tasks completed"
 
-info "Remove old releases"
+_info "Remove old releases"
 
 
 # Remove old release
@@ -59,7 +59,7 @@ do
         #TODO: check folder before execute this F****** function...
 
         if [ ! -d "${i%%/}" ]; then
-          info "The path ${RELEASE_DIR} does not exist"
+          _info "The path ${RELEASE_DIR} does not exist"
           else
             rm -rf ${i%%/}
         fi

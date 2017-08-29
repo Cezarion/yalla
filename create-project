@@ -12,7 +12,7 @@ set -e
 . "$(pwd)/yalla/bin/lib/common.sh"
 
 if ! [ -x "$(command -v yalla)" ]; then
-    install_yalla_bin
+    _install_yalla_bin
 fi
 
 
@@ -22,7 +22,7 @@ do
     touch $folder/.gitkeep
 done
 
-success "Create directories and add .gitkeep \n"
+_success "Create directories and add .gitkeep \n"
 
 for file in ./yalla/samples/{*,.*}
 do
@@ -31,10 +31,21 @@ do
     if [ -f "${file}" ] && [ "$filename" != "README.md" ]
         then
             cp $file ./
-            success "Copy sample file ${filename}"
+            _success "Copy sample file ${filename}"
     fi
 done
 
-info "Create base .gitignore"
+printf "\n"
+_info "Create base .gitignore"
+_gi linux,osx,windows,PhpStorm,SublimeText,VisualStudio > .gitignore
 
-gi linux,osx,windows,PhpStorm,SublimeText,VisualStudio > .gitignore
+cat <<HEREDOC
+
+Yalla is now installed
+
+Usage:
+  ${_ME} [--options] [<arguments>]
+  ${_ME} -h | --help
+Options:
+  -h --help  Display this help information.
+HEREDOC
