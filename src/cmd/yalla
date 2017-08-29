@@ -9,6 +9,8 @@ trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
 YALLA_VERSION=0.1.2
 
+. "${HOME}/.yalla.autocomplete"
+
 # Preserve original arguments with quotes
 # @see : https://stackoverflow.com/questions/3755772/how-to-preserve-double-quotes-in-in-a-shell-script/26733366#26733366
 _args_list(){
@@ -85,6 +87,7 @@ while [ $# -gt 0 ]; do
         -v, --version
         update
 HEREDOC
+        ;;
        *)
           echo "${CMD} is not a registered command"
           exit 1
