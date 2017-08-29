@@ -254,7 +254,7 @@ _success() {
 declare -x -f _success;
 
 _warning(){
-    clr_brown clr_bold "[${WARNINGMARK}]" -n; clr_reset " ${1}" >&2;
+    clr_brown clr_bold "${WARNINGMARK} " -n; clr_reset " ${1}" >&2;
 }
 
 declare -x -f _warning;

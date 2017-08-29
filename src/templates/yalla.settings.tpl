@@ -11,8 +11,8 @@ APP_TYPE="{{APP_TYPE}}";
 DOCKER_STACK="{{DOCKER_STACK}}"
 
 # Slack notifications
-PROJECT="CNP"
-CHANNEL="cnp"
+PROJECT="{{PROJECT}}"
+CHANNEL="{{CHANNEL}}"
 SLACK_HOOK="{{SLACK_HOOK}}"
 
 # Prod url (use for media proxy) and as default value for build scripts :
@@ -21,8 +21,6 @@ PROD_URL=""
 
 # Db dev user
 # Automatically create the database and user for dev environments
-
-# User
 DB_DEV_USER={{DB_DEV_USER}}
 DB_DEV_PASS={{DB_DEV_PASS}}
 DB_DEV_DATABASE_NAME={{DB_DEV_DATABASE_NAME}}

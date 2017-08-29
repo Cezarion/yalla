@@ -52,6 +52,46 @@ function _yalla_settings() {
     local TEMPLATE="${_SRC_}/src/templates/yalla.settings.tpl"
 
 
+
+    ###############################################################################
+    ## Check if a yalla settings already exist
+    ##
+
+    if [ -f "yalla.settings" ]; then
+        _warning "A settings file alreay exists, do you want to overwrite it"
+
+        while true; do
+        read -p "yes / no ? " yn
+            case $yn in
+                [Yy]* )
+                    _br
+                    printf "Ok, let's go ! \xF0\x9F\x98\x8B\n";
+                    break;;
+                [Nn]* )
+                    _br
+                    printf "Ok, bye ! \xF0\x9F\x98\x98 \n";
+                    exit;
+                    break;;
+                * ) printf "Please answer y or n. \n";;
+            esac
+        done
+    fi
+
+    _line
+    _br
+
+    ###############################################################################
+    ## Define project properties
+    ##
+
+    clr_magenta "Project parameters."
+    _br
+    read -p "Project name (ex: fabernovel) : " PROJECT
+    read -p "Channel Slack (ex: random) : " CHANNEL
+
+    _line
+    _br
+
     ###############################################################################
     ## Select app type
     ##
@@ -137,6 +177,8 @@ HEREDOC
     ## Finally write file
     ##
 
+    PROJECT=$PROJECT \
+    CHANNEL=$CHANNEL \
     APP_TYPE=$APP_TYPE \
     DOCKER_STACK="${DOCKER_STACK}" \
     DB_DEV_USER="${DB_DEV_USER}" \
