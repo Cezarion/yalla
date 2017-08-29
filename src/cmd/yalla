@@ -38,7 +38,7 @@ declare -x -f _args_list;
 export WORKING_DIR=$(pwd)
 
 ## Exit if not args or not a yalla project
-if [ ! -d "./yalla" ]; then
+if [ ! -d "./yalla" ] && [ "$1" != "create-project" ]; then
     cat <<HEREDOC
     The "yalla" directory does not appear to be present.
     Run <yalla create-project> or go to a directory where yall is installed
