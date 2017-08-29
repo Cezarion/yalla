@@ -7,7 +7,7 @@ set -o pipefail
 IFS=$'\n\t'
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
-YALLA_VERSION=0.1.1
+YALLA_VERSION=0.1.2
 
 # Preserve original arguments with quotes
 # @see : https://stackoverflow.com/questions/3755772/how-to-preserve-double-quotes-in-in-a-shell-script/26733366#26733366
