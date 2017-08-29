@@ -58,4 +58,26 @@ declare -x -f _gi;
 
 function _version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
 
+###############################################################################
+# _file_put_contents()
+#
+# Usage:
+#   _file_put_contents <file> <text>
+#
+# example :
+#   file_put_contents .gitignore "New line"
+
+function _file_put_contents() {
+  local FILE="${1}"
+  local CONTENT="${2}"
+
+  if [ ! -f "$FILE"]
+    then
+      _error  "${FILE} doesn't exist"
+      exit
+  fi
+
+  echo -e "${CONTENT}\n$(cat $FILE)" > $FILE
+}
+
 

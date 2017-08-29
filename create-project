@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#
+#
+# @authors Mathias Gorenflot (mathias.gorenflot@fabernovel.com)
+# @date    2017-08-29 19:20:36
+# @version $Id$
+#
+
 # Exit immediately on error
 set -e
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
@@ -43,7 +50,17 @@ done
 
 printf "\n"
 _info "Create base .gitignore"
-_gi linux,osx,windows,PhpStorm,SublimeText,VisualStudio > .gitignore
+yalla_ignore=<<HEREDOC
+# Created by the yalla create-project script
+/shared/*.local
+/shared/*.local.*
+/shared/local.*
+# End of yalla create-project script
+
+HEREDOC
+echo -e $yalla_ignore > .gitignore
+# Common .gitignore
+_gi linux,osx,windows,PhpStorm,SublimeText,VisualStudio >> .gitignore
 
 cat <<HEREDOC
 

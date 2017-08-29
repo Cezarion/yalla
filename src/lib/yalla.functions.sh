@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+#
+# @authors Mathias Gorenflot (mathias.gorenflot@fabernovel.com)
+# @date    2017-08-29 19:18:09
+# @version $Id$
+#
+
 # Exit immediately on error
 set -e
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
@@ -27,7 +33,11 @@ done
 _install_yalla_bin(){
     _info "yalla command is not installed. We install it" >&2
     cp './yalla/src/cmd/yalla' /usr/local/bin/
-    _success 'Test yalla version'
+    if [ !-f "${HOME}/.yalla.autocomplete" ]
+        then
+            cp './yalla/src/cmd/autocomplete.sh' "${HOME}/.yalla.autocomplete"
+    fi
+    _success 'Check yalla version'
     echo '---------------------------------------'
     yalla -v
     echo '---------------------------------------'
@@ -252,7 +262,19 @@ HEREDOC
     DB_DEV_DATABASE_NAME="${DB_DEV_DATABASE_NAME}" \
     ./yalla/src/lib/templater.sh ./yalla/src/templates/yalla.settings.tpl > yalla.settings
 
+    _br
+    _line
 
+    _success "Yalla settings are now completed"
+    cat <<HEREDOC
+To update the files, edit the yalla.settings file.
+To restart the installation re-run the command 'yalla create-project'
+
+If there is a problem, open a ticket https://bitbucket.org/buzzaka/project-skeleton/issues?status=new&status=open
+HEREDOC
+
+    _br
+    _line
 }
 
 declare -x -f _yalla_settings;

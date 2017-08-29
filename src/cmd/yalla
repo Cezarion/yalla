@@ -7,7 +7,7 @@ set -o pipefail
 IFS=$'\n\t'
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
-YALLA_VERSION=0.1
+YALLA_VERSION=0.1.1
 
 # Preserve original arguments with quotes
 # @see : https://stackoverflow.com/questions/3755772/how-to-preserve-double-quotes-in-in-a-shell-script/26733366#26733366
@@ -55,29 +55,39 @@ if ! [ -z "$@" ]
     ARGS=$@
 fi
 
-case "$CMD" in
-    create-project)
-        git clone -b skeleton-rework --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla && ./yalla/create-project
-        ;;
+while [ $# -gt 0 ]; do
+  case "$CMD" in
+      create-project)
+          git clone -b skeleton-rework --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla && ./yalla/create-project
+          ;;
 
-    docker | ssh | mysql | app )
-        echo "@todo $(args_list "$@")"
-        ;;
-    -v | --version)
-        echo 'yalla version ' ${YALLA_VERSION}
-        echo 'yalla path ' $(which yalla)
-        ;;
-    -h | --help)
-        echo "@todo"
-        ;;
-    self-update)
-        echo "@todo"
-        ;;
-    update)
-        echo "@todo"
-        ;;
-
-     *)
-        echo "${CMD} is not a registered command"
-        exit 1
-esac
+      docker | ssh | mysql | app )
+          echo "@todo $(args_list "$@")"
+          ;;
+      -v | --version)
+          echo 'yalla version ' ${YALLA_VERSION}
+          echo 'yalla path ' $(which yalla)
+          ;;
+      -h | --help)
+          echo "@todo"
+          ;;
+      self-update)
+          echo "@todo"
+          ;;
+      update)
+          echo "@todo"
+          ;;
+    shortlist)
+        cat <<HEREDOC
+        create-project
+        docker
+        ssh
+        -v, --version
+        update
+HEREDOC
+       *)
+          echo "${CMD} is not a registered command"
+          exit 1
+  esac
+  shift
+done
