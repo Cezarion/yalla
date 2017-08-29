@@ -78,7 +78,7 @@ _yalla_check_update(){
     printf "Yalla Remote version : $remote_version\n"
 
     if [ $(_version $local_version) -gt $(_version $remote_version) ]; then
-      _info "Remote version is older than local version"
+      _warning "Remote version is older than local version"
     elif [ $(_version $local_version) -lt $(_version $remote_version) ]; then
       _notice "Local version need update, do you want to run update ?"
       while true; do

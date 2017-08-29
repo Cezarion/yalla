@@ -21,16 +21,6 @@ fi
 _h1 "Check yalla scripts update"
 _yalla_check_update
 
-# if [ "$local_version" -lt "$remote_version" ]
-#   then
-#     echo "version mismatch"
-#   else
-#     echo "qsdqs"
-# fi
-exit
-#_line
-#_h1 "Init new yalla project"
-
 
 for folder in "${FOLDERS[@]}"
 do
