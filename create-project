@@ -9,7 +9,12 @@ set -e
 ##
 
 # Load common vars and functions
-. "$(pwd)/yalla/bin/lib/common.sh"
+. "$(pwd)/yalla/src/lib/common.sh"
+
+_yalla_settings
+
+exit
+
 
 if ! [ -x "$(command -v yalla)" ]; then
     _install_yalla_bin
@@ -49,3 +54,4 @@ Usage:
 Options:
   -h --help  Display this help information.
 HEREDOC
+

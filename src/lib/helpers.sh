@@ -92,6 +92,18 @@ _join() {
 }
 
 ###############################################################################
+# _tolower()
+#
+# Usage:
+#   _tolower <string>
+#
+
+_tolower() {
+  local str="${*:-}"
+  echo $str | awk '{print tolower($0)}'
+}
+
+###############################################################################
 # _readlink()
 #
 # Usage:
@@ -261,6 +273,14 @@ _error(){
   clr_red clr_bold "[${CROSSMARK}]" -n; clr_reset " ${1}" >&2;
 }
 declare -x -f _error;
+
+_line(){
+  printf "\n---------------------------------------------\n"
+}
+
+_br(){
+  printf "\n"
+}
 
 # exit functions
 _bad_exit() {

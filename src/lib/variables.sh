@@ -9,6 +9,9 @@ export EMAIL;
 # Folder path where application code is located
 export APPLICATION_PATH_NAME='app'
 
+# export current path
+export _SRC_="$(pwd)/yalla"
+
 # Icons
 export CHECKMARK=$'\xE2\x9C\x93'
 export CROSSMARK=$'\xE2\x9D\x8C'

@@ -8,14 +8,14 @@ set -o allexport
 set +o allexport
 
 # Load common vars and functions
-. "${SRC}/bin/lib/common.sh"
+. "${SRC}/src/lib/common.sh"
 
 
 # This script allow to run current project actions without specify
 # current script path.
 # Just set below app type (drupal8,drupal7,symfony,wordpress):
 
-if [ ! -d "${SRC}/bin/${APP_TYPE}" ]
+if [ ! -d "${SRC}/src/${APP_TYPE}" ]
     then
         _bad_exit "${APP_TYPE} does not exist. Please set an available value in project-configuration : drupal8,drupal7,symfony,wordpress";
 fi
@@ -28,9 +28,9 @@ shift
 ARGS=$@
 
 # Run actions
-if [ ! -f "${SRC}/bin/${APP_TYPE}/${ACTION}.sh" ]
+if [ ! -f "${SRC}/src/${APP_TYPE}/${ACTION}.sh" ]
     then
-        _bad_exit "${SRC}/bin/${APP_TYPE}/${ACTION} does not exist.";
+        _bad_exit "${SRC}/src/${APP_TYPE}/${ACTION} does not exist.";
     else
-        bash ${SRC}/bin/$APP_TYPE/$ACTION.sh $ARGS
+        bash ${SRC}/src/$APP_TYPE/$ACTION.sh $ARGS
 fi

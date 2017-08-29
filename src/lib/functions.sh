@@ -1,24 +1,6 @@
 #!/usr/bin/env bash
 
 
-###############################################################################
-# _install_yalla_bin()
-#
-# Usage:
-#   _install_yalla_bin
-#
-# Install yalla command in /usr/local/bin
-# @todo download script from remote repository
-#
-_install_yalla_bin(){
-    info "yalla command is not installed. We install it" >&2
-    cp './yalla/bin/cmd/yalla' /usr/local/bin
-    success 'Test yalla version'
-    echo '---------------------------------------'
-    yalla -v
-    echo '---------------------------------------'
-}
-
 
 ###############################################################################
 # _arg_list()
