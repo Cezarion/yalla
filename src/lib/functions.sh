@@ -46,3 +46,16 @@ declare -x -f _args_list;
 function _gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 
 declare -x -f _gi;
+
+###############################################################################
+# _version()
+#
+# Usage:
+#   _version 0.2.1
+#
+# transform string to allow number comparaisons
+# @see : https://apple.stackexchange.com/questions/83939/compare-multi-digit-version-numbers-in-bash/123408#123408
+
+function _version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'; }
+
+

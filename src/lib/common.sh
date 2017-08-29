@@ -2,6 +2,7 @@
 
 # Exit immediately on error
 set -e
+trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
 SRC=$(cd $(dirname "$0"); pwd)
 

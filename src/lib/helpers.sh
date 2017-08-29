@@ -282,6 +282,12 @@ _br(){
   printf "\n"
 }
 
+_h1(){
+    _line
+    clr_magenta "${1}"
+    _br
+}
+
 # exit functions
 _bad_exit() {
     echo ;

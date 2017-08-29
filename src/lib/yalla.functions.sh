@@ -25,14 +25,80 @@ done
 # @todo download script from remote repository
 #
 _install_yalla_bin(){
-    info "yalla command is not installed. We install it" >&2
-    cp './yalla/bin/cmd/yalla' /usr/local/bin
+    _info "yalla command is not installed. We install it" >&2
+    cp './yalla/src/cmd/yalla' /usr/local/bin/
     _success 'Test yalla version'
     echo '---------------------------------------'
     yalla -v
     echo '---------------------------------------'
 }
 
+###############################################################################
+# _yalla_version()
+#
+# Usage:
+#   __yalla_version <local|remote>
+#
+# get version of a yalla script
+#
+
+_yalla_version(){
+    local ARGS="${1}"
+    local VERSION=
+
+    case $ARGS in
+        local | -l)
+            VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' /usr/local/bin/yalla)
+            ;;
+        remote | -r )
+            VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' ./yalla/src/cmd/yalla)
+            ;;
+        * ) printf "Please answer y or n. \n";;
+    esac
+
+    echo $VERSION
+}
+
+
+
+###############################################################################
+# _yalla_version()
+#
+# Usage:
+#   __yalla_version <local|remote>
+#
+# get version of a yalla script
+#
+_yalla_check_update(){
+    local remote_version=$(_yalla_version -r)
+    local local_version=$(_yalla_version -l)
+    local NEED_UPDATE=0
+
+    printf "Yalla Local version : $local_version\n"
+    printf "Yalla Remote version : $remote_version\n"
+
+    if [ $(_version $local_version) -gt $(_version $remote_version) ]; then
+      _info "Remote version is older than local version"
+    elif [ $(_version $local_version) -lt $(_version $remote_version) ]; then
+      _notice "Local version need update, do you want to run update ?"
+      while true; do
+        read -p "yes / no ? " yn
+            case $yn in
+                [Yy]* )
+                    _install_yalla_bin
+                    break;;
+                [Nn]* )
+                    exit;
+                    break;;
+                * ) printf "Please answer y or n. \n";;
+            esac
+        done
+    else
+      _info "Version is up to date"
+    fi
+
+    _br
+}
 
 ###############################################################################
 # _yalla_settings()
