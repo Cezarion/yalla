@@ -28,11 +28,9 @@ if [ -f "${HOME}/.zshrc" ]
     then
         if ! grep -q ".yalla.autocomplete" "${HOME}/.zshrc"
         then
-            #printf  "${CONTENT}" >> "${HOME}/.zshrc"
-            echo "don't exist"
+            printf  "${CONTENT}" >> "${HOME}/.zshrc"
         fi
-        echo "exist"
-        #source ${HOME}/.yalla.autocomplete
+        source ${HOME}/.yalla.autocomplete
         exit
 fi
 
