@@ -1,4 +1,3 @@
-
 _script()
 {
   _script_commands=$(/usr/local/bin/yalla shortlist)
@@ -10,4 +9,5 @@ _script()
 
   return 0
 }
+
 complete -o nospace -F _script /usr/local/bin/yalla

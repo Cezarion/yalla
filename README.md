@@ -9,6 +9,11 @@
 | --------------- | ------------ | ------------- |
 | docker >= 1.12  | `docker -v`    | [docker.com](https://www.docker.com/community-edition) |
 | devilbox / Forked by Code >= 0.11  | `git branch`    | [devilbox](https://bitbucket.org/buzzaka/devilbox) |
+| Yalla cli  | `which yalla`    | [yalla-cli](https://bitbucket.org/buzzaka/devilbox) |
+
+## Install requirements (yalla-cli)
+curl -s 
+
 
 ## Install requirements (devil box)
 
