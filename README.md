@@ -1,5 +1,5 @@
 # Fabernovel Code // Yalla Boilerplate
-
+--------------
 This project allows to quickly and easily mount a boilerplate for Fabernovel Code projects.
 
 It consists of a command cli which allows to have a unique command through the projects but also to generate a new project.
