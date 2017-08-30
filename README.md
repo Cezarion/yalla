@@ -1,19 +1,47 @@
+# Fabernovel Code // Yalla Boilerplate
 
-**Supported operating systems**
+This project allows to quickly and easily mount a boilerplate for Fabernovel Code projects.
 
-![Linux](https://raw.githubusercontent.com/cytopia/icons/master/64x64/linux.png) ![Windows](https://raw.githubusercontent.com/cytopia/icons/master/64x64/windows.png) ![OSX](https://raw.githubusercontent.com/cytopia/icons/master/64x64/osx.png)
+It consists of a command cli which allows to have a unique command through the projects but also to generate a new project.
+It also consists of a set of scripts to launch commands within the project.
+
+Coupling with [devilbox](https://bitbucket.org/buzzaka/devilbox), a docker stack, it will allow the rapid establishment of a development environment.
+
+** What's new / changing **
+
+Before the skeleton was an integral part of the project and was versioned with the project.
+As a result, it was difficult to update the skeleton.
+
+Now the skelleton becomes a dependency of the project, the whole of this application is grouped in a folder yalla, itself under git.
+So it will be possible to make a correction or an update and make a pull request on the skeleton.
+
+_The new architecture :_
+
+project/
+    application/
+    backup/
+
+### Supported operating systems 
+
+![Linux](https://raw.githubusercontent.com/cytopia/icons/master/64x64/linux.png) ![OSX](https://raw.githubusercontent.com/cytopia/icons/master/64x64/osx.png)
 
 ## Requirements
 
-| Prerequisite    | How to check | How to install
+| Prerequisite    | How to check | How to install |
 | --------------- | ------------ | ------------- |
 | docker >= 1.12  | `docker -v`    | [docker.com](https://www.docker.com/community-edition) |
 | devilbox / Forked by Code >= 0.11  | `git branch`    | [devilbox](https://bitbucket.org/buzzaka/devilbox) |
 | Yalla cli  | `which yalla`    | [yalla-cli](https://bitbucket.org/buzzaka/devilbox) |
 
-## Install requirements (yalla-cli)
-curl -s 
 
+## Install requirements (yalla-cli)
+
+```shell
+curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
+Check 
+```
+
+That's all. 
 
 ## Install requirements (devil box)
 

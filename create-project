@@ -28,6 +28,7 @@ fi
 _h1 "Check yalla scripts update"
 _yalla_check_update
 
+FOLDERS=(application shared logs tests)
 
 for folder in "${FOLDERS[@]}"
 do
