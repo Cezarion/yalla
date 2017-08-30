@@ -22,21 +22,23 @@ chmod +x /usr/local/bin/yalla;
 # Download autocomplete
 curl -o "${HOME}/.yalla.autocomplete"  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/autocomplete.sh;
 
-CONTENT="\n\n#Add yalla autocomplete\n${HOME}/.yalla.autocomplete"
+CONTENT="\n#Add yalla autocomplete\n${HOME}/.yalla.autocomplete"
 
 if [ -f "${HOME}/.zshrc" ]
     then
-        if ! grep -Fxq "yalla.autocomplete" ~/.zshrc
+        if ! grep -q ".yalla.autocomplete" "${HOME}/.zshrc"
         then
-            printf  "${CONTENT}" >> "${HOME}/.zshrc"
+            #printf  "${CONTENT}" >> "${HOME}/.zshrc"
+            echo "don't exist"
         fi
-        source ${HOME}/.yalla.autocomplete
+        echo "exist"
+        #source ${HOME}/.yalla.autocomplete
         exit
 fi
 
 if [ -f "${HOME}/.profile" ]
     then
-        if ! grep -Fxq "yalla.autocomplete" ~/.profile
+        if ! grep -q ".yalla.autocomplete" "${HOME}/.profile"
         then
             printf "${CONTENT}" >> "${HOME}/.profile"
         fi
@@ -46,7 +48,7 @@ fi
 
 if [ -f "${HOME}/.bashrc" ]
     then
-        if ! grep -Fxq "yalla.autocomplete" ~/.bashrc
+        if ! grep -q ".yalla.autocomplete" "${HOME}/.bashrc"
         then
             printf "${CONTENT}" >> "${HOME}/.bashrc"
         fi
