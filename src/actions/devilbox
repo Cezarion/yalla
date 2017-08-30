@@ -2,11 +2,12 @@
 
 # Load params & export local configuration
 set -o allexport
-source ../../.devilbox
-source ../yalla.settings
+source "${WORKING_DIR}/../.devilbox"
+source "${WORKING_DIR}/yalla.settings"
 
 # Load common scripts
-source ./src/lib/common.sh
+source "${APP_YALLA_LIB}/common.sh"
+
 
 CWD="/shared/httpd"
 CURRENT_DIR_NAME=${PWD##*/}
@@ -15,7 +16,7 @@ CURRENT_DIR_PATH=${PWD}
 LOCAL_DATABASE_PATH="${CURRENT_DIR_PATH}/databases"
 
 # Load devilbox custom scripts
-source ./src/devilbox/functions.sh
+source "${APP_YALLA_ACTIONS}/devilbox.functions.sh"
 
 
 
