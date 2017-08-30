@@ -295,9 +295,10 @@ HEREDOC
 
     _br
     _line
-
+    _br
     _success "Yalla settings are now completed"
     cat <<HEREDOC
+
 To update the files, edit the yalla.settings file.
 To restart the installation re-run the command 'yalla create-project'
 
