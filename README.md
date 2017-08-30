@@ -19,7 +19,10 @@ _The new architecture :_
 
 project/
     application/
-    backup/
+    logs/
+    shared/
+    tests
+    yalla/
 
 ### Supported operating systems 
 
