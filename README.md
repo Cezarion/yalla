@@ -34,10 +34,6 @@ project/
 
 --------------
 
-[TOC]
-
---------------
-
 ## Requirements
 
 | Prerequisite    | How to check | How to install |
@@ -52,31 +48,45 @@ project/
 
 ```shell
 curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
-Check 
 ```
 
 That's all. 
 
-## Install requirements (devil box)
+## Install Devil Box
 
 Choose a directory (if you are a Fabernovel Team member go to `~/Webserver`)
 ```shell
-$ git clone git@bitbucket.org:buzzaka/devilbox.git
-$ cd devilbox
-$ ./install.sh 
+$ $user@machine:~/Webserver| git clone -b skeleton-stack --single-branch git@bitbucket.org:buzzaka/devilbox.git devilbox 
+$ $user@machine:~/Webserver| cd devilbox
+$ $user@machine:~/Webserver| ./install.sh 
 ```
 
 More details see https://bitbucket.org/buzzaka/devilbox/overview#%20usage-as-a-common-stack
 
-## Regular install by Dev
+This will create a `devilbox` folder that is going to be the heart of the stack lamp, ...
+This stack contains enough to launch containers redis, apache, mysql, ...
+
+This will also create a `www-docker` folder at the same level as devilbox.
+It is here that the projects will be initiated.
+
+```shell
+$ $user@machine:~/Webserver/devilbox| cd ..
+$ $user@machine:~/Webserver| ls 
+$ $user@machine:~/Webserver| devilbox www-docker
+```
+
+
+## Init a new project 
 
 Go to `~/Webserver/www-docker`
 ```shell
-$ git clone git@bitbucket.org:buzzaka/cnp-caploc.git
-$ cd cnp-caploc
-$ ./devilbox code install
+$ $user@machine:~/Webserver| cd www-docker
+$ $user@machine:~/Webserver| mkdir new-project && cd $_ 
+$ $user@machine:~/Webserver/new-project| yalla create-project
 ```
 
+
+------ DEPRECATED - LINE BELOW NEEDS TO BE UPDATED ------- 
 ### Regular scripts
 
 #### From computer
