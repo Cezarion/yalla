@@ -59,14 +59,14 @@ _br
 
 _info "Create base .gitignore"
 
-cat <<HEREDOC
+CONTENT=<<HEREDOC
 # Created by the yalla create-project script
 /shared/*.local
 /shared/*.local.*
 /shared/local.*
 # End of yalla create-project script
-
-HEREDOC > .gitignore
+HEREDOC
+echo $CONTENTT > .gitignore
 # Common .gitignore
 _gi linux,osx,windows,PhpStorm,SublimeText,VisualStudio >> .gitignore
 
