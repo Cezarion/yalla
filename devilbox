@@ -2,11 +2,11 @@
 
 # Load params & export local configuration
 set -o allexport
-source ../.devilbox
-source ./project-configuration
+source ../../.devilbox
+source ../yalla.settings
 
 # Load common scripts
-source ./bin/lib/common.sh
+source ./src/lib/common.sh
 
 CWD="/shared/httpd"
 CURRENT_DIR_NAME=${PWD##*/}
@@ -15,7 +15,7 @@ CURRENT_DIR_PATH=${PWD}
 LOCAL_DATABASE_PATH="${CURRENT_DIR_PATH}/databases"
 
 # Load devilbox custom scripts
-source ./bin/devilbox/install.sh
+source ./src/devilbox/functions.sh
 
 
 
@@ -29,6 +29,12 @@ set +o allexport
 
 ACTION=$1
 
+
+echo $ACTION
+echo $CURRENT_DIR_NAME
+echo $CURRENT_DIR_PATH
+
+exit
 
 case "$ACTION" in
     config)
@@ -51,18 +57,18 @@ case "$ACTION" in
         ;;
     exec)
         shift
-        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}; $(args_list "$@")"
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}; $(_args_list "$@")"
         ;;
     code)
         shift
-        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code $(args_list "$@")"
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code $(_args_list "$@")"
         ;;
     # There is a bug with docker compose and pipe, tty, ..
     # so I use a script to execute a script on the docker container
     # @see https://github.com/docker/compose/issues/3352
     mysql)
         shift
-        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./bin/devilbox/mysql.sh $(args_list "$@")"
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./bin/devilbox/mysql.sh $(_args_list "$@")"
         ;;
     install)
         _info "Start docker stack"

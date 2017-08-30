@@ -66,4 +66,6 @@ _gi linux,osx,windows,PhpStorm,SublimeText,VisualStudio >> .gitignore
 
 _success ".gitignore was generated with os, editor an project config"
 
+# Setting up app and environnements settings
+
 _yalla_settings

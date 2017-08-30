@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+#
+#
+# @authors Mathias Gorenflot (mathias.gorenflot@fabernovel.com)
+# @date    2017-08-30 21:22:02
+# @version $Id$
+# @package yalla
+#
+
+###############################################################################
+# Bash 'Strict Mode'
+# http://redsymbol.net/articles/unofficial-bash-strict-mode
+# https://github.com/alphabetum/bash-boilerplate#bash-strict-mode
+set -o nounset
+set -o errexit
+set -o pipefail
+IFS=$'\n\t'
+
+###############################################################################
+##
+## This file dispatch yalla command
+##
+
+. ./yalla/src/lib/common.sh
+
+# Die if it's not a yalla project
+
+# Script to run
+ACTION=$1
+
+#
+# To preserve the original arguments,
+# the _arg_list function converts the array to a string.
+# Now you convert the string to a table
+#
+#
+IFS=$'\n'; ARGS=($(echo $2 | egrep -o '"[^"]*"|\S+'))
+
+# List args
+# for arg in "${ARGS[@]}"
+#     do
+#         printf "${arg}\n"
+# done
+
+case $ACTION in
+    docker)
+        if [! -f ]
+    ;;
+esac
