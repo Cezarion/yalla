@@ -33,9 +33,40 @@ done
 _install_yalla_bin(){
     _info "yalla command is not installed. We install it" >&2
     cp './yalla/src/cmd/yalla' /usr/local/bin/
+
     if [ !-f "${HOME}/.yalla.autocomplete" ]
         then
             cp './yalla/src/cmd/autocomplete.sh' "${HOME}/.yalla.autocomplete"
+
+            CONTENT="\n#Add yalla autocomplete\nsource \$HOME/.yalla.autocomplete"
+
+            if [ -f "${HOME}/.zshrc" ]
+                then
+                    if ! grep -q ".yalla.autocomplete" "${HOME}/.zshrc"
+                    then
+                        printf  "${CONTENT}" >> "${HOME}/.zshrc"
+                    fi
+                    source ${HOME}/.yalla.autocomplete
+            fi
+
+            if [ -f "${HOME}/.profile" ]
+                then
+                    if ! grep -q ".yalla.autocomplete" "${HOME}/.profile"
+                    then
+                        printf "${CONTENT}" >> "${HOME}/.profile"
+                    fi
+                    source ${HOME}/.yalla.autocomplete
+            fi
+
+            if [ -f "${HOME}/.bashrc" ]
+                then
+                    if ! grep -q ".yalla.autocomplete" "${HOME}/.bashrc"
+                    then
+                        printf "${CONTENT}" >> "${HOME}/.bashrc"
+                    fi
+                    source ${HOME}/.yalla.autocomplete
+            fi
+
     fi
     _success 'Check yalla version'
     echo '---------------------------------------'

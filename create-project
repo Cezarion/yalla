@@ -63,15 +63,6 @@ echo -e $yalla_ignore > .gitignore
 # Common .gitignore
 _gi linux,osx,windows,PhpStorm,SublimeText,VisualStudio >> .gitignore
 
-cat <<HEREDOC
-
-Yalla is now installed
-
-Usage:
-  ${_ME} [--options] [<arguments>]
-  ${_ME} -h | --help
-Options:
-  -h --help  Display this help information.
-HEREDOC
+_success ".gitignore was generated with os, editor an project config"
 
 _yalla_settings
