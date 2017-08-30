@@ -14,7 +14,7 @@ export _SRC_="$(pwd)/yalla"
 
 # Icons
 export CHECKMARK=$'\xE2\x9C\x93'
-export CROSSMARK=$'\xE2\x9D\x8C'
+export CROSSMARK=$'\xE2\x9C\x97'
 export INFOMARK=$'\xE2\x84\xB9'
 export WARNINGMARK=$'\xE2\x9A\xA0'
 

@@ -12,7 +12,7 @@ YALLA_VERSION=0.1.2
 # Preserve original arguments with quotes
 # @see : https://stackoverflow.com/questions/3755772/how-to-preserve-double-quotes-in-in-a-shell-script/26733366#26733366
 _args_list(){
-    argList=""
+    local argList=""
     #iterate on each argument
     for arg in "$@"
     do
@@ -31,29 +31,34 @@ _args_list(){
     echo "$argList"
 }
 
-declare -x -f _args_list;
-
 ## Set Variables
 
 export WORKING_DIR=$(pwd)
 
-## Exit if not args or not a yalla project
-# if [ ! -d "./yalla" ] && [ "$1" != "create-project" ]; then
-#     cat <<HEREDOC
-#     The "yalla" directory does not appear to be present.
-#     Run <yalla create-project> or go to a directory where yall is installed
-# HEREDOC
-#     exit 1;
-# fi
-
 ## Parse args
 CMD=${1:--h}
 
-if ! [ -z "$@" ]
-  then
-    shift
-    ARGS=$@
-fi
+
+# Exit if not args or not a yalla project
+_check_is_yalla_app() {
+  if [ ! -d "./yalla" ] && [ "$CMD" != "create-project" ]; then
+      echo -e "\n\xE2\x9C\x97 Error ! \n"
+      cat <<HEREDOC
+The "yalla" directory does not appear to be present.
+Run <yalla create-project> or go to a directory where yall is installed
+
+HEREDOC
+      exit 1;
+  fi
+}
+
+
+
+# if ! [ -z "$@" ]
+#   then
+#     shift
+#     ARGS=$@
+# fi
 
 while [ $# -gt 0 ]; do
   case "$CMD" in
@@ -62,6 +67,7 @@ while [ $# -gt 0 ]; do
           ;;
 
       docker | ssh | mysql | app )
+          _check_is_yalla_app
           echo "@todo $(args_list "$@")"
           ;;
       -v | --version)
