@@ -29,6 +29,8 @@ set +o allexport
 ACTION=$1
 shift
 
+echo $@
+
 
 case "$ACTION" in
     config)
@@ -49,8 +51,11 @@ case "$ACTION" in
     ssh)
         $docker_exec "cd ${CWD}; exec bash -l"
         ;;
+    connect)
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}; exec bash -l"
+        ;;
     exec)
-        shift
+        #shift
         $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}; $(_args_list "$@")"
         ;;
     code)
