@@ -28,7 +28,7 @@ if [ -f "${HOME}/.zshrc" ]
     then
         if ! grep -Fxq "yalla.autocomplete" ~/.zshrc
         then
-            echo -e "${CONTENT}" >> "${HOME}/.zshrc"
+            printf  "${CONTENT}" >> "${HOME}/.zshrc"
         fi
         source ${HOME}/.yalla.autocomplete
         exit
@@ -38,7 +38,7 @@ if [ -f "${HOME}/.profile" ]
     then
         if ! grep -Fxq "yalla.autocomplete" ~/.profile
         then
-            echo -e "${CONTENT}" >> "${HOME}/.profile"
+            printf "${CONTENT}" >> "${HOME}/.profile"
         fi
         source ${HOME}/.yalla.autocomplete
         exit
@@ -48,7 +48,7 @@ if [ -f "${HOME}/.bashrc" ]
     then
         if ! grep -Fxq "yalla.autocomplete" ~/.bashrc
         then
-            echo -e "${CONTENT}" >> "${HOME}/.bashrc"
+            printf "${CONTENT}" >> "${HOME}/.bashrc"
         fi
         source ${HOME}/.yalla.autocomplete
         exit
