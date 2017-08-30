@@ -24,7 +24,7 @@ curl -o "${HOME}/.yalla.autocomplete"  https://buzzaka:Buzz06\$dev@yalla-dl.fabe
 
 chmod +x "${HOME}/.yalla.autocomplete";
 
-CONTENT="\n#Add yalla autocomplete\n${HOME}/.yalla.autocomplete"
+CONTENT="\n#Add yalla autocomplete\nsource ${HOME}/.yalla.autocomplete"
 
 if [ -f "${HOME}/.zshrc" ]
     then
