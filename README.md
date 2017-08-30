@@ -86,7 +86,7 @@ $ $user@machine:~/Webserver/new-project| yalla create-project
 ```
 
 
------- DEPRECATED - LINE BELOW NEEDS TO BE UPDATED ------- 
+# ------ DEPRECATED - LINE BELOW NEEDS TO BE UPDATED ------- 
 ### Regular scripts
 
 #### From computer
