@@ -1,5 +1,8 @@
+[TOC]
 # Fabernovel Code // Yalla Boilerplate
 --------------
+
+
 This project allows to quickly and easily mount a boilerplate for Fabernovel Code projects.
 
 It consists of a command cli which allows to have a unique command through the projects but also to generate a new project.
@@ -24,20 +27,25 @@ project/
     tests
     yalla/
 
+--------------
+
 ### Supported operating systems 
 
 ![Linux](https://raw.githubusercontent.com/cytopia/icons/master/64x64/linux.png) ![OSX](https://raw.githubusercontent.com/cytopia/icons/master/64x64/osx.png)
+
+--------------
 
 ## Requirements
 
 | Prerequisite    | How to check | How to install |
 | --------------- | ------------ | ------------- |
+| git >= 2  | `git --version`    | [git-scm.com](https://git-scm.com/book/fr/v1/D%C3%A9marrage-rapide-Installation-de-Git) |
 | docker >= 1.12  | `docker -v`    | [docker.com](https://www.docker.com/community-edition) |
 | devilbox / Forked by Code >= 0.11  | `git branch`    | [devilbox](https://bitbucket.org/buzzaka/devilbox) |
-| Yalla cli  | `which yalla`    | [yalla-cli](https://bitbucket.org/buzzaka/devilbox) |
+| Yalla cli  | `which yalla`    | [yalla-cli](#markdown-header-install-yalla-cli) |
 
 
-## Install requirements (yalla-cli)
+## Install yalla-cli
 
 ```shell
 curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
