@@ -1,4 +1,3 @@
-[TOC]
 # Fabernovel Code // Yalla Boilerplate
 --------------
 
@@ -32,6 +31,10 @@ project/
 ### Supported operating systems 
 
 ![Linux](https://raw.githubusercontent.com/cytopia/icons/master/64x64/linux.png) ![OSX](https://raw.githubusercontent.com/cytopia/icons/master/64x64/osx.png)
+
+--------------
+
+[TOC]
 
 --------------
 
@@ -113,18 +116,18 @@ $ ./devilbox shortlist # show available commands
 
 Start edit project-configuration
 
-```
+```shell
 #!sh
 $ vi ./project-configuration
 ```
 Or 
-```
+```shell
 #!sh
 $ subl ./project-configuration
 ```
 
 Edit ./project-configuration as follow : 
-``` shell
+```shell
 # Set the type of application.
 # This serves as a wrapper to search for commands in the bin/ folder
 # available values : drupal8,drupal7,symfony,wordpress
@@ -145,8 +148,7 @@ SLACK_HOOK="https://hooks.slack.com/services/T02NYDFMA/B0E7G562X/at4yonmQaSuORxd
 # Prod url (use for media proxy) and as default value for build scripts :
 # example : https://fabernovel.com
 PROD_URL=""
-```
-
+```shell
 #!sh
 ./code build dev
 ```
