@@ -44,8 +44,14 @@ do
 
     if [ -f "${file}" ] && [ "$filename" != "README.md" ]
         then
-            cp $file ./
-            _success "Copy sample file ${filename}"
+          if [ "$filename" == ".devilbox-run-time-settings" ]
+            then
+              cp $file ./.env
+              _success "Copy sample file ${filename} into .env"
+          else
+              cp $file ./
+              _success "Copy sample file ${filename}"
+          fi
     fi
 done
 

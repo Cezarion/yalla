@@ -85,18 +85,18 @@ HEREDOC
       update)
           echo "@todo"
           ;;
-    shortlist)
+      shortlist)
         cat <<HEREDOC
-        create-project
-        docker
-        ssh
-        -v, --version
-        update
+create-project
+docker
+ssh
+-v, --version
+update
 HEREDOC
         ;;
        *)
           echo "${CMD} is not a registered command"
           exit 1
   esac
-  shift
+#  shift
 #done

@@ -18,8 +18,6 @@ LOCAL_DATABASE_PATH="${CURRENT_DIR_PATH}/databases"
 # Load devilbox custom scripts
 source "${APP_YALLA_ACTIONS}/devilbox.functions.sh"
 
-
-
 # Docker shortcuts
 compose_file="${DEVILBOX_LOCAL_PATH}/docker-compose.yml"
 docker_cmd="docker-compose -f ${compose_file}"
@@ -29,13 +27,8 @@ docker_mysql_cmd="${docker_cmd} exec --user devilbox php env mysql -h 127.0.0.1 
 set +o allexport
 
 ACTION=$1
+shift
 
-
-echo $ACTION
-echo $CURRENT_DIR_NAME
-echo $CURRENT_DIR_PATH
-
-exit
 
 case "$ACTION" in
     config)

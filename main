@@ -65,6 +65,6 @@ IFS=$'\n'; ARGS=($(echo $2 | egrep -o '"[^"]*"|\S+'))
 
 case "$ACTION" in
     docker)
-        sh "${APP_YALLA_ACTIONS}/devilbox" $2
+        sh "${APP_YALLA_ACTIONS}/devilbox" "${ARGS[@]}"
     ;;
 esac
