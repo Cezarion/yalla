@@ -85,6 +85,23 @@ $ $user@machine:~/Webserver| mkdir new-project && cd $_
 $ $user@machine:~/Webserver/new-project| yalla create-project
 ```
 
+## Available commands
+
+### Devilbox
+
+``` shell
+$ $user@machine:~/Webserver/new-project| yalla docker config # Show local config
+$ $user@machine:~/Webserver/new-project| yalla docker up # Start required docker container as daemon ( @see project-configuration DOCKER_STACK)
+$ $user@machine:~/Webserver/new-project| yalla docker stop # Stop required container
+$ $user@machine:~/Webserver/new-project| yalla docker cleanup # When changing some variable in .env you must re-create the container.Simply remove it, it will be auto-created during the next start:
+$ $user@machine:~/Webserver/new-project| yalla docker ssh #connect to php container in www-docker path 
+$ $user@machine:~/Webserver/new-project| yalla docker connect #connect to php container in www-docker/new-project path 
+$ $user@machine:~/Webserver/new-project| yalla docker exec # run a command into container fwithout connect from ssh. Example : yalla docker exec composer -v
+$ $user@machine:~/Webserver/new-project| yalla docker code # is wrapper to execute ./code args cmd from local path without to connect into container
+$ $user@machine:~/Webserver/new-project| yalla docker code install # run ./code install ino container 
+$ $user@machine:~/Webserver/new-project| yalla docker shortlist # show available commands
+```
+
 
 # ------ DEPRECATED - LINE BELOW NEEDS TO BE UPDATED ------- 
 ### Regular scripts
