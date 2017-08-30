@@ -310,3 +310,25 @@ HEREDOC
 }
 
 declare -x -f _yalla_settings;
+
+
+###############################################################################
+# _check_is_yalla_app()
+#
+# Usage:
+#   _check_is_yalla_app
+#
+# Exit if not args or not a yalla project
+#
+
+_check_is_yalla_app() {
+  if [ ! -d "./yalla" ] && [ "$1" != "create-project" ]; then
+      echo -e "\n\xE2\x9C\x97 Error ! \n"
+      cat <<HEREDOC
+The "yalla" directory does not appear to be present.
+Run <yalla create-project> or go to a directory where yall is installed
+
+HEREDOC
+      exit 1;
+  fi
+}
