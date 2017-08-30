@@ -14,13 +14,13 @@ trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 [[ -d /usr/local/bin ]] || mkdir -p /usr/local/bin
 
 # Download cli script
-curl -o /usr/local/bin/yalla  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/yalla
+curl -o /usr/local/bin/yalla  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/yalla;
 
 # Set script as executable
-chmod +x /usr/local/bin/yalla
+chmod +x /usr/local/bin/yalla;
 
 # Download autocomplete
-curl -o "${HOME}/.yalla.autocomplete"  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/autocomplete.sh
+curl -o "${HOME}/.yalla.autocomplete"  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/autocomplete.sh;
 
 CONTENT="\n\n#Add yalla autocomplete\n${HOME}/.yalla.autocomplete"
 
