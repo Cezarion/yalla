@@ -20,7 +20,7 @@ curl -o /usr/local/bin/yalla  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co
 chmod +x /usr/local/bin/yalla;
 
 # Download autocomplete
-curl -o "${HOME}/.yalla.autocomplete"  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/yall.autocomplete.;
+curl -o "${HOME}/.yalla.autocomplete"  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/yalla.autocomplete;
 
 #chmod +x "${HOME}/.yalla.autocomplete";
 
