@@ -7,7 +7,7 @@ if [ -z "${EMAIL}" ]; then EMAIL="admin@local.host"; fi
 export EMAIL;
 
 # Folder path where application code is located
-export APPLICATION_PATH_NAME='app'
+export APPLICATION_PATH_NAME='application'
 
 # export current path
 export _SRC_="$(pwd)/yalla"

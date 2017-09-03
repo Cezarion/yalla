@@ -57,13 +57,19 @@ done
 
 _br
 
-_info "Create base .gitignore"
+_info "Create base .gitignore in project directory"
 
 CONTENT=$(cat <<HEREDOC
 # Created by the yalla create-project script
+
+# Local yalla folder
+/yalla/
+
+# Local env files
 /shared/*.local
 /shared/*.local.*
 /shared/local.*
+
 # End of yalla create-project script
 
 HEREDOC
@@ -73,8 +79,17 @@ printf "${CONTENT}" > .gitignore
 # Common .gitignore
 _gi linux,osx,windows,PhpStorm,SublimeText,VisualStudio >> .gitignore
 
+_br
+
+_info "Create base .gitignore in application directory"
+
+_gi node >> "${APPLICATION_PATH_NAME}/.gitignore"
+
 _success ".gitignore was generated with os, editor an project config"
 
 # Setting up app and environnements settings
 
 _yalla_settings
+
+# Init git rempository
+

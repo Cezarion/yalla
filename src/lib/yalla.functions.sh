@@ -11,15 +11,16 @@ set -e
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
 # Load common vars and functions
-for file in $(pwd)/yalla/src/lib/*
-do
-    FILENAME=$(basename $file)
 
-    if [ "${FILENAME}" != "yalla.functions.sh" ] && [ "${FILENAME}" != "common.sh" ] && [ "${FILENAME}" != "templater.sh" ]
-        then
-            . $file
-    fi
-done
+# for file in $(pwd)/yalla/src/lib/*
+# do
+#     FILENAME=$(basename $file)
+
+#     if [ "${FILENAME}" != "yalla.functions.sh" ] && [ "${FILENAME}" != "common.sh" ] && [ "${FILENAME}" != "templater.sh" ]
+#         then
+#             . $file
+#     fi
+# done
 
 ###############################################################################
 # _install_yalla_bin()

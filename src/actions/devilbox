@@ -8,7 +8,6 @@ source "${WORKING_DIR}/yalla.settings"
 # Load common scripts
 source "${APP_YALLA_LIB}/common.sh"
 
-
 CWD="/shared/httpd"
 CURRENT_DIR_NAME=${PWD##*/}
 CURRENT_DIR_PATH=${PWD}
@@ -16,7 +15,7 @@ CURRENT_DIR_PATH=${PWD}
 LOCAL_DATABASE_PATH="${CURRENT_DIR_PATH}/databases"
 
 # Load devilbox custom scripts
-source "${APP_YALLA_ACTIONS}/devilbox.functions.sh"
+source "${APP_YALLA_LIB}/devilbox.functions.sh"
 
 # Docker shortcuts
 compose_file="${DEVILBOX_LOCAL_PATH}/docker-compose.yml"
@@ -30,7 +29,6 @@ ACTION=$1
 shift
 
 echo $@
-
 
 case "$ACTION" in
     config)
@@ -58,23 +56,25 @@ case "$ACTION" in
         #shift
         $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}; $(_args_list "$@")"
         ;;
-    code)
-        shift
-        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code $(_args_list "$@")"
-        ;;
+    # ------ unsed
+    # code)
+    #     shift
+    #     $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code $(_args_list "$@")"
+    #     ;;
     # There is a bug with docker compose and pipe, tty, ..
     # so I use a script to execute a script on the docker container
     # @see https://github.com/docker/compose/issues/3352
+    # ------ / unsed
     mysql)
         shift
-        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./bin/devilbox/mysql.sh $(_args_list "$@")"
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ls -la; ${APP_YALLA_LIB}/devilbox.cmd.mysql.sh $(_args_list "$@")"
         ;;
     install)
         _info "Start docker stack"
         $docker_cmd up -d $DOCKER_STACK;
 
         _info "\nCreate database or import an existing file"
-        install_actions
+        _dv_install_actions
 
 
         _info "Install project"

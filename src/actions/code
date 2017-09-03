@@ -1,6 +1,4 @@
-#!/bin/bash
-
-SRC=$(cd $(dirname "$0"); pwd)
+#!/usr/bin/env bash
 
 # Load project settings
 set -o allexport
@@ -10,12 +8,14 @@ set +o allexport
 # Load common vars and functions
 . "${SRC}/src/lib/common.sh"
 
+# Set current script path from app type
+PLUGIN_SCRIPT_PATH="${SRC}/src/${APP_TYPE}"
 
 # This script allow to run current project actions without specify
 # current script path.
 # Just set below app type (drupal8,drupal7,symfony,wordpress):
 
-if [ ! -d "${SRC}/src/${APP_TYPE}" ]
+if [ ! -d "${PLUGIN_SCRIPT_PATH}" ]
     then
         _bad_exit "${APP_TYPE} does not exist. Please set an available value in project-configuration : drupal8,drupal7,symfony,wordpress";
 fi
@@ -28,9 +28,9 @@ shift
 ARGS=$@
 
 # Run actions
-if [ ! -f "${SRC}/src/${APP_TYPE}/${ACTION}.sh" ]
+if [ ! -f "${PLUGIN_SCRIPT_PATH}/${ACTION}.sh" ]
     then
-        _bad_exit "${SRC}/src/${APP_TYPE}/${ACTION} does not exist.";
+        _bad_exit "${PLUGIN_SCRIPT_PATH}/${ACTION} does not exist.";
     else
-        bash ${SRC}/src/$APP_TYPE/$ACTION.sh $ARGS
+        sh "${PLUGIN_SCRIPT_PATH}/${ACTION}.sh" $ARGS
 fi

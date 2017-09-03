@@ -6,7 +6,7 @@ SRC=$(cd $(dirname "$0"); pwd)
 
 . "${SRC}/../lib/common.sh"
 
-
+exit
 # Download symfony sources
 while true; do
     read -p "Do you wish to fully re/install, it will delete ${PWD}/application directory ?" yn
