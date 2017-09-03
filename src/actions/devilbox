@@ -28,8 +28,6 @@ set +o allexport
 ACTION=$1
 shift
 
-echo $@
-
 case "$ACTION" in
     config)
         $docker_cmd config
@@ -67,7 +65,7 @@ case "$ACTION" in
     # ------ / unsed
     mysql)
         shift
-        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ls -la; ${APP_YALLA_LIB}/devilbox.cmd.mysql.sh $(_args_list "$@")"
+        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./yalla/src/lib/devilbox.cmd.mysql.sh $(_args_list "$@")"
         ;;
     install)
         _info "Start docker stack"
