@@ -2,9 +2,10 @@
 
 # Exit immediately on error
 set -e
+trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 # Load common vars and functions
-. "$(pwd)/common.sh"
+. "./yalla/src/lib/common.sh"
 
 # remove first arg (mysql)
 
@@ -12,12 +13,13 @@ INLINE=
 DATABASE=""
 FILE=""
 
-[ ! "$(docker ps -a | grep <name>)" ]
+
+# [ ! "$(docker ps -a | grep <name>)" ]
 
 _usage() {
-notice "\nBad use or missing arguments."
+    _notice "\nBad use or missing arguments."
 
-echo '
+    echo '
 Examples :
     yalla mysql -d database_name -f path/to/file.sql : import a database
     yalla mysql -d database_name -i "SHOW TABLES;" : run an inline sql command script

@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
 
-### Current user mail
-EMAIL=$(git config user.email)
-if [ -z "${EMAIL}" ]; then EMAIL="admin@local.host"; fi
-
-export EMAIL;
+set -e
+trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 # Folder path where application code is located
-export APPLICATION_PATH_NAME='application'
+APPLICATION_PATH_NAME='application'
 
 # export current path
-export _SRC_="$(pwd)/yalla"
+_SRC_="./yalla"
 
 # Icons
-export CHECKMARK=$'\xE2\x9C\x93'
-export CROSSMARK=$'\xE2\x9C\x97'
-export INFOMARK=$'\xE2\x84\xB9'
-export WARNINGMARK=$'\xE2\x9A\xA0'
+CHECKMARK=$'\xE2\x9C\x93'
+CROSSMARK=$'\xE2\x9C\x97'
+INFOMARK=$'\xE2\x84\xB9'
+WARNINGMARK=$'\xE2\x9A\xA0'
 
 # Colors
-export RED=$'\e[31;01m'
-export BLUE=$'\e[36;01m'
-export YELLOW=$'\e[33;01m'
-export NORMAL=$'\e[0m'
-export GREEN=$'\e[32;01m'
+RED=$'\e[31;01m'
+BLUE=$'\e[36;01m'
+YELLOW=$'\e[33;01m'
+NORMAL=$'\e[0m'
+GREEN=$'\e[32;01m'

@@ -2,6 +2,7 @@
 
 # Exit immediately on error
 set -e
+trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 _dv_install_actions(){
     if [[ $DOCKER_STACK == *"sql"* ]]; then
