@@ -18,14 +18,14 @@ Now the skeleton becomes a dependency of the project, the whole of this applicat
 So it will be possible to make a correction or an update and make a pull request on the skeleton.
 
 _The new architecture :_
-
+```
 project/
     application/
     logs/
     shared/
     tests
     yalla/
-
+```
 --------------
 
 ### Supported operating systems 
