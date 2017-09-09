@@ -23,9 +23,17 @@ yalla docker config
 
 Really necessary ? 
 ------------
-yalla composer [cmd]
-yalla npm [cmd]
-yalla gulp [cmd]
-yalla ng-cli [cmd]
-yalla drush [cmd]
-yalla drupal-console [cmd]
+yalla composer [cmd]   
+yalla npm [cmd]    
+yalla gulp [cmd]   
+yalla ng-cli [cmd]    
+yalla drush [cmd]   
+yalla drupal-console [cmd]      
+
+
+## @todo
+
+* Setting up the readme template and copy to project
+* Pull database from target (staging|preprod|prod)
+* Setup script for symfony,d8,angular,themosis
+
