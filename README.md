@@ -3,8 +3,9 @@
 
 
 | This project allows to quickly and easily mount a boilerplate for Fabernovel Code projects.| [TOC] |
+|It consists of a command cli which allows to have a unique command through the projects but also to generate a new project. | ----- |
 | --------------- | --------------- | 
-It consists of a command cli which allows to have a unique command through the projects but also to generate a new project.
+
 It also consists of a set of scripts to launch commands within the project.
 
 Coupling with [devilbox](https://bitbucket.org/buzzaka/devilbox), a docker stack, it will allow the rapid establishment of a development environment.
