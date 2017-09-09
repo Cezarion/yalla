@@ -14,7 +14,7 @@ Coupling with [devilbox](https://bitbucket.org/buzzaka/devilbox), a docker stack
 Before the skeleton was an integral part of the project and was versioned with the project.
 As a result, it was difficult to update the skeleton.
 
-Now the skelleton becomes a dependency of the project, the whole of this application is grouped in a folder yalla, itself under git.
+Now the skeleton becomes a dependency of the project, the whole of this application is grouped in a folder **yalla**, itself under git.
 So it will be possible to make a correction or an update and make a pull request on the skeleton.
 
 _The new architecture :_
