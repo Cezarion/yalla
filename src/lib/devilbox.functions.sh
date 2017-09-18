@@ -27,8 +27,8 @@ _dv_create_user_and_database() {
     #if [ ! -f "${LOCAL_DATABASE_PATH}/create_user_and_database.sql" ]; then
         echo -e "\
         CREATE DATABASE IF NOT EXISTS \`$DB_DEV_NAME\`;\n\
-        CREATE USER IF NOT EXISTS '$DB_DEV_USER'@'127.0.0.1' IDENTIFIED BY '$DB_DEV_PASS';\n\
-        GRANT ALL PRIVILEGES ON \`$DB_DEV_NAME\`. * TO '$DB_DEV_USER'@'127.0.0.1';\n\
+        CREATE USER IF NOT EXISTS '$DB_DEV_USER'@'%' IDENTIFIED BY '$DB_DEV_PASS';\n\
+        GRANT ALL PRIVILEGES ON \`$DB_DEV_NAME\`. * TO '$DB_DEV_USER'@'%';\n\
         FLUSH PRIVILEGES;" > "${LOCAL_DATABASE_PATH}/create_user_and_database.sql";
     #fi
 
