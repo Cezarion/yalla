@@ -1,30 +1,34 @@
 # Fabernovel Code // Yalla Boilerplate
 --------------
 
-
-This project allows to quickly and easily mount a boilerplate for Fabernovel Code projects.
-
-It consists of a command cli which allows to have a unique command through the projects but also to generate a new project.
-It also consists of a set of scripts to launch commands within the project.
-
-Coupling with [devilbox](https://bitbucket.org/buzzaka/devilbox), a docker stack, it will allow the rapid establishment of a development environment.
+> This project allows to quickly and easily mount a boilerplate for Fabernovel Code projects.
+> It consists of a command cli which allows to have a unique command through the projects but also to generate a new project.
+> It also consists of a set of scripts to launch commands within the project.
+>
+> Coupling with [devilbox](https://bitbucket.org/buzzaka/devilbox), a docker stack, it will allow the rapid establishment of a development environment.
 
 ** What's new / changing **
 
 Before the skeleton was an integral part of the project and was versioned with the project.
 As a result, it was difficult to update the skeleton.
 
-Now the skelleton becomes a dependency of the project, the whole of this application is grouped in a folder yalla, itself under git.
+Now the skeleton becomes a dependency of the project, the whole of this application is grouped in a folder **yalla**, itself under git.
 So it will be possible to make a correction or an update and make a pull request on the skeleton.
 
 _The new architecture :_
-
+```
 project/
     application/
     logs/
     shared/
-    tests
+    tests/
     yalla/
+```
+--------------
+
+## Table of content
+
+[TOC]
 
 --------------
 
