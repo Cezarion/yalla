@@ -1,0 +1,37 @@
+# roles/common/tasks/main.yml
+---
+
+- name: Debian - Install httplib2 required by uri module
+  package:
+    name: python-httplib2
+    state: latest
+  when: ansible_os_family != 'Darwin'
+  tags:
+    - python
+
+- name: Debian - Install MysqlDB required by ansible for mysql actions
+  package:
+    name: python-mysqldb
+    state: latest
+  when: ansible_os_family != 'Darwin'
+  tags:
+    - python
+
+- name: MacOs - Install httplib2 required by uri module
+  pip:
+    name: httplib2
+    state: latest
+  when: ansible_os_family == 'Darwin'
+  tags:
+    - python
+    - macos
+
+- name: MacOs - Install MysqlDB required by ansible for mysql actions
+  pip:
+    name: PyMySQL
+    state: latest
+  when:
+    - ansible_os_family == 'Darwin'
+  tags:
+    - python
+    - macos

@@ -1,0 +1,22 @@
+---
+
+- name: Install Ansible requirements
+  hosts: staging
+  gather_facts: true
+  become: true
+  roles:
+    - role: common
+  tags:
+    - common
+
+- name: Sync databases
+  hosts:
+    - "{{ source | default('dev')}}"
+    - "{{ target }}"
+  gather_facts: true
+  become: no
+  roles:
+    - role: mysql-sync-ansible
+  tags:
+    - sql
+    - sql-sync

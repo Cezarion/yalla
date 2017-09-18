@@ -1,0 +1,46 @@
+# roles/mysql-sync/tasks/main.yml
+---
+
+- debug:
+    msg: "Source is {{ source }} and target is {{ target }}"
+
+
+# - name: Create MySQL database dump on source host - {{ source }}
+#   hosts: "{{ source }}"
+#   vars:
+#     src_host_backup: "{{ backup_dir }}latest.sql.bz2"
+#   mysql_db:
+#     name: {{ db_name }}
+#     state: dump
+#     target: {{ src_host_backup }}
+#     tags:
+#       - sql-sync
+#       - sql-dump
+
+
+# - name: Transfert database dump to host {{ instance.name }}
+#   hosts: app
+#   vars:
+#     src_host: "{{ source }}"
+#     dest_host: "{{ target }}"
+#     dest_host_type: "{{ hostvars[dest_host]['ansible_host'] }}"
+#   tasks:
+#     - name: Fetch file from src to dest
+#       fetch:
+#         src: "{{ hostvars[src_host]['backup_dir'] }}latest.sql"
+#         dest: "{{ hostvars[dest_host]['backup_dir'] }}"
+#         flat: true
+#       when: hostvars[dest_host]['ansible_host'] == 'localhost' and hostvars[src_host]['ansible_host'] != 'localhost'
+#       tags:
+#         - sql-sync
+#         - sql-copy
+
+
+#     - name: Fetch file from src to dest
+#       copy:
+#         src: "{{ hostvars[src_host]['backup_dir'] }}latest.sql"
+#         dest: "{{ hostvars[dest_host]['backup_dir'] }}"
+#       when: hostvars[dest_host]['ansible_host'] != 'localhost' and hostvars[src_host]['ansible_host'] == 'localhost'
+#       tags:
+#         - sql-sync
+#         - sql-copy

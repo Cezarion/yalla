@@ -1,0 +1,6 @@
+---
+host_env: staging
+ansible_connection: ssh
+ansible_user: deploy
+become_method: su
+become_user: webdev
