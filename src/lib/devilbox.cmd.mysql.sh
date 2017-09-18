@@ -4,7 +4,7 @@
 set -e
 
 # Load common vars and functions
-. "$(pwd)/common.sh"
+. "./yalla/src/lib/common.sh"
 
 # remove first arg (mysql)
 
