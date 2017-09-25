@@ -221,7 +221,7 @@ MONGO_SERVER=3.5
 ###
 
 ## To allow custom configration per computer this variable is exported in devilbox script
-HOST_PATH_HTTPD_DATADIR=~/Webserver/www-devil
+HOST_PATH_HTTPD_DATADIR=~/Webserver/www-docker
 
 ###
 ### Local filesystem path to mysql/mariadb datadir.
