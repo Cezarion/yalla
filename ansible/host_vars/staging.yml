@@ -1,6 +1,7 @@
 ---
 host_env: staging
 ansible_connection: ssh
-ansible_user: deploy
+ansible_user: webdev
 become_method: su
-become_user: webdev
+become_user: deploy
+ansible_become_pass: "{{ vault_staging_become_pass }}"

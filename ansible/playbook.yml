@@ -1,7 +1,21 @@
 ---
 
+# - name: Test privilege escalation
+#   hosts: staging
+#   gather_facts: false
+#   become: true
+#   become_user: "{{ hostvars[inventory_hostname]['become_user'] }}"
+#   #become_method: "{{ hostvars[inventory_hostname]['become_method'] }}"
+#   roles:
+#     - tests
+
+
 - name: Install Ansible requirements
-  hosts: staging
+
+  vars_files:
+    - ./group_vars/vault.yml
+
+  hosts: app
   gather_facts: true
   become: true
   roles:
@@ -10,11 +24,17 @@
     - common
 
 - name: Sync databases
+
+  vars_files:
+    - ./group_vars/vault.yml
+
   hosts:
-    - "{{ source | default('dev')}}"
-    - "{{ target }}"
+    - dev
+    - staging
+  vars:
+    source: "{{ source }}"
+    target: "{{ target }}"
   gather_facts: true
-  become: no
   roles:
     - role: mysql-sync-ansible
   tags:

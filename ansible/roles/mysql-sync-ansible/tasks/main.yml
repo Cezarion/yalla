@@ -1,39 +1,60 @@
 # roles/mysql-sync/tasks/main.yml
 ---
 
+- name: Set default target for sync if not defined
+  set_fact:
+     target: 'dev'
+     when: target is undefined
+
+- name: Set default target for sync if not defined
+  set_fact:
+     dest_host_type: "{{ hostvars[target]['ansible_host'] }}"
+
 - debug:
     msg: "Source is {{ source }} and target is {{ target }}"
 
-
-# - name: Create MySQL database dump on source host - {{ source }}
-#   hosts: "{{ source }}"
-#   vars:
-#     src_host_backup: "{{ backup_dir }}latest.sql.bz2"
-#   mysql_db:
-#     name: {{ db_name }}
-#     state: dump
-#     target: {{ src_host_backup }}
-#     tags:
-#       - sql-sync
-#       - sql-dump
+- name: Check if there is a recent dump
+  find:
+    paths: "{{ hostvars[source]['backup_dir'] }}"
+    age: "-3600"
+    patterns: "*.bz2"
+    age_stamp: atime
+  register: early_dump
 
 
-# - name: Transfert database dump to host {{ instance.name }}
-#   hosts: app
-#   vars:
-#     src_host: "{{ source }}"
-#     dest_host: "{{ target }}"
-#     dest_host_type: "{{ hostvars[dest_host]['ansible_host'] }}"
-#   tasks:
-#     - name: Fetch file from src to dest
-#       fetch:
-#         src: "{{ hostvars[src_host]['backup_dir'] }}latest.sql"
-#         dest: "{{ hostvars[dest_host]['backup_dir'] }}"
-#         flat: true
-#       when: hostvars[dest_host]['ansible_host'] == 'localhost' and hostvars[src_host]['ansible_host'] != 'localhost'
-#       tags:
-#         - sql-sync
-#         - sql-copy
+- name: Create MySQL database dump on source host - {{ source }}
+  hosts: "{{ source }}"
+  become: yes
+  become_user: "{{ hostvars[source]['become_user'] }}"
+  # vars:
+  #   src_host_backup: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+  mysql_db:
+    name: "{{ hostvars[source]['db_name'] }}"
+    state: dump
+    login_user: "{{ hostvars[source]['db_user'] }}"
+    login_password: "{{ hostvars[source]['db_pwd'] }}"
+    target: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+  tags:
+    - sql-sync
+    - sql-dump
+  when: early_dump.matched < 1
+
+- stat:
+    path: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+  register: dumpfile
+
+- name: Transfert database dump to target host - {{ target }}
+  hosts:
+    - "{{ target }}"
+    - "{{ source }}"
+  fetch:
+    src: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+    dest: "{{ hostvars[target]['backup_dir'] }}"
+    flat: true
+  when: dest_host_type == 'localhost' and dumpfile.stat.readable
+  tags:
+    - sql-sync
+    - sql-copy
 
 
 #     - name: Fetch file from src to dest
