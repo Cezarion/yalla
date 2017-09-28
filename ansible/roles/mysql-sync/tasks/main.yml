@@ -16,10 +16,6 @@
   register: early_dump
   when: not host_is_target
 
-- debug:
-    var: early_dump
-    verbosity: 2
-
 - name: Sql Sync // Create MySQL database dump on source host - {{ src }}
   block:
     - command: mysqldump -u{{ db_user }} -p{{ db_pwd }} --add-drop-table --databases {{ db_name }} --result-file={{ source_db_backup }}
