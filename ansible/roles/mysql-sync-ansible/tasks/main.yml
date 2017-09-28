@@ -13,7 +13,7 @@
     - find:
         paths: "{{ hostvars[source]['backup_dir'] }}"
         age: "-3600"
-        patterns: "*.bz2"
+        patterns: "*.{{ source_db_backup_format }}"
         age_stamp: atime
       register: early_dump
 
@@ -23,7 +23,7 @@
         state: dump
         login_user: "{{ hostvars[source]['db_user'] }}"
         login_password: "{{ hostvars[source]['db_pwd'] }}"
-        target: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+        target: "{{ source_db_backup_archive }}"
       tags:
         - sql-sync
         - sql-dump

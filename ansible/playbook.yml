@@ -13,6 +13,10 @@
     host_is_target: "{{ (inventory_hostname == hostvars[target]['inventory_hostname_short']) }}"
     dest_host_type: "{{ hostvars[target]['ansible_host'] }}"
 
+    source_db_backup: "{{ hostvars[source]['backup_dir'] }}latest.sql"
+    source_db_backup_format: bz2
+    source_db_backup_archive: "{{ source_db_backup }}.{{ source_db_backup_format }}"
+
   hosts: "{{ source }},{{ var_target }}"
   gather_facts: true
   roles:
