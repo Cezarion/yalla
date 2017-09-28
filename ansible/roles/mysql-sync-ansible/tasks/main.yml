@@ -13,7 +13,7 @@
     - find:
         paths: "{{ hostvars[source]['backup_dir'] }}"
         age: "-3600"
-        patterns: "lastest-*.{{ source_db_backup_format }}"
+        patterns: "latest-*.{{ source_db_backup_format }}"
         age_stamp: atime
       register: early_dump
 

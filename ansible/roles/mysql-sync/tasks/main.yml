@@ -5,15 +5,20 @@
      target: 'dev'
      when: target is undefined
 
+
   #Check if there is a recent dump
 - name: "Sql Sync // Check if a archive exist"
   find:
     paths: "{{ hostvars[source]['backup_dir'] }}"
     age: "-3600"
-    patterns: "lastest-*.{{ source_db_backup_format }}"
+    patterns: "latest-*.{{ source_db_backup_format }}"
     age_stamp: atime
   register: early_dump
   when: not host_is_target
+
+- debug:
+    var: early_dump
+    verbosity: 2
 
 - name: Sql Sync // Create MySQL database dump on source host - {{ src }}
   block:
