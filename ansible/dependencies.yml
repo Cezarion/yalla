@@ -7,7 +7,7 @@
 
 - name: Install Ansible requirements on remote hosts
   vars_files:
-    - ./group_vars/vault.yml
+    - ./vaults/vault.yml
   hosts: app:!dev
   gather_facts: true
   become: true
@@ -24,7 +24,7 @@
 - name: Install Ansible requirements on local host
   hosts: dev
   gather_facts: true
-  become: true
+  become: false
   roles:
     - role: common
   tags:

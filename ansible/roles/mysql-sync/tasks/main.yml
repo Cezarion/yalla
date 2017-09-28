@@ -17,9 +17,6 @@
 
 - name: Sql Sync // Create MySQL database dump on source host - {{ src }}
   block:
-    - debug:
-        msg: "{{ early_dump.matched }}"
-
     - command: mysqldump -u{{ db_user }} -p{{ db_pwd }} --add-drop-table --databases {{ db_name }} --result-file={{ source_db_backup }}
 
     - archive:

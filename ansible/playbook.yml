@@ -4,8 +4,6 @@
 # If failed, please run dependencies playbook
 
 - name: Sync databases
-  vars_files:
-    - ./group_vars/vault.yml
   vars:
     # Target is an optional args. Set default value if not defined
     var_target: "{{ target | default('dev') }}"
