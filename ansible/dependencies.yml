@@ -3,7 +3,7 @@
 # Install ansible dependencies to use ansible mysql module
 # @see : http://docs.ansible.com/ansible/latest/mysql_db_module.html
 #
-# Command: ansible-playbook dependencies.yml --ask-vault-pass -K
+# Command: ansible-playbook dependencies.yml --ask-vault-pass
 
 - name: Install Ansible requirements on remote hosts
   vars_files:

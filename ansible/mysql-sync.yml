@@ -1,11 +1,14 @@
 ---
 
-# To use this playbook, ansible mysql modules must installed.
+# To use this playbook,  NO ansible mysql modules are required.
 # If failed, please run dependencies playbook
+#
+# Command :
+#   ansible-playbook mysql-sync.yml -e "source=staging"
+#   ansible-playbook mysql-sync.yml -e "source=staging target=preprod"
 
 - name: Sync databases
-  # vars_files:
-  #   - ./group_vars/vault.yml
+
   vars:
     # Target is an optional args. Set default value if not defined
     var_target: "{{ target | default('dev') }}"
