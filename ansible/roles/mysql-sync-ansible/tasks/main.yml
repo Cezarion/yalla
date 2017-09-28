@@ -35,6 +35,3 @@
       when:
         - early_dump.matched < 1
   when: not host_is_target
-
-- name: "Sql Sync // Transfert database dump to target host - {{ target }}"
-  import_tasks: transfert-database.yml

@@ -9,15 +9,10 @@
   vars:
     # Target is an optional args. Set default value if not defined
     var_target: "{{ target | default('dev') }}"
-    # Shortcuts
-    host_is_target: "{{ (inventory_hostname == hostvars[target]['inventory_hostname_short']) }}"
-    dest_host_type: "{{ hostvars[target]['ansible_host'] }}"
-
   hosts: "{{ source }},{{ var_target }}"
   gather_facts: true
   roles:
-    - mysql-sync-ansible
-    - mysql-transfert-database
+    - role: mysql-sync-ansible
   tags:
     - sql
     - sql-sync
