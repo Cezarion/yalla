@@ -6,42 +6,35 @@
      target: 'dev'
      when: target is undefined
 
-- name: Set default target for sync if not defined
-  set_fact:
-     dest_host_type: "{{ hostvars[target]['ansible_host'] }}"
 
 - debug:
-    msg: "Source is {{ source }} and target is {{ target }}"
-
-- name: Check if there is a recent dump
-  find:
-    paths: "{{ hostvars[source]['backup_dir'] }}"
-    age: "-3600"
-    patterns: "*.bz2"
-    age_stamp: atime
-  register: early_dump
-
+    msg: "Source is {{ source }} and target is {{ target }} {{ host_is_target }}"
+  #when: not host_is_target
 
 - name: "Sql Sync // Create MySQL database dump on source host - {{ source }}"
-  hosts: "{{ source }}"
-  become: yes
-  become_user: "{{ hostvars[source]['become_user'] }}"
-  # vars:
-  #   src_host_backup: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
-  mysql_db:
-    name: "{{ hostvars[source]['db_name'] }}"
-    state: dump
-    login_user: "{{ hostvars[source]['db_user'] }}"
-    login_password: "{{ hostvars[source]['db_pwd'] }}"
-    target: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
-  tags:
-    - sql-sync
-    - sql-dump
-  when: early_dump.matched < 1
+  block:
 
-- stat:
-    path: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
-  register: dumpfile
+    #'Check if there is a recent dump'
+    - find:
+        paths: "{{ hostvars[source]['backup_dir'] }}"
+        age: "-3600"
+        patterns: "*.bz2"
+        age_stamp: atime
+      register: early_dump
+
+    #"Create MySQL database dump on source host - {{ source }}"
+    - mysql_db:
+        name: "{{ hostvars[source]['db_name'] }}"
+        state: dump
+        login_user: "{{ hostvars[source]['db_user'] }}"
+        login_password: "{{ hostvars[source]['db_pwd'] }}"
+        target: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+      tags:
+        - sql-sync
+        - sql-dump
+      when:
+        - early_dump.matched < 1
+  when: not host_is_target
 
 - name: "Sql Sync // Transfert database dump to target host - {{ target }}"
   import_tasks: transfert-database.yml
