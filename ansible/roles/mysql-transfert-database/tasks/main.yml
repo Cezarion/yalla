@@ -2,7 +2,7 @@
 ---
 
 - stat:
-    path: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+    path: "{{ source_db_backup_archive }}"
   register: dumpfile
   when: not host_is_target
 
@@ -10,14 +10,14 @@
   block:
     # When source is not localhost
     - fetch:
-        src: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+        src: "{{ source_db_backup_archive }}"
         dest: "{{ hostvars[target]['backup_dir'] }}"
         flat: true
       when: dest_host_type == 'localhost'
 
     # When source is localhost
     - copy:
-        src: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+        src: "{{ source_db_backup_archive }}"
         dest: "{{ hostvars[target]['backup_dir'] }}"
       when: dest_host_type != 'localhost'
 
