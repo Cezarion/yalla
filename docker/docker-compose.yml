@@ -1,0 +1,16 @@
+version: '2.1'
+
+services:
+  ansible_host:
+    entrypoint: ansible-playbook
+    environment:
+      ANSIBLE_CONFIG: /ansible-playbook/ansible.cfg
+      ANSIBLE_INVENTORY: /ansible-playbook/hosts.yml
+    image: ju2wheels/ansible:2.x-alpine-3.6
+    #tty: true
+    ports:
+      - "22:22"
+    volumes:
+      - ./../ansible:/ansible-playbook
+      - ./../backup:/backup
+      - ~/.ssh:/root/.ssh
