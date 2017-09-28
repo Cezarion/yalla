@@ -1,0 +1,33 @@
+---
+
+# Install ansible dependencies to use ansible mysql module
+# @see : http://docs.ansible.com/ansible/latest/mysql_db_module.html
+#
+# Command: ansible-playbook dependencies.yml --ask-vault-pass -K
+
+- name: Install Ansible requirements on remote hosts
+  vars_files:
+    - ./group_vars/vault.yml
+  hosts: app:!dev
+  gather_facts: true
+  become: true
+  remote_user: hostvars[inventory_hostname]['become_user']
+  become_user: "{{ hostvars[inventory_hostname]['become_user'] }}"
+  become_method: "{{ hostvars[inventory_hostname]['become_method'] }}"
+  roles:
+    - role: common
+  tags:
+    - common
+    - remote
+    - ansible
+
+- name: Install Ansible requirements on local host
+  hosts: dev
+  gather_facts: true
+  become: true
+  roles:
+    - role: common
+  tags:
+    - common
+    - local
+    - ansible

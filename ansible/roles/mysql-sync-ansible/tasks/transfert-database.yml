@@ -1,0 +1,22 @@
+# roles/mysql-sync/tasks/transfert-database.yml
+---
+
+
+- name: Fetch dump from {{ source }} to {{ target }} when source is not localhost
+  fetch:
+    src: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+    dest: "{{ hostvars[target]['backup_dir'] }}"
+    flat: true
+  when: dest_host_type == 'localhost' and dumpfile.stat.readable
+  tags:
+    - sql-sync
+    - sql-copy
+
+- name: Fetch dump from {{ source }} to {{ target }} when source is localhost
+  copy:
+    src: "{{ hostvars[source]['backup_dir'] }}latest.sql.bz2"
+    dest: "{{ hostvars[target]['backup_dir'] }}"
+  when: dest_host_type != 'localhost' and dumpfile.stat.readable
+  tags:
+    - sql-sync
+    - sql-copy

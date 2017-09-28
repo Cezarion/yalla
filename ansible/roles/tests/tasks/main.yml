@@ -5,6 +5,7 @@
   debug:
     var: hostvars[inventory_hostname]
     verbosity: 2
+  when: hostvars[inventory_hostname]['ansible_host'] != 'localhost'
 
 - name: test escalation
   command: whoami

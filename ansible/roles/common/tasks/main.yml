@@ -1,6 +1,11 @@
 # roles/common/tasks/main.yml
 ---
 
+# - name: Override ansible_user
+#   set_fact:
+#     ansible_user: "{{ hostvars[inventory_hostname]['become_user'] }}"
+#   when: hostvars[inventory_hostname]['ansible_host'] != 'localhost'
+
 - name: Debian - Install httplib2 required by uri module
   package:
     name: python-httplib2

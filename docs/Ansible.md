@@ -7,3 +7,16 @@ fatal: [staging]: FAILED! => {
 ```
 
 et ssh pass est une faille de sécurité
+
+Playbook de test : 
+```
+
+- name: Test privilege escalation
+  vars_files:
+    - ./group_vars/vault.yml
+  hosts: app
+  gather_facts: true
+  become: true
+  roles:
+    - tests
+```
