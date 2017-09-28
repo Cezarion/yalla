@@ -9,10 +9,19 @@
   vars:
     # Target is an optional args. Set default value if not defined
     var_target: "{{ target | default('dev') }}"
+    # Shortcuts
+    host_is_target: "{{ (inventory_hostname == hostvars[target]['inventory_hostname_short']) }}"
+    dest_host_type: "{{ hostvars[target]['ansible_host'] }}"
+    # dump file
+    source_db_backup: "{{ hostvars[source]['backup_dir'] }}latest.sql"
+    source_db_backup_format: bz2
+    source_db_backup_archive: "{{ source_db_backup }}.{{ source_db_backup_format }}"
+
   hosts: "{{ source }},{{ var_target }}"
   gather_facts: true
   roles:
-    - role: mysql-sync-ansible
+    - mysql-sync
+    - mysql-transfert-database
   tags:
     - sql
     - sql-sync

@@ -6,11 +6,6 @@
      target: 'dev'
      when: target is undefined
 
-
-- debug:
-    msg: "Source is {{ source }} and target is {{ target }} {{ host_is_target }}"
-  #when: not host_is_target
-
 - name: "Sql Sync // Create MySQL database dump on source host - {{ source }}"
   block:
 
