@@ -1,0 +1,30 @@
+---
+
+# To use this playbook, ansible mysql modules must installed.
+# If failed, please run dependencies playbook
+#
+# Command :
+#   ansible-playbook mysql-sync-ansible.yml -e "source=staging"
+#   ansible-playbook mysql-sync-ansible.yml -e "source=staging target=preprod"
+
+
+- name: Sync databases
+  vars:
+    # Target is an optional args. Set default value if not defined
+    var_target: "{{ target | default('dev') }}"
+    # Shortcuts
+    host_is_target: "{{ (inventory_hostname == hostvars[target]['inventory_hostname_short']) }}"
+    dest_host_type: "{{ hostvars[target]['ansible_host'] }}"
+
+    source_db_backup: "{{ hostvars[source]['backup_dir'] }}latest.sql"
+    source_db_backup_format: bz2
+    source_db_backup_archive: "{{ source_db_backup }}.{{ source_db_backup_format }}"
+
+  hosts: "{{ source }},{{ var_target }}"
+  gather_facts: true
+  roles:
+    - mysql-sync-ansible
+    - mysql-transfert-database
+  tags:
+    - sql
+    - sql-sync
