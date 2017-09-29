@@ -11,6 +11,7 @@ services:
     ports:
       - "22:22"
     volumes:
+      - ./../../hosts.yml:/ansible-playbook/hosts.yml
       - ./../ansible:/ansible-playbook
       - ./../backup:/backup
       - ~/.ssh:/root/.ssh

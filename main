@@ -59,15 +59,21 @@ readonly action=$1
 #
 IFS=$'\n'; ARGS=($(echo "${2}" | grep -E -o '"[^"]*"|\S+'))
 
-
-
-# List args
-# for arg in "${ARGS[@]}"
-#     do
-#         printf "${arg}\n"
-# done
-
+# Run Specific wrapper for
+# Mysql, devilbox (docker), ansible or yalla (app) actions
 case "$action" in
+    app)
+        case "${ARGS}" in
+            setup-settings )
+                # Create required settings files for a new or old project
+                # In this way it allows to use yalla whatever the project tree.
+                _yalla_settings
+            ;;
+            *)
+                _error "${ARGS} is not a registered command"
+            ;;
+        esac
+    ;;
     docker | dr)
         "${APP_YALLA_ACTIONS}/devilbox" "${ARGS[@]}"
     ;;
@@ -76,8 +82,5 @@ case "$action" in
     ;;
     ap | ansible-playbook)
         _ansible "${ARGS[@]}"
-    ;;
-    as | ansible)
-        ansible "${ARGS[@]}"
     ;;
 esac
