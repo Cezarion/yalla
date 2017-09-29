@@ -35,7 +35,7 @@ _install_yalla_bin(){
     _info "yalla command is not installed. We install it" >&2
     cp './yalla/src/cmd/yalla' /usr/local/bin/
 
-    if [ !-f "${HOME}/.yalla.autocomplete" ]
+    if [ ! -f "${HOME}/.yalla.autocomplete" ]
         then
             cp './yalla/src/cmd/autocomplete.sh' "${HOME}/.yalla.autocomplete"
 
@@ -45,27 +45,27 @@ _install_yalla_bin(){
                 then
                     if ! grep -q ".yalla.autocomplete" "${HOME}/.zshrc"
                     then
-                        printf  "${CONTENT}" >> "${HOME}/.zshrc"
+                        echo  "${CONTENT}" >> "${HOME}/.zshrc"
                     fi
-                    source ${HOME}/.yalla.autocomplete
+                    source "${HOME}/.yalla.autocomplete"
             fi
 
             if [ -f "${HOME}/.profile" ]
                 then
                     if ! grep -q ".yalla.autocomplete" "${HOME}/.profile"
                     then
-                        printf "${CONTENT}" >> "${HOME}/.profile"
+                        echo "${CONTENT}" >> "${HOME}/.profile"
                     fi
-                    source ${HOME}/.yalla.autocomplete
+                    source "${HOME}/.yalla.autocomplete"
             fi
 
             if [ -f "${HOME}/.bashrc" ]
                 then
                     if ! grep -q ".yalla.autocomplete" "${HOME}/.bashrc"
                     then
-                        printf "${CONTENT}" >> "${HOME}/.bashrc"
+                        echo "${CONTENT}" >> "${HOME}/.bashrc"
                     fi
-                    source ${HOME}/.yalla.autocomplete
+                    source "${HOME}/.yalla.autocomplete"
             fi
 
     fi
@@ -74,6 +74,7 @@ _install_yalla_bin(){
     yalla -v
     echo '---------------------------------------'
 }
+
 
 ###############################################################################
 # _yalla_version()
@@ -98,7 +99,7 @@ _yalla_version(){
         * ) printf "Please answer y or n. \n";;
     esac
 
-    echo $VERSION
+    echo "${VERSION}"
 }
 
 
@@ -116,8 +117,8 @@ _yalla_check_update(){
     local local_version=$(_yalla_version -l)
     local NEED_UPDATE=0
 
-    printf "Yalla Local version : $local_version\n"
-    printf "Yalla Remote version : $remote_version\n"
+    echo "Yalla Local version : ${local_version}\n"
+    echo "Yalla Remote version : ${remote_version}\n"
 
     if [ $(_version $local_version) -gt $(_version $remote_version) ]; then
       _warning "Remote version is older than local version"
@@ -154,11 +155,10 @@ _yalla_check_update(){
 function _yalla_settings() {
     _line
     _br
-    clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Generate yalla.settings file :"
+    clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Generate yalla.settings and hosts.yml files :"
     _br
 
-    local TEMPLATE="${_SRC_}/src/templates/yalla.settings.tpl"
-
+    local TEMPLATE="${_SRC_}/templates/yalla.settings.tpl"
 
 
     ###############################################################################
@@ -273,6 +273,24 @@ HEREDOC
     ###############################################################################
     ## Finally write file
     ##
+    clr_magenta "does the production environment exist? "
+    while true; do
+        read -p "yes / no ? " yn
+            case $yn in
+                [Yy]* )
+                    clr_magenta "Production url."
+                    _br
+                    read -p "Production url: " PRODUCTION_URI
+                    break;;
+            esac
+    done
+
+    _br
+    _line
+
+    ###############################################################################
+    ## Finally write file
+    ##
 
     clr_magenta "Database parameters."
     _br
@@ -292,15 +310,46 @@ HEREDOC
     DB_DEV_USER="${DB_DEV_USER}" \
     DB_DEV_PASS="${DB_DEV_PASS}" \
     DB_DEV_DATABASE_NAME="${DB_DEV_DATABASE_NAME}" \
-    ./yalla/src/lib/templater.sh ./yalla/src/templates/yalla.settings.tpl > yalla.settings
+    PRODUCTION_URI="${PRODUCTION_URI}" \
+    ./yalla/src/lib/templater.sh ./yalla/templates/yalla.settings.tpl > yalla.settings
+
+    DB_DEV_USER="${DB_DEV_USER}" \
+    DB_DEV_PASS="${DB_DEV_PASS}" \
+    DB_DEV_DATABASE_NAME="${DB_DEV_DATABASE_NAME}" \
+    PRODUCTION_URI="${PRODUCTION_URI}" \
+    ./yalla/src/lib/templater.sh ./yalla/templates/hosts.yml.tpl > hosts.yml
 
     _br
     _line
+
+    ###############################################################################
+    ## Set .gitignore
+    ##
+
+    CONTENT=$(cat <<HEREDOC
+    # Created by the yalla_settings script
+
+    # Local secrets folders
+    /vaults.yml
+    /vault.yml
+    /vaults/
+    /vaults/vault.yml
+
+    # End of yalla yalla_settings script
+
+HEREDOC)
+
+    printf "${CONTENT}" >> .gitignore
+
+    ###############################################################################
+    ## end message
+    ##
+
     _br
     _success "Yalla settings are now completed"
     cat <<HEREDOC
 
-To update the files, edit the yalla.settings file.
+To update the files, edit the yalla.settings file and/or hosts.yml.
 To restart the installation re-run the command 'yalla create-project'
 
 If there is a problem, open a ticket https://bitbucket.org/buzzaka/project-skeleton/issues?status=new&status=open

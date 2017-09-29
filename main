@@ -50,24 +50,32 @@ set +o allexport
 
 # Script to run
 readonly action=$1
-
+shift
 #
 # To preserve the original arguments,
 # the _arg_list function converts the array to a string.
 # Now you convert the string to a table
 #
 #
-IFS=$'\n'; ARGS=($(echo "${2}" | grep -E -o '"[^"]*"|\S+'))
 
+IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
+#readonly ARGS=("$@")
 
-
-# List args
-# for arg in "${ARGS[@]}"
-#     do
-#         printf "${arg}\n"
-# done
-
+# Run Specific wrapper for
+# Mysql, devilbox (docker), ansible or yalla (app) actions
 case "$action" in
+    app)
+        case "${ARGS}" in
+            setup-settings )
+                # Create required settings files for a new or old project
+                # In this way it allows to use yalla whatever the project tree.
+                _yalla_settings
+            ;;
+            *)
+                _error "${ARGS} is not a registered command"
+            ;;
+        esac
+    ;;
     docker | dr)
         "${APP_YALLA_ACTIONS}/devilbox" "${ARGS[@]}"
     ;;
@@ -75,9 +83,9 @@ case "$action" in
         "${APP_YALLA_ACTIONS}/devilbox mysql ${ARGS[*]}"
     ;;
     ap | ansible-playbook)
-        _ansible "${ARGS[@]}"
+        _ansible_playbook "${ARGS[@]}"
     ;;
-    as | ansible)
-        ansible "${ARGS[@]}"
+    av | ansible-vault)
+        _ansible_vault "${ARGS[@]}"
     ;;
 esac
