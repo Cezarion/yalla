@@ -100,7 +100,7 @@ _join() {
 
 _tolower() {
   local str="${*:-}"
-  echo $str | awk '{print tolower($0)}'
+  echo "${str}" | awk '{print tolower($0)}'
 }
 
 ###############################################################################
@@ -251,28 +251,28 @@ _spinner() {
 _success() {
   clr_green "[${CHECKMARK}]" -n; clr_reset " ${1}" >&2;
 }
-declare -x -f _success;
+#declare -x -f _success;
 
 _warning(){
     clr_brown clr_bold "${WARNINGMARK} " -n; clr_reset " ${1}" >&2;
 }
 
-declare -x -f _warning;
+#declare -x -f _warning;
 
 _info(){
     clr_cyan clr_bold "[${INFOMARK}]" -n; clr_reset " ${1}" >&2;
 }
-declare -x -f _info;
+#declare -x -f _info;
 
 _notice(){
-  printf "${BLUE}[ ! ]${NORMAL} ${1} \n" >&2;
+  echo -e "${BLUE}[ ! ]${NORMAL} ${1} \n" >&2;
 }
-declare -x -f _notice;
+#declare -x -f _notice;
 
 _error(){
   clr_red clr_bold "[${CROSSMARK}]" -n; clr_reset " ${1}" >&2;
 }
-declare -x -f _error;
+#declare -x -f _error;
 
 _line(){
   printf "\n---------------------------------------------\n"
@@ -290,10 +290,10 @@ _h1(){
 
 # exit functions
 _bad_exit() {
-    echo ;
-    echo "${RED} ERROR: ${1}" >&2;
-    echo "${NORMAL}" >&2;
+    # echo ;
+    # echo "${RED} ERROR: ${1}" >&2;
+    # echo "${NORMAL}" >&2;
+    _error "${1}"
     exit 1;
 }
-
-declare -x -f _bad_exit;
+#declare -x -f _bad_exit;

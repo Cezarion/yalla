@@ -58,19 +58,18 @@ HEREDOC
 #     ARGS=$@
 # fi
 
-
 #while [ $# -gt 0 ]; do
   case "$CMD" in
       create-project)
           git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla && ./yalla/create-project
           ;;
 
-      docker | dr | ssh | db | mysql | ap | ansible-playbook | app )
+      docker | dr | ssh | db | mysql | as | ansible | app )
           #Check if yalla path exist
           _check_is_yalla_app
 
           # Run command
-          ./yalla/main $CMD $(_args_list $@)
+          sh ./yalla/main $CMD $(_args_list $@)
           ;;
       -v | --version)
           echo 'yalla version ' ${YALLA_VERSION}
@@ -88,9 +87,8 @@ HEREDOC
       shortlist)
         cat <<HEREDOC
 create-project
-docker           | dr
-mysql            | db
-ansible-playbook | ap
+docker | dr
+mysql  | db
 ssh
 -v, --version
 update
