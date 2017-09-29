@@ -166,5 +166,5 @@ function _ansible(){
     done
     shift $((OPTIND -1))
 
-    docker-compose -f "${APP_YALLA_PATH}/docker/docker-compose.yml" run --rm ansible_host ${docker_args[*]} "/ansible-playbook/${playbook}.yml"
+    docker-compose -f "${APP_YALLA_PATH}/docker/docker-compose.yml" run --rm ansible_playbook ${docker_args[*]} "/ansible-playbook/${playbook}.yml"
 }

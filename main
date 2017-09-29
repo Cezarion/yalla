@@ -50,14 +50,16 @@ set +o allexport
 
 # Script to run
 readonly action=$1
-
+shift
 #
 # To preserve the original arguments,
 # the _arg_list function converts the array to a string.
 # Now you convert the string to a table
 #
 #
-IFS=$'\n'; ARGS=($(echo "${2}" | grep -E -o '"[^"]*"|\S+'))
+
+IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
+#readonly ARGS=("$@")
 
 # Run Specific wrapper for
 # Mysql, devilbox (docker), ansible or yalla (app) actions
