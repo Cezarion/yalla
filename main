@@ -28,14 +28,14 @@ trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 # From /usr/local/bin/yalla
 
 set -o allexport
-APP_PATH=$WORKING_DIR
+readonly APP_PATH=$WORKING_DIR
 
 # Set paths
-APP_YALLA_PATH="${WORKING_DIR}/yalla"
-APP_YALLA_SRC="${APP_YALLA_PATH}/src"
-APP_YALLA_LIB="${APP_YALLA_PATH}/src/lib"
-APP_YALLA_ACTIONS="${APP_YALLA_PATH}/src/actions"
-APP_YALLA_PLUGINS="${APP_YALLA_PATH}/src/plugins"
+readonly APP_YALLA_PATH="${WORKING_DIR}/yalla"
+readonly APP_YALLA_SRC="${APP_YALLA_PATH}/src"
+readonly APP_YALLA_LIB="${APP_YALLA_PATH}/src/lib"
+readonly APP_YALLA_ACTIONS="${APP_YALLA_PATH}/src/actions"
+readonly APP_YALLA_PLUGINS="${APP_YALLA_PATH}/src/plugins"
 
 ### Current user mail
 USER_EMAIL=$(git config user.email)
@@ -47,6 +47,7 @@ if [ -z "${USER_EMAIL}" ]; then USER_EMAIL="admin@local.host"; fi
 ##
 
 . "${APP_YALLA_LIB}/common.sh"
+. "${APP_YALLA_ACTIONS}/ansible"
 
 set +o allexport
 
@@ -76,5 +77,9 @@ case "$ACTION" in
     ;;
     db | mysql)
         sh "${APP_YALLA_ACTIONS}/devilbox mysql ${ARGS[@]}"
+    ;;
+    as | ansible)
+        echo "${ARGS[@]}"
+        ansible "${ARGS[@]}"
     ;;
 esac
