@@ -4,3 +4,4 @@ ansible_connection: ssh
 ansible_user: deploy
 become_method: su
 become_user: webdev
+ansible_become_pass: "{{ vault_staging_become_pass | default('') }}"

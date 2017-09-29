@@ -9,13 +9,8 @@
 #
 
 ###############################################################################
-# Bash 'Strict Mode'
-# http://redsymbol.net/articles/unofficial-bash-strict-mode
-# https://github.com/alphabetum/bash-boilerplate#bash-strict-mode
-set -o nounset
-set -o errexit
-set -o pipefail
-IFS=$'\n\t'
+# Exit immediately on error
+set -e
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
 
@@ -28,18 +23,18 @@ trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 # From /usr/local/bin/yalla
 
 set -o allexport
-APP_PATH=$WORKING_DIR
+readonly APP_PATH=$WORKING_DIR
 
 # Set paths
-APP_YALLA_PATH="${WORKING_DIR}/yalla"
-APP_YALLA_SRC="${APP_YALLA_PATH}/src"
-APP_YALLA_LIB="${APP_YALLA_PATH}/src/lib"
-APP_YALLA_ACTIONS="${APP_YALLA_PATH}/src/actions"
-APP_YALLA_PLUGINS="${APP_YALLA_PATH}/src/plugins"
+readonly APP_YALLA_PATH="${WORKING_DIR}/yalla"
+readonly APP_YALLA_SRC="${APP_YALLA_PATH}/src"
+readonly APP_YALLA_LIB="${APP_YALLA_PATH}/src/lib"
+readonly APP_YALLA_ACTIONS="${APP_YALLA_PATH}/src/actions"
+readonly APP_YALLA_PLUGINS="${APP_YALLA_PATH}/src/plugins"
 
 ### Current user mail
-USER_EMAIL=$(git config user.email)
-if [ -z "${USER_EMAIL}" ]; then USER_EMAIL="admin@local.host"; fi
+readonly USER_EMAIL=$(git config user.email)
+if [ -z "${USER_EMAIL}" ]; then readonly USER_EMAIL="admin@local.host"; fi
 
 ###############################################################################
 ##
@@ -47,14 +42,14 @@ if [ -z "${USER_EMAIL}" ]; then USER_EMAIL="admin@local.host"; fi
 ##
 
 . "${APP_YALLA_LIB}/common.sh"
+. "${APP_YALLA_ACTIONS}/ansible"
 
 set +o allexport
-
 
 # Die if it's not a yalla project
 
 # Script to run
-ACTION=$1
+readonly action=$1
 
 #
 # To preserve the original arguments,
@@ -62,7 +57,9 @@ ACTION=$1
 # Now you convert the string to a table
 #
 #
-IFS=$'\n'; ARGS=($(echo $2 | egrep -o '"[^"]*"|\S+'))
+IFS=$'\n'; ARGS=($(echo "${2}" | grep -E -o '"[^"]*"|\S+'))
+
+
 
 # List args
 # for arg in "${ARGS[@]}"
@@ -70,11 +67,18 @@ IFS=$'\n'; ARGS=($(echo $2 | egrep -o '"[^"]*"|\S+'))
 #         printf "${arg}\n"
 # done
 
-case "$ACTION" in
+case "$action" in
     docker | dr)
-        sh "${APP_YALLA_ACTIONS}/devilbox" "${ARGS[@]}"
+        "${APP_YALLA_ACTIONS}/devilbox" "${ARGS[@]}"
     ;;
     db | mysql)
-        sh "${APP_YALLA_ACTIONS}/devilbox mysql ${ARGS[@]}"
+        "${APP_YALLA_ACTIONS}/devilbox mysql ${ARGS[*]}"
+    ;;
+    ap | ansible-playbook)
+        _ansible "${ARGS[@]}"
+    ;;
+    as | ansible)
+        echo "${ARGS[@]}"
+        ansible "${ARGS[@]}"
     ;;
 esac

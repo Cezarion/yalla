@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+
+# Exit immediately on error
+set -e
+trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
+
+_list_playbooks(){
+
+for file in $APP_YALLA_PATH/ansible/*.yml
+do
+    filename=$(basename $file)
+    echo $filename
+    # if [ -f "${file}" ] && [ "$filename" != "README.md" ]
+    #     then
+    #       if [ "$filename" == ".devilbox-run-time-settings" ]
+    #         then
+    #           cp $file ./.env
+    #           _success "Copy sample file ${filename} into .env"
+    #       else
+    #           cp $file ./
+    #           _success "Copy sample file ${filename}"
+    #       fi
+    # fi
+done
+
+}
+
+_show_help() {
+
+cat << EOF
+Usage: yalla ansible [-vikCKbe] [-e ANSIBLE EXTRA VARS] [options]...
+
+Options:
+    -v          verbose mode. Can be used multiple times for increased verbosity.
+    -h          display this help and exit
+    --ask-vault-pass      ask for vault password
+
+    -e                    set additional variables as key=value
+    --flush-cache         clear the fact cache
+    -C, --check           don\'t make any changes; instead, try to predict some
+    -k, --ask-pass        ask for connection password
+    -u                    connect as this user (default=None)
+
+Privilege Escalation Options:
+    control how and which user you become as on target hosts
+
+    -b, --become        run operations with become (does not imply password prompting)
+    --become-method=BECOME_METHOD
+                        privilege escalation method to use (default=sudo),
+                        valid choices: [ sudo | su | pbrun | pfexec | doas |
+                        dzdo | ksu | runas | pmrun ]
+    --become-user=BECOME_USER
+                        run operations as this user (default=root)
+    -K, --ask-become-pass
+
+Available Playbooks:
+  $(_list_playbooks)
+
+Example :
+    yalla ap mysql-sync -e "source=staging"
+
+Access all ansible-playbook variables:
+    If you need to run others and non available options within Ansible, run :
+    docker-compose -f yalla/docker/docker-compose.yml run --rm  ansible_host /ansible-playbook/[PLAYBOOK-NAME].yml [options]
+
+EOF
+}
+
+function _ansible(){
+    local playbook=$1
+    shift
+    local args=("$@")
+    local docker_args=''
+
+    OPTIND=1
+    # # local extra_args=${args[*]:1}
+    # # #docker-compose -f docker/docker-compose.yml run --rm  ansible_host /ansible-playbook/mysql-sync.yml -e "source=staging"
+    # # #ansible-playbook mysql-sync.yml -e "source=staging"
+
+    if ! [ -f "$APP_YALLA_PATH/ansible/${playbook}.yml" ] && ! [ "${playbook##*$hosts*}" ]; then
+        _bad_exit "${playbook} is not an available playbook"
+    fi
+
+
+    # @see : http://mywiki.wooledge.org/ComplexOptionParsing
+    # set defaults
+
+    i=$(($# + 1)) # index of the first non-existing argument
+    local optspec="vikCKbe:h-:"
+
+    while getopts "$optspec" opt "${args[@]}"; do
+        while true; do
+          case "${opt}" in
+            -)
+                if [[ ${OPTARG} =~ .*=.* ]]; then # with this --key=value format only one argument is possible
+                     opt=${OPTARG/=*/}
+                     ((${#opt} <= 1)) && {
+                         echo "Syntax error: Invalid long option '$opt'" >&2
+                         exit 2
+                     }
+                     # if [ "${opt}" != 1 ]; then
+                     #     echo "Syntax error: Option '$opt' does not support this syntax." >&2
+                     #     exit 2
+                     # fi
+                     OPTARG=${OPTARG#*=}
+                else
+                    opt="$OPTARG"
+
+                    ((${#opt} <= 1)) && {
+                        echo "Syntax error: Invalid long option '$opt'" >&2
+                        exit 2
+                    }
+
+                    OPTARG=(${@:OPTIND})
+                    (OPTIND+=$opt)
+
+                   ((OPTIND > i)) && {
+                       echo "Syntax error: Not all required arguments for option '$opt' are given." >&2
+                       exit 3
+                   }
+               fi
+
+                continue #now that opt/OPTARG are set we can process them as
+                # if getopts would've given us long options
+                ;;
+            # Report ansible-playbook options
+            become-user | become-method )
+                docker_args="${docker_args} --$opt=$OPTARG"
+               ;;
+            ask-pass | become | ask-become-pass | check | flush-cache | ask-vault-pass )
+                docker_args="${docker_args} --$opt"
+               ;;
+            k | b | K | C )
+                docker_args="${docker_args} -$opt"
+               ;;
+            e )
+              docker_args="${docker_args} -${opt} \"${OPTARG}\""
+              ;;
+            i )
+              docker_args="${docker_args} -${opt} ${OPTARG}"
+              ;;
+            v)
+              docker_args="${docker_args} -v${OPTARG}"
+              ;;
+            h)
+                show_help
+                exit 0
+                ;;
+            ?)
+              echo "Invalid option: $OPTARG" >&2
+              _show_help 1>&2
+              exit 1
+              ;;
+            :)
+              echo "Option -$OPTARG requires an argument." 1>&2
+              _show_help
+              exit 1
+              ;;
+            *)
+                echo "Syntax error: Unknown long option '$opt'" 1>&2
+                _show_help
+                exit 2
+                ;;
+            esac
+        break; done
+    done
+    shift $((OPTIND -1))
+
+    echo "args : ${docker_args}"
+
+    # for arg in "${[@]}"; do
+    #     echo "${arg}"
+    # done
+    #docker-compose -f "${APP_YALLA_PATH}/docker/docker-compose.yml" run --rm  ansible_host "/ansible-playbook/${playbook}.yml" -e "source=staging"
+    #echo ${targets[@]}
+}

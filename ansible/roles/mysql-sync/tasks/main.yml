@@ -1,40 +1,36 @@
 ---
 
-- name: Create MySQL database dump on source host - {{ src }}
-  hosts: "{{ src }}"
-  vars:
-    src_host_backup: "{{ backup_dir }}latest.sql"
-  tasks:
-    - name: Test mysql dump
-      command: mysqldump -u{{ db_user }} -p{{ db_pwd }} --add-drop-table --databases {{ db_name }} --result-file={{ src_host_backup }}
-      tags:
-        - sql-sync
-        - sql-dump
+- name: "Sql Sync // Set default target for sync if not defined"
+  set_fact:
+     target: 'dev'
+     when: target is undefined
 
 
-- name: Transfert database dump to host {{ instance.name }}
-  hosts: app
-  vars:
-    src_host: "{{ src }}"
-    dest_host: "{{ dest }}"
-    dest_host_type: "{{ hostvars[dest_host]['ansible_host'] }}"
-  tasks:
-    - name: Fetch file from src to dest
-      fetch:
-        src: "{{ hostvars[src_host]['backup_dir'] }}latest.sql"
-        dest: "{{ hostvars[dest_host]['backup_dir'] }}"
-        flat: true
-      when: hostvars[dest_host]['ansible_host'] == 'localhost' and hostvars[src_host]['ansible_host'] != 'localhost'
-      tags:
-        - sql-sync
-        - sql-copy
+  #Check if there is a recent dump
+- name: "Sql Sync // Check if a archive exist"
+  find:
+    paths: "{{ hostvars[source]['backup_dir'] }}"
+    age: "-3600"
+    patterns: "latest-*.{{ source_db_backup_format }}"
+    age_stamp: atime
+  register: early_dump
+  when: not host_is_target
 
+- name: Sql Sync // Create MySQL database dump on source host - {{ src }}
+  block:
+    - command: mysqldump -u{{ db_user }} -p{{ db_pwd }} --add-drop-table --databases {{ db_name }} --result-file={{ source_db_backup }}
 
-    - name: Fetch file from src to dest
-      copy:
-        src: "{{ hostvars[src_host]['backup_dir'] }}latest.sql"
-        dest: "{{ hostvars[dest_host]['backup_dir'] }}"
-      when: hostvars[dest_host]['ansible_host'] != 'localhost' and hostvars[src_host]['ansible_host'] == 'localhost'
-      tags:
-        - sql-sync
-        - sql-copy
+    - archive:
+        path: "{{ source_db_backup }}"
+        dest: "{{ source_db_backup }}.{{ source_db_backup_format }}"
+        format: "{{ source_db_backup_format }}"
+
+    - file:
+        path: "{{ source_db_backup }}"
+        state: absent
+  when:
+    - not host_is_target
+    - early_dump.matched < 1
+  tags:
+    - sql-sync
+    - sql-dump

@@ -1,0 +1,17 @@
+# roles/tests/tasks/main.yml
+---
+
+- name: Display all variables/facts known for a host
+  debug:
+    var: hostvars[inventory_hostname]
+    verbosity: 2
+  when: hostvars[inventory_hostname]['ansible_host'] != 'localhost'
+
+- name: test escalation
+  command: whoami
+  register: who
+  tags:
+    - test
+
+- debug:
+    msg: "Je suis : {{ who.stdout }}"
