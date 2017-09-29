@@ -78,7 +78,6 @@ case "$action" in
         _ansible "${ARGS[@]}"
     ;;
     as | ansible)
-        echo "${ARGS[@]}"
         ansible "${ARGS[@]}"
     ;;
 esac

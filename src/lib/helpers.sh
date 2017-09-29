@@ -265,12 +265,12 @@ _info(){
 #declare -x -f _info;
 
 _notice(){
-  echo -e "${BLUE}[ ! ]${NORMAL} ${1} \n" >&2;
+  echo "${BLUE}[ ! ]${NORMAL} ${1} \n" >&2;
 }
 #declare -x -f _notice;
 
 _error(){
-  clr_red clr_bold "[${CROSSMARK}]" -n; clr_reset " ${1}" >&2;
+  echo "${RED} [${CROSSMARK}] ${1} ${NORMAL}" >&2;
 }
 #declare -x -f _error;
 
