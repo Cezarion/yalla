@@ -70,10 +70,10 @@ HEREDOC
           _check_is_yalla_app
 
           # Store args, prevent $@ collision between scripts
-          readonly ARGS=("$@")
+          readonly PARAMS=("$@")
 
           # Run command
-          ./yalla/main "$CMD" $(_args_list "$ARGS")
+          ./yalla/main "$CMD" "${PARAMS[@]}"
           ;;
       -v | --version)
           echo 'yalla version ' ${YALLA_VERSION}
