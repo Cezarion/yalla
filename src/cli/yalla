@@ -64,7 +64,7 @@ HEREDOC
           git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla && ./yalla/create-project
           ;;
 
-      docker | dr | ssh | db | mysql | as | ansible | app )
+      docker | dr | ssh | db | mysql | ap | ansible-playbook | app )
           #Check if yalla path exist
           _check_is_yalla_app
 
@@ -87,8 +87,9 @@ HEREDOC
       shortlist)
         cat <<HEREDOC
 create-project
-docker | dr
-mysql  | db
+docker           | dr
+mysql            | db
+ansible-playbook | ap
 ssh
 -v, --version
 update
