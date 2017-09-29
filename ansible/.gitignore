@@ -3,5 +3,12 @@
 
 ### Ansible ###
 *.retry
-hosts.yml
+
 # End of https://www.gitignore.io/api/ansible
+
+# Created by yalla
+
+hosts.yml
+vaults
+
+# End of yalla

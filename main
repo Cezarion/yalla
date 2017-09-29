@@ -83,6 +83,9 @@ case "$action" in
         "${APP_YALLA_ACTIONS}/devilbox mysql ${ARGS[*]}"
     ;;
     ap | ansible-playbook)
-        _ansible "${ARGS[@]}"
+        _ansible_playbook "${ARGS[@]}"
+    ;;
+    av | ansible-vault)
+        _ansible_vault "${ARGS[@]}"
     ;;
 esac

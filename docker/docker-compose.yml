@@ -11,7 +11,7 @@ services:
     ports:
       - "22:22"
     volumes:
-      - ./../../vaults:/ansible-playbook/vault.yml
+      - ./../../vaults:/ansible-playbook/vaults/
       - ./../../hosts.yml:/ansible-playbook/hosts.yml
       - ./../ansible:/ansible-playbook
       - ./../backup:/backup
@@ -25,4 +25,4 @@ services:
       ports:
         - "22:22"
       volumes:
-        - ./../../vaults:/ansible-playbook/vault.yml
+        - ./../../vaults:/ansible-playbook/vaults

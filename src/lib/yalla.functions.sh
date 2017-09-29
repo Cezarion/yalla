@@ -321,6 +321,30 @@ HEREDOC
 
     _br
     _line
+
+    ###############################################################################
+    ## Set .gitignore
+    ##
+
+    CONTENT=$(cat <<HEREDOC
+    # Created by the yalla_settings script
+
+    # Local secrets folders
+    /vaults.yml
+    /vault.yml
+    /vaults/
+    /vaults/vault.yml
+
+    # End of yalla yalla_settings script
+
+HEREDOC)
+
+    printf "${CONTENT}" >> .gitignore
+
+    ###############################################################################
+    ## end message
+    ##
+
     _br
     _success "Yalla settings are now completed"
     cat <<HEREDOC

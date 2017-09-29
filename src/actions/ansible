@@ -15,10 +15,10 @@ done
 
 }
 
-_show_help() {
+_ansible_playbook_show_help() {
 
 cat << EOF
-Usage: yalla ansible [-vikCKbe] [-e ANSIBLE EXTRA VARS] [options]...
+Usage: yalla ap | ansible-playbook [-vikCKbe] [-e ANSIBLE EXTRA VARS] [options]...
 
 Options:
 ----------------------------------------------------------------------
@@ -62,12 +62,12 @@ Access all ansible-playbook variables:
 ----------------------------------------------------------------------
 If you need to run others and non available options within Ansible, run :
 
-docker-compose -f yalla/docker/docker-compose.yml run --rm  ansible_host /ansible-playbook/[PLAYBOOK-NAME].yml [options]
+docker-compose -f yalla/docker/docker-compose.yml run --rm  ansible_playbook /ansible-playbook/[PLAYBOOK-NAME].yml [options]
 
 EOF
 }
 
-function _ansible(){
+function _ansible_playbook(){
     local playbook=$1
     shift
     local args=("$@")
@@ -143,21 +143,21 @@ function _ansible(){
               docker_args+=("-v${OPTARG}")
               ;;
             h)
-                _show_help
+                _ansible_playbook_show_help
                 exit 0
                 ;;
             ?)
-                _show_help
+                _ansible_playbook_show_help
                 _error "Invalid option or missing argument"
                 exit 1
               ;;
             :)
-                _show_help
+                _ansible_playbook_show_help
                 _error "Option -${OPTARG} requires an argument.\n"
                 exit 1
               ;;
             *)
-                _show_help
+                _ansible_playbook_show_help
                 _error "Syntax error: Unknown long option ${opt}"
                 exit 2
                 ;;
@@ -167,4 +167,54 @@ function _ansible(){
     shift $((OPTIND -1))
 
     docker-compose -f "${APP_YALLA_PATH}/docker/docker-compose.yml" run --rm ansible_playbook ${docker_args[*]} "/ansible-playbook/${playbook}.yml"
+}
+
+_ansible_vault_show_help() {
+
+cat << EOF
+Usage: yalla av | ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view]
+
+Options:
+----------------------------------------------------------------------
+
+    create      Create encrypted files
+    edit        Editing encrypted files
+    rekey       Rekeying encrypted files
+    view        Viewing encrypted files
+    decrypt     Decrypting encrypted files
+    encrypt     Encrypting unencrypted files
+    -h          display this help and exit
+
+Example :
+----------------------------------------------------------------------
+    yalla av | ansible-vault create
+
+
+Run ansible vault in a regular way:
+----------------------------------------------------------------------
+If you need to run others and non available options within Ansible, run :
+
+docker-compose -f yalla/docker/docker-compose.yml run --rm  ansible_vault [options]
+
+EOF
+}
+
+
+
+_ansible_vault(){
+  readonly OPT="$1"
+  local ACTION=''
+
+  case "$OPT" in
+    create | edit | rekey | view  | decrypt | encrypt )
+      ACTION="$OPT"
+    ;;
+    * )
+      _ansible_vault_show_help
+      _error "Syntax error: Unknown long option ${opt}"
+      exit 2
+    ;;
+  esac
+
+  docker-compose -f "${APP_YALLA_PATH}/docker/docker-compose.yml" run --rm ansible_vault "$ACTION" /ansible-playbook/vaults/vault.yml
 }
