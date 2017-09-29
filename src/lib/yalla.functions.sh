@@ -273,6 +273,24 @@ HEREDOC
     ###############################################################################
     ## Finally write file
     ##
+    clr_magenta "does the production environment exist? "
+    while true; do
+        read -p "yes / no ? " yn
+            case $yn in
+                [Yy]* )
+                    clr_magenta "Production url."
+                    _br
+                    read -p "Production url: " PRODUCTION_URI
+                    break;;
+            esac
+    done
+
+    _br
+    _line
+
+    ###############################################################################
+    ## Finally write file
+    ##
 
     clr_magenta "Database parameters."
     _br
@@ -292,11 +310,13 @@ HEREDOC
     DB_DEV_USER="${DB_DEV_USER}" \
     DB_DEV_PASS="${DB_DEV_PASS}" \
     DB_DEV_DATABASE_NAME="${DB_DEV_DATABASE_NAME}" \
+    PRODUCTION_URI="${PRODUCTION_URI}" \
     ./yalla/src/lib/templater.sh ./yalla/templates/yalla.settings.tpl > yalla.settings
 
     DB_DEV_USER="${DB_DEV_USER}" \
     DB_DEV_PASS="${DB_DEV_PASS}" \
     DB_DEV_DATABASE_NAME="${DB_DEV_DATABASE_NAME}" \
+    PRODUCTION_URI="${PRODUCTION_URI}" \
     ./yalla/src/lib/templater.sh ./yalla/templates/hosts.yml.tpl > hosts.yml
 
     _br
