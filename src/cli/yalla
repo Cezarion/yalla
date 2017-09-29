@@ -65,7 +65,7 @@ HEREDOC
            ./yalla/create-project
           ;;
 
-      docker | dr | ssh | db | mysql | ap | ansible-playbook | app )
+      docker | dr | ssh | db | mysql | ap | ansible-playbook | ansible-vault | av | app )
           #Check if yalla path exist
           _check_is_yalla_app
 
@@ -94,6 +94,7 @@ create-project
 docker           | dr
 mysql            | db
 ansible-playbook | ap
+ansible-vault    | av
 app
 ssh
 -h --help
