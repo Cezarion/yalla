@@ -61,15 +61,19 @@ HEREDOC
 #while [ $# -gt 0 ]; do
   case "$CMD" in
       create-project)
-          git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla && ./yalla/create-project
+          #git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla &&
+           ./yalla/create-project
           ;;
 
       docker | dr | ssh | db | mysql | ap | ansible-playbook | app )
           #Check if yalla path exist
           _check_is_yalla_app
 
+          # Store args, prevent $@ collision between scripts
+          readonly ARGS=("$@")
+
           # Run command
-          sh ./yalla/main $CMD $(_args_list $@)
+          ./yalla/main $CMD $(_args_list "$ARGS")
           ;;
       -v | --version)
           echo 'yalla version ' ${YALLA_VERSION}
