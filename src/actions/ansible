@@ -4,6 +4,27 @@
 set -e
 trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
+_list_playbooks(){
+
+for file in $APP_YALLA_PATH/ansible/*.yml
+do
+    filename=$(basename $file)
+    echo $filename
+    # if [ -f "${file}" ] && [ "$filename" != "README.md" ]
+    #     then
+    #       if [ "$filename" == ".devilbox-run-time-settings" ]
+    #         then
+    #           cp $file ./.env
+    #           _success "Copy sample file ${filename} into .env"
+    #       else
+    #           cp $file ./
+    #           _success "Copy sample file ${filename}"
+    #       fi
+    # fi
+done
+
+}
+
 _show_help() {
 
 cat << EOF
@@ -33,6 +54,7 @@ Privilege Escalation Options:
     -K, --ask-become-pass
 
 Available Playbooks:
+  $(_list_playbooks)
 
 Example :
     yalla ap mysql-sync -e "source=staging"
