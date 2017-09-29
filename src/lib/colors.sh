@@ -1,40 +1,45 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Exit immediately on error
+set -e
+trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
+
 #
 # Constants and functions for terminal colors.
 # Author: Max Tsepkov <max@yogi.pw>
 
-CLR_ESC="\033["
+readonly CLR_ESC="\033["
 
 # All these variables has a function with the same name, but in lower case.
 #
-CLR_RESET=0             # reset all attributes to their defaults
-CLR_RESET_UNDERLINE=24  # underline off
-CLR_RESET_REVERSE=27    # reverse off
-CLR_DEFAULT=39          # set underscore off, set default foreground color
-CLR_DEFAULTB=49         # set default background color
+readonly CLR_RESET=0             # reset all attributes to their defaults
+readonly CLR_RESET_UNDERLINE=24  # underline off
+readonly CLR_RESET_REVERSE=27    # reverse off
+readonly CLR_DEFAULT=39          # set underscore off, set default foreground color
+readonly CLR_DEFAULTB=49         # set default background color
 
-CLR_BOLD=1              # set bold
-CLR_BRIGHT=2            # set half-bright (simulated with color on a color display)
-CLR_UNDERSCORE=4        # set underscore (simulated with color on a color display)
-CLR_REVERSE=7           # set reverse video
+readonly CLR_BOLD=1              # set bold
+readonly CLR_BRIGHT=2            # set half-bright (simulated with color on a color display)
+readonly CLR_UNDERSCORE=4        # set underscore (simulated with color on a color display)
+readonly CLR_REVERSE=7           # set reverse video
 
-CLR_BLACK=30            # set black foreground
-CLR_RED=31              # set red foreground
-CLR_GREEN=32            # set green foreground
-CLR_BROWN=33            # set brown foreground
-CLR_BLUE=34             # set blue foreground
-CLR_MAGENTA=35          # set magenta foreground
-CLR_CYAN=36             # set cyan foreground
-CLR_WHITE=37            # set white foreground
+readonly CLR_BLACK=30            # set black foreground
+readonly CLR_RED=31              # set red foreground
+readonly CLR_GREEN=32            # set green foreground
+readonly CLR_BROWN=33            # set brown foreground
+readonly CLR_BLUE=34             # set blue foreground
+readonly CLR_MAGENTA=35          # set magenta foreground
+readonly CLR_CYAN=36             # set cyan foreground
+readonly CLR_WHITE=37            # set white foreground
 
-CLR_BLACKB=40           # set black background
-CLR_REDB=41             # set red background
-CLR_GREENB=42           # set green background
-CLR_BROWNB=43           # set brown background
-CLR_BLUEB=44            # set blue background
-CLR_MAGENTAB=45         # set magenta background
-CLR_CYANB=46            # set cyan background
-CLR_WHITEB=47           # set white background
+readonly CLR_BLACKB=40           # set black background
+readonly CLR_REDB=41             # set red background
+readonly CLR_GREENB=42           # set green background
+readonly CLR_BROWNB=43           # set brown background
+readonly CLR_BLUEB=44            # set blue background
+readonly CLR_MAGENTAB=45         # set magenta background
+readonly CLR_CYANB=46            # set cyan background
+readonly CLR_WHITEB=47           # set white background
 
 
 # check if string exists as function
@@ -48,14 +53,18 @@ function fn_exists
 function clr_layer
 {
     # default echo setting
-    CLR_ECHOSWITCHES="-e"
-    CLR_STACK=""
-    CLR_SWITCHES=""
-    ARGS=("$@")
+    local CLR_ECHOSWITCHES="-e"
+    local CLR_STACK=""
+    local CLR_SWITCHES=""
+    local ARG=""
+    local firstletter=""
+
+    readonly ARGS=("$@")
 
     # iterate over arguments in reverse
     for ((i=$#; i>=0; i--)); do
         ARG=${ARGS[$i]}
+
         # echo $ARG
         # set CLR_VAR as last argtype
         firstletter=${ARG:0:1}
@@ -73,16 +82,16 @@ function clr_layer
                 CLR_STACK=$ARG
             else
                 # if the argument is function, apply it
-                if [ -n "$ARG" ] && fn_exists $ARG; then
+                if [ -n "$ARG" ] && fn_exists "$ARG"; then
                     #continue to pass switches through recursion
-                    CLR_STACK=$($ARG "$CLR_STACK" $CLR_SWITCHES)
+                    CLR_STACK=$($ARG "$CLR_STACK" "$CLR_SWITCHES")
                 fi
             fi
         fi
     done
 
     # pass stack and color var to escape function
-    clr_escape "$CLR_STACK" $1;
+    clr_escape "$CLR_STACK" "$1";
 }
 
 # General function to wrap string with escape sequence(s).
