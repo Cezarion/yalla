@@ -1,3 +1,6 @@
 ---
 project_root: "{{ inventory_dir }}/../"
 backup_dir: "{{ project_root }}backup/"
+
+ansible_connection: ssh
+become_method: su

@@ -172,7 +172,7 @@ function _ansible_playbook(){
 _ansible_vault_show_help() {
 
 cat << EOF
-Usage: yalla av | ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view]
+Usage: yalla av | ansible-vault [-h|--help|create|decrypt|edit|encrypt|encrypt_string|rekey|view]
 
 Options:
 ----------------------------------------------------------------------
@@ -183,7 +183,7 @@ Options:
     view        Viewing encrypted files
     decrypt     Decrypting encrypted files
     encrypt     Encrypting unencrypted files
-    -h          display this help and exit
+    -h, --help  display this help and exit
 
 Example :
 ----------------------------------------------------------------------
@@ -209,9 +209,13 @@ _ansible_vault(){
     create | edit | rekey | view  | decrypt | encrypt )
       ACTION="$OPT"
     ;;
+    --help | -h )
+      _ansible_vault_show_help
+      exit 0
+    ;;
     * )
       _ansible_vault_show_help
-      _error "Syntax error: Unknown long option ${opt}"
+      _error "Syntax error: Unknown option ${opt}"
       exit 2
     ;;
   esac

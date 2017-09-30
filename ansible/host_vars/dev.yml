@@ -1,3 +1,2 @@
 ---
-host_env: dev
 ansible_connection: local

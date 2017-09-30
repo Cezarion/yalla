@@ -1,0 +1,6 @@
+# host_vars/preprod.yml
+---
+
+# Vaults
+db_pwd: "{{ vault_preprod_db_pass | default('') }}"
+ansible_become_pass: "{{ vault_preprod_become_pass | default('') }}"
