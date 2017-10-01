@@ -41,7 +41,7 @@ _mysql_create_user_and_database() {
     fi
 
 
-    _info "\nCreate user, database and add privileges"
+    _info "Create user, database and add privileges"
 
     # Generating the sql script that will create the user and the database.
     #if [ ! -f "${LOCAL_BACKUP_PATH}/create_user_and_database.sql" ]; then
@@ -55,7 +55,7 @@ _mysql_create_user_and_database() {
     # Run script
     yalla mysql -f "${LOCAL_BACKUP_PATH}/create_user_and_database.sql" #./backup/create_user_and_database.sql
 
-    _info "\nCheck databases : "
+    _info "Check databases : "
     yalla mysql -i 'SHOW DATABASES;' | grep $DB_DEV_DATABASE_NAME;
 
     # Now import an existing database if a file exist
@@ -66,9 +66,9 @@ _mysql_create_user_and_database() {
 _mysql_import_database() {
     echo "${LOCAL_BACKUP_PATH}/${DB_DEV_DATABASE_NAME}.sql"
     if [ -f "${LOCAL_BACKUP_PATH}/${DB_DEV_DATABASE_NAME}.sql" ]; then
-        _info "\nImport database ${DB_DEV_DATABASE_NAME}"
+        _info "Import database ${DB_DEV_DATABASE_NAME}"
 
         # Run script
-        ./devilbox mysql -d $DB_DEV_DATABASE_NAME -f "./databases/${DB_DEV_DATABASE_NAME}.sql"
+        yalla mysql -d $DB_DEV_DATABASE_NAME -f "./databases/${DB_DEV_DATABASE_NAME}.sql"
     fi
 }
