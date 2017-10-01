@@ -32,6 +32,10 @@ readonly APP_YALLA_LIB="${APP_YALLA_PATH}/src/lib"
 readonly APP_YALLA_ACTIONS="${APP_YALLA_PATH}/src/actions"
 readonly APP_YALLA_PLUGINS="${APP_YALLA_PATH}/src/plugins"
 
+readonly LOCAL_BACKUP_PATH="${WORKING_DIR}/backup"
+
+readonly LOCAL_DOCKER_DB_HOST="127.0.0.1"
+
 ### Current user mail
 readonly USER_EMAIL=$(git config user.email)
 if [ -z "${USER_EMAIL}" ]; then readonly USER_EMAIL="admin@local.host"; fi
@@ -41,8 +45,12 @@ if [ -z "${USER_EMAIL}" ]; then readonly USER_EMAIL="admin@local.host"; fi
 ## This file dispatch yalla command
 ##
 
+. "${WORKING_DIR}/../.devilbox"
+. "${WORKING_DIR}/yalla.settings"
+
 . "${APP_YALLA_LIB}/common.sh"
 . "${APP_YALLA_ACTIONS}/ansible"
+. "${APP_YALLA_ACTIONS}/mysql"
 
 set +o allexport
 
@@ -57,6 +65,8 @@ shift
 # Now you convert the string to a table
 #
 #
+#
+
 
 IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
 #readonly ARGS=("$@")
@@ -80,7 +90,7 @@ case "$action" in
         "${APP_YALLA_ACTIONS}/devilbox" "${ARGS[@]}"
     ;;
     db | mysql)
-        "${APP_YALLA_ACTIONS}/devilbox mysql ${ARGS[*]}"
+        _mysql $@
     ;;
     ap | ansible-playbook)
         _ansible_playbook "${ARGS[@]}"

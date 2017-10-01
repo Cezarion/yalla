@@ -4,8 +4,8 @@
 # If failed, please run dependencies playbook
 #
 # Command :
-#   ansible-playbook mysql-sync-ansible.yml -e "source=staging"
-#   ansible-playbook mysql-sync-ansible.yml -e "source=staging target=preprod"
+#   ansible-playbook mysql-sync-ansible.yml -e "source=staging" --ask-vault-pass
+#   ansible-playbook mysql-sync-ansible.yml -e "source=staging target=preprod" --ask-vault-pass
 
 
 - name: Sync databases
@@ -19,6 +19,10 @@
     source_db_backup: "{{ hostvars[source]['backup_dir'] }}latest.sql"
     source_db_backup_format: bz2
     source_db_backup_archive: "{{ source_db_backup }}.{{ source_db_backup_format }}"
+
+  # Load protected vars
+  vars_files:
+    - ./vaults/vault.yml
 
   hosts: "{{ source }},{{ var_target }}"
   gather_facts: true

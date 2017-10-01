@@ -14,7 +14,7 @@ services:
       - ./../../vaults:/ansible-playbook/vaults/
       - ./../../hosts.yml:/ansible-playbook/hosts.yml
       - ./../ansible:/ansible-playbook
-      - ./../backup:/backup
+      - ./../../backup:/backup
       - ~/.ssh:/root/.ssh
   ansible_vault:
       entrypoint: ansible-vault

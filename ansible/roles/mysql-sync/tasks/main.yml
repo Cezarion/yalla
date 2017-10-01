@@ -5,7 +5,6 @@
      target: 'dev'
      when: target is undefined
 
-
   #Check if there is a recent dump
 - name: "Sql Sync // Check if a archive exist"
   find:

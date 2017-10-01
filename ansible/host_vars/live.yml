@@ -1,0 +1,6 @@
+# host_vars/staging.yml
+---
+
+# Vaults
+db_pwd: "{{ vault_live_db_pass | default('') }}"
+ansible_become_pass: "{{ vault_live_become_pass | default('') }}"

@@ -52,6 +52,77 @@ HEREDOC
   fi
 }
 
+_yalla_usage(){
+cat <<HEREDOC
+Yalla is a command set to simplify the creation or maintenance of a project.
+
+Requirements :
+Docker   : https://www.docker.com/community-edition#download
+Devilbox : https://bitbucket.org/buzzaka/devilbox
+
+----------------------------------------------------------------------
+
+Setup commands :
+
+  create-project        Init a new project with the new skeleton workflow
+
+---------------
+
+  app                   Execute app commands
+      setup-config      Initializes and configures a project to work with devilbox.
+                        This command simplifies the initialization of an old project in the devilbox workflow.
+                        It also allows to create the database and to use yalla commands
+                        to download the database from a remote environment
+
+---------------
+
+  docker | dr           Execute docker actions
+      config            Validate and view the Compose file
+      stop              Stop services
+      start             Start services
+      build             Build or rebuild services
+      cleanup           Remove stopped containers
+      ssh               Connect to main docker container, where the code is and where the commands are available (wp cli, node, ...)
+      connect           Connect to main docker container, directly in path to project
+      exec              Execute a command in a running container
+
+  yalla dr -h for list of commands
+
+---------------
+
+  mysql | db            Execute mysql command.
+      -d                database_name -f path/to/file.sql : import a database
+      -d                database_name -i "SHOW TABLES;" : run an inline sql command script
+      -i                "SHOW DATABASES;" : run an inline sql command script
+      -f                ./backup/create_user_and_database.sql : import an sql file
+
+  yalla db -h  for list of commands and help
+
+---------------
+
+ansible-playbook | ap   Execute ansible available actions.
+                        Yalla integrates ansible via an independent docker container.
+       [-vikCKbe] [-e ANSIBLE EXTRA VARS] [options]...
+
+       yalla ap -h  for list of commands
+
+---------------
+
+ansible-vault | av    Execute ansible available actions.
+                      Yalla integrates ansible via an independent docker container.
+       [-h|--help|create|decrypt|edit|encrypt|encrypt_string|rekey|view]
+
+       yalla av -h  for list of commands and help
+
+---------------
+
+-h --help.            Display this help
+-v, --version         Show yalla version
+
+update                Not yet available
+HEREDOC
+}
+
 # if ! [ -z "$@" ]
 #   then
 #     shift
@@ -80,7 +151,7 @@ HEREDOC
           echo 'yalla path ' $(which yalla)
           ;;
       -h | --help)
-          echo "@todo"
+          _yalla_usage
           ;;
       self-update)
           curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
@@ -91,6 +162,7 @@ HEREDOC
       shortlist)
         cat <<HEREDOC
 create-project
+app setup-config
 docker           | dr
 mysql            | db
 ansible-playbook | ap
@@ -100,6 +172,7 @@ ssh
 -h --help
 -v, --version
 update
+HEREDOC
 HEREDOC
         ;;
        *)

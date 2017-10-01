@@ -1,7 +1,10 @@
+# host_vars/staging.yml
 ---
-host_env: staging
-ansible_connection: ssh
+
+# Users
 ansible_user: deploy
-become_method: su
 become_user: webdev
+
+# Vaults
+db_pwd: "{{ vault_staging_db_pass }}"
 ansible_become_pass: "{{ vault_staging_become_pass | default('') }}"
