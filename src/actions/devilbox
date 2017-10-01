@@ -66,12 +66,22 @@ case "$DV_ACTION" in
     #     $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code install";
     #     ;;
     # ------ / really
-    shortlist)
-            echo config up stop cleanup exec code ssh shortlist
+    shortlist | -h | --help )
+            echo '
+      config            Validate and view the Compose file
+      stop              Stop services
+      start             Start services
+      build             Build or rebuild services
+      cleanup           Remove stopped containers
+      ssh               Connect to main docker container, where the code is and where the commands are available (wp cli, node, ...)
+      connect           Connect to main docker container, directly in path to project
+      exec              Execute a command in a running container
+        '
         ;;
     *)
-        echo "${DV_ACTION} is not a registered command"
-        echo "config up stop cleanup ssh are available command"
+        yalla -h
+        _br
+        _error "${DV_ACTION} is not a registered command"
         exit 1
 esac
 

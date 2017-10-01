@@ -69,17 +69,13 @@ EOF
 
 function _ansible_playbook(){
     local playbook=$1
-    shift
+
     local args=("$@")
     declare -a docker_args=()
 
     # # local extra_args=${args[*]:1}
     # # #docker-compose -f docker/docker-compose.yml run --rm  ansible_host /ansible-playbook/mysql-sync.yml -e "source=staging"
     # # #ansible-playbook mysql-sync.yml -e "source=staging"
-
-    if ! [ -f "$APP_YALLA_PATH/ansible/${playbook}.yml" ] && ! [ "${playbook##*$hosts*}" ]; then
-        _bad_exit "${playbook} is not an available playbook"
-    fi
 
 
     # @see : http://mywiki.wooledge.org/ComplexOptionParsing
@@ -89,6 +85,7 @@ function _ansible_playbook(){
     local optspec="vikCKbe:h-:"
 
     while getopts "$optspec" opt "${args[@]}"; do
+
         while true; do
           case "${opt}" in
             -)
@@ -165,6 +162,13 @@ function _ansible_playbook(){
         break; done
     done
     shift $((OPTIND -1))
+
+    if ! [ -f "$APP_YALLA_PATH/ansible/${playbook}.yml" ] && ! [ "${playbook##*$hosts*}" ]; then
+        _ansible_playbook_show_help
+        _bad_exit "${playbook} is not an available playbook"
+    fi
+
+
 
     docker-compose -f "${APP_YALLA_PATH}/docker/docker-compose.yml" run --rm ansible_playbook ${docker_args[*]} "/ansible-playbook/${playbook}.yml"
 }

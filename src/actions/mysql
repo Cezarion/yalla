@@ -8,8 +8,6 @@ trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); 
 # [ ! "$(docker ps -a | grep <name>)" ]
 
 _usage() {
-    _notice "Bad use or missing arguments."
-
     echo '
 Examples :
     yalla db | mysql -d database_name -f path/to/file.sql : import a database
@@ -27,7 +25,7 @@ function _mysql() {
     local DATABASE=""
     local FILE=""
 
-    local optspec="i:d:f:h:"
+    local optspec="i:d:f:h"
 
     while getopts "$optspec" opt "${args[@]}"; do
         case "${opt}" in
@@ -44,6 +42,7 @@ function _mysql() {
                 _usage
                 ;;
             \?)
+                _notice "Bad use or missing arguments."
                 echo "Invalid option: -$OPTARG" >&2
                 _usage
             ;;

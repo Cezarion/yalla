@@ -90,7 +90,7 @@ case "$action" in
         "${APP_YALLA_ACTIONS}/devilbox" "${ARGS[@]}"
     ;;
     db | mysql)
-        _mysql $@
+        _mysql "${@}"
     ;;
     ap | ansible-playbook)
         _ansible_playbook "${ARGS[@]}"

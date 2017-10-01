@@ -102,7 +102,7 @@ Setup commands :
 
 ansible-playbook | ap   Execute ansible available actions.
                         Yalla integrates ansible via an independent docker container.
-       [-vikCKbe] [-e ANSIBLE EXTRA VARS] [options]...
+       [-vikCKbe] [-e ANSIBLE EXTRA VARS] [playbook-name]...
 
        yalla ap -h  for list of commands
 
