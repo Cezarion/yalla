@@ -25,7 +25,7 @@ readonly DV_ACTION=$1
 shift
 
 case "$DV_ACTION" in
-    config | stop | build )
+    config | stop | build | start )
         $docker_cmd "$DV_ACTION"
         ;;
     up)
