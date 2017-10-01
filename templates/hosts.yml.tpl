@@ -34,6 +34,7 @@
 #         #for db password create or edit a vault. See below
 #         db_name:      #database-name
 #         db_user:      #database-user
+#         db_host:      #databse host | default localhost
 #
 #         host_url:
 #         project_root:
@@ -52,6 +53,7 @@ app:
     db_name: {{DB_DEV_DATABASE_NAME}}
     db_user: {{DB_DEV_USER}}
     db_pwd:  {{DB_DEV_PASS}}
+    db_host: localhost
 
   hosts:
     dev:

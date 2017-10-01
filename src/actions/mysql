@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# Exit immediately on error
+set -e
+trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
+
+
+# [ ! "$(docker ps -a | grep <name>)" ]
+
+_usage() {
+    _notice "Bad use or missing arguments."
+
+    echo '
+Examples :
+    yalla db | mysql -d database_name -f path/to/file.sql : import a database
+    yalla db | mysql -d database_name -i "SHOW TABLES;" : run an inline sql command script
+    yalla db | mysql -i "SHOW DATABASES;" : run an inline sql command script
+    yalla db | mysql -f ./backup/create_user_and_database.sql : import an sql file
+'
+}
+
+function _mysql() {
+
+    local args=("$@")
+
+    local INLINE=
+    local DATABASE=""
+    local FILE=""
+
+    local optspec="i:d:f:h:"
+
+    while getopts "$optspec" opt "${args[@]}"; do
+        case "${opt}" in
+            i )
+                INLINE="${OPTARG}"
+                ;;
+            d )
+                DATABASE="${OPTARG}"
+                ;;
+            f )
+                FILE="${OPTARG}"
+                ;;
+            h )
+                _usage
+                ;;
+            \?)
+                echo "Invalid option: -$OPTARG" >&2
+                _usage
+            ;;
+        esac
+    done
+
+    # Import a sql file
+    if [[ ! -z $FILE ]]; then
+        if [ ! -f "${FILE}" ]; then
+            _bad_exit "No ${FILE} file was found in the directory";
+        fi
+
+        mysql -u root -h "${LOCAL_DOCKER_DB_HOST}" "${DATABASE}" < ${FILE};
+    fi
+
+    # Run inline mysql command
+    if [[ ! -z $INLINE ]]; then
+        echo $INLINE
+
+        echo $INLINE | mysql -u root -h "${LOCAL_DOCKER_DB_HOST}" "${DATABASE}";
+    fi
+}

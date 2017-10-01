@@ -4,3 +4,5 @@ backup_dir: "{{ project_root }}backup/"
 
 ansible_connection: ssh
 become_method: su
+
+db_host: localhost

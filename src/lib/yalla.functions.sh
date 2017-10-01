@@ -153,6 +153,7 @@ _yalla_check_update(){
 #
 
 function _yalla_settings() {
+
     _line
     _br
     clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Generate yalla.settings and hosts.yml files :"
@@ -271,17 +272,21 @@ HEREDOC
     _line
 
     ###############################################################################
-    ## Finally write file
+    ## If production environment exist populate files
     ##
     clr_magenta "does the production environment exist? "
     while true; do
         read -p "yes / no ? " yn
             case $yn in
-                [Yy]* )
+                [Yy] )
                     clr_magenta "Production url."
                     _br
                     read -p "Production url: " PRODUCTION_URI
                     break;;
+                 *)
+                    _notice "Ok, continue"
+                    break
+                    ;;
             esac
     done
 
@@ -289,7 +294,7 @@ HEREDOC
     _line
 
     ###############################################################################
-    ## Finally write file
+    ## Setup db params
     ##
 
     clr_magenta "Database parameters."
@@ -320,6 +325,11 @@ HEREDOC
     ./yalla/src/lib/templater.sh ./yalla/templates/hosts.yml.tpl > hosts.yml
 
     _br
+
+    # Load params file
+    source yalla.settings
+
+    _br
     _line
 
     ###############################################################################
@@ -340,6 +350,36 @@ HEREDOC
 HEREDOC)
 
     printf "${CONTENT}" >> .gitignore
+
+    ###############################################################################
+    ## end message
+    ##
+
+    _br
+    _success "Yalla settings are now completed"
+
+
+    ###############################################################################
+    ## Create user and database
+    ##
+
+    _br
+    clr_magenta "Do you want create user database ? "
+    while true; do
+        read -p "yes / no ? " yn
+            case $yn in
+                [Yy]* )
+                    yalla dr up;
+                    _mysql_create_user_and_database
+                    break;;
+                *)
+                    break
+                    ;;
+            esac
+    done
+
+    _br
+    _line
 
     ###############################################################################
     ## end message

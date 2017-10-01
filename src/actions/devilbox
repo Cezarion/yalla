@@ -7,20 +7,11 @@ trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); 
 
 # Load params & export local configuration
 set -o allexport
-source "${WORKING_DIR}/../.devilbox"
-source "${WORKING_DIR}/yalla.settings"
-
-# Load common scripts
-source "${APP_YALLA_LIB}/common.sh"
 
 CWD="/shared/httpd"
 CURRENT_DIR_NAME=${PWD##*/}
 CURRENT_DIR_PATH=${PWD}
 
-LOCAL_DATABASE_PATH="${CURRENT_DIR_PATH}/databases"
-
-# Load devilbox custom scripts
-source "${APP_YALLA_LIB}/devilbox.functions.sh"
 
 # Docker shortcuts
 readonly compose_file="${DEVILBOX_LOCAL_PATH}/docker-compose.yml"
@@ -30,21 +21,15 @@ readonly docker_mysql_cmd="${docker_cmd} exec --user devilbox php env mysql -h 1
 
 set +o allexport
 
-ACTION=$1
+readonly DV_ACTION=$1
 shift
 
-case "$ACTION" in
-    config)
-        $docker_cmd config
+case "$DV_ACTION" in
+    config | stop | build )
+        $docker_cmd "$DV_ACTION"
         ;;
     up)
         $docker_cmd up -d $DOCKER_STACK
-        ;;
-    build)
-        $docker_cmd build
-        ;;
-    stop)
-        $docker_cmd stop
         ;;
     cleanup)
         $docker_cmd rm -f
@@ -68,25 +53,24 @@ case "$ACTION" in
     # so I use a script to execute a script on the docker container
     # @see https://github.com/docker/compose/issues/3352
     # ------ / unsed
-    mysql)
-        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./yalla/src/lib/devilbox.cmd.mysql.sh $(_args_list "$@")"
-        ;;
-    install)
-        _info "Start docker stack"
-        $docker_cmd up -d $DOCKER_STACK;
+    # ----- Really necessary ?
+    # install)
+    #     _info "Start docker stack"
+    #     $docker_cmd up -d $DOCKER_STACK;
 
-        _info "\nCreate database or import an existing file"
-        _dv_install_actions
+    #     _info "\nCreate database or import an existing file"
+    #     _mysql_install_actions
 
 
-        _info "Install project"
-        $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code install";
-        ;;
+    #     _info "Install project"
+    #     $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code install";
+    #     ;;
+    # ------ / really
     shortlist)
             echo config up stop cleanup exec code ssh shortlist
         ;;
     *)
-        echo "${ACTION} is not a registered command"
+        echo "${DV_ACTION} is not a registered command"
         echo "config up stop cleanup ssh are available command"
         exit 1
 esac
