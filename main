@@ -46,7 +46,9 @@ if [ -z "${USER_EMAIL}" ]; then readonly USER_EMAIL="admin@local.host"; fi
 ##
 
 . "${WORKING_DIR}/../.devilbox"
-. "${WORKING_DIR}/yalla.settings"
+if [ -f "${WORKING_DIR}/yalla.settings" ]; then
+    . "${WORKING_DIR}/yalla.settings"
+fi
 
 . "${APP_YALLA_LIB}/common.sh"
 . "${APP_YALLA_ACTIONS}/ansible"
