@@ -5,24 +5,39 @@ services:
     entrypoint: ansible-playbook
     environment:
       ANSIBLE_CONFIG: /ansible-playbook/ansible.cfg
-      ANSIBLE_INVENTORY: /ansible-playbook/hosts.yml
+      ANSIBLE_INVENTORY: /ansible-config/hosts.yml
     image: ju2wheels/ansible:2.x-alpine-3.6
     #tty: true
     ports:
       - "22:22"
     volumes:
-      - ./../../vaults:/ansible-playbook/vaults/
-      - ./../../hosts.yml:/ansible-playbook/hosts.yml
+      - ./../../vaults:/ansible-config/vaults/
+      - ./../../hosts.yml:/ansible-config/hosts.yml
       - ./../ansible:/ansible-playbook
       - ./../../backup:/backup
       - ~/.ssh:/root/.ssh
   ansible_vault:
-      entrypoint: ansible-vault
+    entrypoint: ansible-vault
+    environment:
+      ANSIBLE_CONFIG: /ansible-playbook/ansible.cfg
+    image: ju2wheels/ansible:2.x-alpine-3.6
+    #tty: true
+    ports:
+      - "22:22"
+    volumes:
+      - ./../../vaults:/ansible-config/vaults
+  ansible_debug:
+      entrypoint: /bin/bash
       environment:
         ANSIBLE_CONFIG: /ansible-playbook/ansible.cfg
+        ANSIBLE_INVENTORY: /ansible-config/hosts.yml
       image: ju2wheels/ansible:2.x-alpine-3.6
-      #tty: true
+      tty: true
       ports:
         - "22:22"
       volumes:
-        - ./../../vaults:/ansible-playbook/vaults
+      - ./../../vaults:/ansible-config/vaults/
+      - ./../../hosts.yml:/ansible-config/hosts.yml
+      - ./../ansible:/ansible-playbook
+      - ./../../backup:/backup
+      - ~/.ssh:/root/.ssh

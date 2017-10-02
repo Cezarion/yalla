@@ -22,7 +22,7 @@
 
   # Load protected vars
   vars_files:
-    - ./vaults/vault.yml
+    - /ansible-config/vaults/vault.yml
 
   hosts: "{{ source }},{{ var_target }}"
   gather_facts: true
