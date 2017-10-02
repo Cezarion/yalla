@@ -140,7 +140,7 @@ HEREDOC
           readonly PARAMS=("$@")
 
           #Check if yalla path exist or create it if it's a setup task
-          if [ -d "yalla" ] && [ "$CMD" == 'app' ] && [ "${PARAMS[0]}" == "setup-settings" ]; then
+          if ! [ -d "yalla" ] && [ "$CMD" == 'app' ] && [ "${PARAMS[0]}" == "setup-settings" ]; then
             git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
           else
             _check_is_yalla_app
