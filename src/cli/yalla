@@ -41,7 +41,7 @@ shift
 
 # Exit if not args or not a yalla project
 _check_is_yalla_app() {
-  if [ ! -d "./yalla" ] && [ "$CMD" != "create-project" ]; then
+  if [ ! -d "./yalla" ] && [ "$CMD" != "create-project" ] && [ "$CMD" != "app" ]; then
       echo -e "\n\xE2\x9C\x97 Error ! \n"
       cat <<HEREDOC
 The "yalla" directory does not appear to be present.
@@ -132,16 +132,19 @@ HEREDOC
 #while [ $# -gt 0 ]; do
   case "$CMD" in
       create-project)
-          #git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla &&
-           ./yalla/create-project
+          git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla && ./yalla/create-project
           ;;
 
       docker | dr | ssh | db | mysql | ap | ansible-playbook | ansible-vault | av | app )
-          #Check if yalla path exist
-          _check_is_yalla_app
-
           # Store args, prevent $@ collision between scripts
           readonly PARAMS=("$@")
+
+          #Check if yalla path exist or create it if it's a setup task
+          if [ "$CMD" == 'app' ] && [ "${PARAMS[0]}" == "setup-settings" ]; then
+            git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
+          else
+            _check_is_yalla_app
+          fi;
 
           # Run command
           ./yalla/main "$CMD" "${PARAMS[@]}"
