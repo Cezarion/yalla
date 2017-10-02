@@ -16,7 +16,7 @@
 #     available values :
 #     vault_staging_db_pass: your-staging-pass
 #     vault_preprod_db_pass: your-preprod-pass
-#     vault_prod_db_pass:    your-db-pass
+#     vault_live_db_pass:    your-db-pass
 #
 # ----------------------------------------------------------------------
 #

@@ -14,6 +14,8 @@ readonly CHECKMARK=$'\xE2\x9C\x93'
 readonly CROSSMARK=$'\xE2\x9C\x97'
 readonly INFOMARK=$'\xE2\x84\xB9'
 readonly WARNINGMARK=$'\xE2\x9A\xA0'
+readonly ARROWMARK=$'\xE2\x9E\xA5'
+readonly LAMPMARK=$'\xF0\x9F\x92\xA1'
 
 # Colors
 readonly RED=$'\e[31;01m'

@@ -401,11 +401,36 @@ HEREDOC)
     _br
     _success "Yalla settings are now completed"
     cat <<HEREDOC
+$(_line)
 
-To update the files, edit the yalla.settings file and/or hosts.yml.
-To restart the installation re-run the command 'yalla create-project'
+$(clr_bold "Yalla settings are no completed")
+$(_line)
 
-If there is a problem, open a ticket https://bitbucket.org/buzzaka/project-skeleton/issues?status=new&status=open
+$(clr_underscore clr_cyan "Main config files are : ")
+
+$(clr_bold "yalla.settings : ")
+    Set variables for yalla, define slack channel to notify on deploy, ...
+
+$(clr_bold "hosts.yml : ")
+    Set up base config to allow ansible mysql sync
+
+$(clr_bold "Pull database from remote host :")
+    • Populate $(clr_bold "hosts.yml") with remote datas
+    • Edit secrets (vault) : run
+        $(clr_cyan 'yalla av create')
+    • Edit like that :
+        $(clr_bright "vault_staging_db_pass: your-staging-pass")
+        $(clr_bright "vault_preprod_db_pass: your-preprod-pass")
+        $(clr_bright "vault_live_db_pass:    your-db-pass")
+    • Run
+        $(clr_cyan 'yalla ap mysql-sync -e "source="staging|preprod|live" --ask-vault-pass')
+
+$(_line)
+
+If there is a problem, open a ticket
+https://bitbucket.org/buzzaka/project-skeleton/issues?status=new&status=open
+
+
 HEREDOC
 
     _br
