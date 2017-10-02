@@ -20,6 +20,7 @@
     #"Create MySQL database dump on source host - {{ source }}"
     - mysql_db:
         name: "{{ hostvars[source]['db_name'] }}"
+        host: "{{ hostvars[source]['db_host'] }}"
         state: dump
         login_user: "{{ hostvars[source]['db_user'] }}"
         login_password: "{{ hostvars[source]['db_pwd'] }}"

@@ -8,10 +8,10 @@ services:
       ANSIBLE_INVENTORY: /ansible-config/hosts.yml
     image: ju2wheels/ansible:2.x-alpine-3.6
     #tty: true
-    ports:
-      - "22:22"
+    # ports:
+    #   - "22:22"
     volumes:
-      - ./../../vaults:/ansible-config/vaults/
+      - ./../../vaults:/ansible-config/vaults
       - ./../../hosts.yml:/ansible-config/hosts.yml
       - ./../ansible:/ansible-playbook
       - ./../../backup:/backup
@@ -22,8 +22,8 @@ services:
       ANSIBLE_CONFIG: /ansible-playbook/ansible.cfg
     image: ju2wheels/ansible:2.x-alpine-3.6
     #tty: true
-    ports:
-      - "22:22"
+    # ports:
+    #   - "22:22"
     volumes:
       - ./../../vaults:/ansible-config/vaults
   ansible_debug:
@@ -33,10 +33,10 @@ services:
         ANSIBLE_INVENTORY: /ansible-config/hosts.yml
       image: ju2wheels/ansible:2.x-alpine-3.6
       tty: true
-      ports:
-        - "22:22"
+      # ports:
+      #   - "22:22"
       volumes:
-      - ./../../vaults:/ansible-config/vaults/
+      - ./../../vaults:/ansible-config/vaults
       - ./../../hosts.yml:/ansible-config/hosts.yml
       - ./../ansible:/ansible-playbook
       - ./../../backup:/backup
