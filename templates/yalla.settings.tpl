@@ -1,6 +1,6 @@
 {{DOCKER_STACK="httpd php mysql"}}
 {{SLACK_HOOK="https://hooks.slack.com/services/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"}}
-{{PRODUCTION_URI=""}}
+{{PRODUCTION_URI="@todo"}}
 # Set the type of application.
 # This serves as a wrapper to search for commands in the bin/ folder
 # available values : drupal8,drupal7,symfony,wordpress

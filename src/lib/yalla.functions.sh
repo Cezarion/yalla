@@ -153,7 +153,6 @@ _yalla_check_update(){
 #
 
 function _yalla_settings() {
-
     _line
     _br
     clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Generate yalla.settings and hosts.yml files :"
@@ -207,11 +206,16 @@ function _yalla_settings() {
 
     clr_magenta "Select application type :"
     _br
-    select APP_TYPE in Symfony Drupal8 Drupal7 Wordpress
+    select APP_TYPE in Symfony Drupal8 Drupal7 Wordpress Angular Other
     do
             case $APP_TYPE in
-            Symfony|Drupal8|Drupal7|Wordpress)
+            Symfony|Drupal8|Drupal7|Wordpress|Angular)
                     APP_TYPE=$(_tolower $APP_TYPE)
+                    break
+                    ;;
+            Other )
+                    read -p "Please specify : " APP_TYPE_OTHER
+                    APP_TYPE=$(_tolower $APP_TYPE_OTHER)
                     break
                     ;;
             *)
@@ -308,6 +312,8 @@ HEREDOC
     ## Finally write file
     ##
 
+    _info "Write database parameters into $(clr_bold clr_white "yalla.settings")"
+    _br
     PROJECT=$PROJECT \
     CHANNEL=$CHANNEL \
     APP_TYPE=$APP_TYPE \
@@ -318,6 +324,8 @@ HEREDOC
     PRODUCTION_URI="${PRODUCTION_URI}" \
     ./yalla/src/lib/templater.sh ./yalla/templates/yalla.settings.tpl > yalla.settings
 
+    _info "Write database parameters into $(clr_bold clr_white "hosts.yml")"
+    _br
     DB_DEV_USER="${DB_DEV_USER}" \
     DB_DEV_PASS="${DB_DEV_PASS}" \
     DB_DEV_DATABASE_NAME="${DB_DEV_DATABASE_NAME}" \
@@ -335,21 +343,26 @@ HEREDOC
     ###############################################################################
     ## Set .gitignore
     ##
+    if [ ! -z $(grep "Ignore local secrets folders" ".gitignore") ]; then
+        _notice "Secrets folders already ignored"
+    else
+        _notice "Ignore secret files into .gitignore"
+        CONTENT=$(cat <<HEREDOC
 
-    CONTENT=$(cat <<HEREDOC
-    # Created by the yalla_settings script
+# Created by the yalla_settings script
 
-    # Local secrets folders
-    /vaults.yml
-    /vault.yml
-    /vaults/
-    /vaults/vault.yml
+# Ignore local secrets folders
+vaults.yml
+vault.yml
+vaults/
+vaults/vault.yml
 
-    # End of yalla yalla_settings script
+# End of yalla yalla_settings script
 
 HEREDOC)
-
-    printf "${CONTENT}" >> .gitignore
+        printf "${CONTENT}" >> .gitignore
+    fi
+    _br
 
     ###############################################################################
     ## end message
