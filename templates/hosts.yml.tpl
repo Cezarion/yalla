@@ -73,7 +73,7 @@ app:
     # preprod:
     #   ansible_host:        #server ip / hostname
     #   ansible_user: deploy #no sudo user
-    #.  become_user:  devops #sudo user
+    #   become_user:  devops #sudo user
     #
     #   #for db password create or edit a vault. See below
     #   db_name:      #database-name
@@ -86,7 +86,7 @@ app:
     # live:
     #   ansible_host:        #server ip / hostname
     #   ansible_user: deploy #no sudo user
-    #.  become_user:  devops #sudo user
+    #   become_user:  devops #sudo user
 
     #   #for db password create or edit a vault. See below
     #   db_name:

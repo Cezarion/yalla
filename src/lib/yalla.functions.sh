@@ -357,6 +357,8 @@ vault.yml
 vaults/
 vaults/vault.yml
 
+# Ignore this project
+yalla
 # End of yalla yalla_settings script
 
 HEREDOC)
