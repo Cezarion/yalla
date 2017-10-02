@@ -224,5 +224,5 @@ _ansible_vault(){
     ;;
   esac
 
-  docker-compose -f "${APP_YALLA_PATH}/docker/docker-compose.yml" run --rm ansible_vault "$ACTION" /ansible-playbook/vaults/vault.yml
+  docker-compose -f "${APP_YALLA_PATH}/docker/docker-compose.yml" run --rm ansible_vault "$ACTION" /ansible-config/vaults/vault.yml
 }
