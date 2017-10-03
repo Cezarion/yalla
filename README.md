@@ -111,19 +111,20 @@ $ $user@machine:~/Webserver/new-project| yalla app setup-settings
 
 * Populate `hosts.yml` with remote datas  
 * Edit secrets (vault) : run  
-    ```
+```
     yalla av create
-    ```
+```
 * Edit like that :   
-    ```
+```
     vault_staging_db_pass: your-staging-pass   
     vault_preprod_db_pass: your-preprod-pass    
     vault_live_db_pass:    your-db-pass
-    ```    
+```    
+
 * Run   
-    ```
+```
     yalla ap mysql-sync -e "source="staging|preprod|live"    --ask-vault-pass'
-    ```
+```
 
 
 If there is a problem, open a ticket
