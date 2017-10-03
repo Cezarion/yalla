@@ -282,7 +282,7 @@ HEREDOC
     while true; do
         read -p "yes / no ? " yn
             case $yn in
-                [Yy] )
+                [Yy] | yes | Yes )
                     clr_magenta "Production url."
                     _br
                     read -p "Production url: " PRODUCTION_URI

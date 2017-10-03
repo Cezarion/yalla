@@ -69,7 +69,7 @@ Setup commands :
 ---------------
 
   app                   Execute app commands
-      setup-config      Initializes and configures a project to work with devilbox.
+      setup-settings    Initializes and configures a project to work with devilbox.
                         This command simplifies the initialization of an old project in the devilbox workflow.
                         It also allows to create the database and to use yalla commands
                         to download the database from a remote environment
