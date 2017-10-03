@@ -96,7 +96,7 @@ Go to `~/Webserver/www-docker`
 ```shell
 $ $user@machine:~/Webserver| cd www-docker
 $ $user@machine:~/Webserver| git clone my-project && cd $_
-$ $user@machine:~/Webserver/new-project| yalla app setup-settings
+$ $user@machine:~/Webserver/my-project| yalla app setup-settings
 ```
 
 ## Main config files
@@ -111,10 +111,11 @@ $ $user@machine:~/Webserver/new-project| yalla app setup-settings
 
 * Populate `hosts.yml` with remote datas  
 * Edit secrets (vault) : run  
+```shell
+$user@machine:~/Webserver/my-project| yalla av create
 ```
-    yalla av create
-```
-* Edit like that :   
+* Edit like that :
+
 ```
     vault_staging_db_pass: your-staging-pass   
     vault_preprod_db_pass: your-preprod-pass    
@@ -122,10 +123,9 @@ $ $user@machine:~/Webserver/new-project| yalla app setup-settings
 ```    
 
 * Run   
+```shell
+$user@machine:~/Webserver/my-project| yalla ap mysql-sync -e "source="staging|preprod|live" --ask-vault-pass'
 ```
-    yalla ap mysql-sync -e "source="staging|preprod|live"    --ask-vault-pass'
-```
-
 
 If there is a problem, open a ticket
 https://bitbucket.org/buzzaka/project-skeleton/issues?status=new&status=open
@@ -159,7 +159,7 @@ yalla docker exec              Execute a command in a running container
 
 ### Ansible Playbooks:
 
-*@see : http://docs.ansible.com/ansible/latest/playbooks.html*
+*Ansible documentation : http://docs.ansible.com/ansible/latest/playbooks.html*
 
 Usage: yalla ap | ansible-playbook [-vikCKbe] [-e ANSIBLE EXTRA VARS] [options]...
 
@@ -209,7 +209,7 @@ docker-compose -f yalla/docker/docker-compose.yml run --rm  ansible_playbook /an
 
 ### Ansible Vault:
 
-@see : http://docs.ansible.com/ansible/latest/playbooks_vault.html
+* Ansible documentation : http://docs.ansible.com/ansible/latest/playbooks_vault.html *
 
 ##### Options:
 
@@ -224,13 +224,13 @@ yalla av -h, --help  display this help and exit
 ```
 
 **Example :**
-```
-    yalla av | ansible-vault create
+```shell
+yalla av | ansible-vault create
 ```
 
 #### Run ansible vault in a regular way:
 
 If you need to run others and non available options within Ansible, run :
-```
+```shell
 docker-compose -f yalla/docker/docker-compose.yml run --rm  ansible_vault [options]
 ```
