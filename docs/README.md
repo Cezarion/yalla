@@ -30,6 +30,24 @@ yalla ng-cli [cmd]
 yalla drush [cmd]   
 yalla drupal-console [cmd]      
 
+Main commands:
+------------
+
+yalla start : start containers (= yalla dr start) + show local uri    
+
+yalla restart : restart containers (= yalla dr restart)  + show local uri
+
+yalla stop : stop containers (= yalla dr stop)
+
+
+yalla init =  yalla create-project + edit .env
+              yalla app setup-settings if cat .gitignore | grep yalla = ''
+
+yalla install =  clone yalla + yalla start + create database + import database  + edit /etc/hosts + show local uri
+
+yalla info = yalla dr status = show running container, database params, project uri, remote infos (db,uri)
+
+yalla connect = yalla dr connect => enter into container into current project
 
 ## @ Todo
 
@@ -38,6 +56,7 @@ yalla drupal-console [cmd]
 * During process specify that database infos are for local env
 * When config exist, add command | readme to create db
 * Notify if local apache or mysql is running
+* Setup /etc/hosts
 * How to start with an existing yalla project
   -> @missing clone yalla   
   -> @missing create user and database   
