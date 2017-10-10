@@ -32,7 +32,7 @@ project/
 
 --------------
 
-### Supported operating systems 
+### Supported operating systems
 
 ![Linux](https://raw.githubusercontent.com/cytopia/icons/master/64x64/linux.png) ![OSX](https://raw.githubusercontent.com/cytopia/icons/master/64x64/osx.png)
 
@@ -54,15 +54,15 @@ project/
 curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
 ```
 
-That's all. 
+That's all.
 
 ## Install Devil Box
 
 Choose a directory (if you are a Fabernovel Team member go to `~/Webserver`)
 ```shell
-$ $user@machine:~/Webserver| git clone -b skeleton-stack --single-branch git@bitbucket.org:buzzaka/devilbox.git devilbox 
+$ $user@machine:~/Webserver| git clone -b skeleton-stack --single-branch git@bitbucket.org:buzzaka/devilbox.git devilbox
 $ $user@machine:~/Webserver| cd devilbox
-$ $user@machine:~/Webserver| ./install.sh 
+$ $user@machine:~/Webserver| ./install.sh
 ```
 
 More details see https://bitbucket.org/buzzaka/devilbox/overview#%20usage-as-a-common-stack
@@ -75,113 +75,162 @@ It is here that the projects will be initiated.
 
 ```shell
 $ $user@machine:~/Webserver/devilbox| cd ..
-$ $user@machine:~/Webserver| ls 
+$ $user@machine:~/Webserver| ls
 $ $user@machine:~/Webserver| devilbox www-docker
 ```
 
 
-## Init a new project 
+## Init a new project
 
 Go to `~/Webserver/www-docker`
 ```shell
 $ $user@machine:~/Webserver| cd www-docker
-$ $user@machine:~/Webserver| mkdir new-project && cd $_ 
+$ $user@machine:~/Webserver| mkdir new-project && cd $_
 $ $user@machine:~/Webserver/new-project| yalla create-project
 ```
 
-## Available commands
 
-### Devilbox
+## Init from an existing project
 
-``` shell
-$ $user@machine:~/Webserver/new-project| yalla docker config # Show local config
-$ $user@machine:~/Webserver/new-project| yalla docker up # Start required docker container as daemon ( @see project-configuration DOCKER_STACK)
-$ $user@machine:~/Webserver/new-project| yalla docker stop # Stop required container
-$ $user@machine:~/Webserver/new-project| yalla docker cleanup # When changing some variable in .env you must re-create the container.Simply remove it, it will be auto-created during the next start:
-$ $user@machine:~/Webserver/new-project| yalla docker ssh #connect to php container in www-docker path 
-$ $user@machine:~/Webserver/new-project| yalla docker connect #connect to php container in www-docker/new-project path 
-$ $user@machine:~/Webserver/new-project| yalla docker exec # run a command into container fwithout connect from ssh. Example : yalla docker exec composer -v
-$ $user@machine:~/Webserver/new-project| yalla docker code # is wrapper to execute ./code args cmd from local path without to connect into container
-$ $user@machine:~/Webserver/new-project| yalla docker code install # run ./code install ino container 
-$ $user@machine:~/Webserver/new-project| yalla docker shortlist # show available commands
-```
-
-
-# ------ DEPRECATED - LINE BELOW NEEDS TO BE UPDATED ------- 
-### Regular scripts
-
-#### From computer
-
-``` shell
-$ ./devilbox args # available args : config up stop cleanup exec code ssh
-```
-
-
-``` shell
-$ .code args # available args : install build 
-```
-
-
-#### Details
-
-``` shell
-$ ./devilbox config # Show local config
-$ ./devilbox up # Start required docker container as daemon ( @see project-configuration DOCKER_STACK)
-$ ./devilbox stop # Stop required container
-$ ./devilbox cleanup # When changing some variable in .env you must re-create the container.Simply remove it, it will be auto-created during the next start:
-$ ./devilbox ssh #connect to php container in www-docker path 
-$ ./devilbox exec # run a command into container fwithout connect from ssh. Example : ./devilbox exec composer -v
-$ ./devilbox code # is wrapper to execute ./code args cmd from local path without to connect into container
-$ ./devilbox code install # run ./code install ino container 
-$ ./devilbox shortlist # show available commands
-```
-
-
-## Regular install by Lead Dev
-
-* You have installed devilbox
-* Uri http://localhost show you something like that :
-![Devilbox](docs/img/devilbox-dash-01.png)
-
-### Configure app
-
-Start edit project-configuration
-
+Go to `~/Webserver/www-docker`
 ```shell
-#!sh
-$ vi ./project-configuration
-```
-Or 
-```shell
-#!sh
-$ subl ./project-configuration
+$ $user@machine:~/Webserver| cd www-docker
+$ $user@machine:~/Webserver| git clone my-project && cd $_
+$ $user@machine:~/Webserver/my-project| yalla app setup-settings
 ```
 
-Edit ./project-configuration as follow : 
+## Main config files
+
+##### yalla.settings :
+* Set variables for yalla, define slack channel to notify on deploy, ...
+
+##### hosts.yml :
+* Set up base config to allow ansible mysql sync
+
+## Pull database from remote host :
+
+* Populate `hosts.yml` with remote datas  
+* Edit secrets (vault) : run  
 ```shell
-# Set the type of application.
-# This serves as a wrapper to search for commands in the bin/ folder
-# available values : drupal8,drupal7,symfony,wordpress
+$user@machine:~/Webserver/my-project| yalla av create
+```
+* Edit like that :
 
-APP_TYPE="symfony";
+```
+    vault_staging_db_pass: your-staging-pass   
+    vault_preprod_db_pass: your-preprod-pass    
+    vault_live_db_pass:    your-db-pass
+```    
 
-# Docker stack
-# Configure versions in ./.env file
-# available values : see .env.example For exeample you can choose between mariadb-10.2 or mysql-5.5
-# available values : httpd,nginx,mysql,redis,pgsql,memcd,mongo, ...
-DOCKER_STACK="httpd php mysql redis"
-
-# Slack notifications
-PROJECT="CNP" # Prject name
-CHANNEL="cnp" # Channel name
-SLACK_HOOK="https://hooks.slack.com/services/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" # Webhook, normally you d'ont need ti change it
-
-# Prod url (use for media proxy) and as default value for build scripts :
-# example : https://fabernovel.com
-PROD_URL=""
+* Run   
 ```shell
-#!sh
-./code build dev
+$user@machine:~/Webserver/my-project| yalla ap mysql-sync -e "source="staging|preprod|live" --ask-vault-pass'
 ```
 
-* That's it.
+If there is a problem, open a ticket
+https://bitbucket.org/buzzaka/project-skeleton/issues?status=new&status=open
+
+## Commands
+
+### Mysql :
+
+```
+yalla db | mysql -d database_name -f path/to/file.sql #import a database
+yalla db | mysql -d database_name -i "SHOW TABLES;" #run an inline sql command script
+yalla db | mysql -i "SHOW DATABASES;" #run an inline sql command script
+yalla db | mysql -f ./backup/create_user_and_database.sql #import an sql file
+```
+NB : Only Mysql, Mariadb or Perconna server are available
+
+
+### Docker :
+
+```
+# Main command yalla docker | dr
+yalla docker config            Validate and view the Compose file
+yalla docker stop              Stop services
+yalla docker start             Start services
+yalla docker build             Build or rebuild services
+yalla docker cleanup           Remove stopped containers
+yalla docker ssh               Connect to main docker container, where the code is and where the commands are available (wp cli, node, ...)
+yalla docker connect           Connect to main docker container, directly in path to project
+yalla docker exec              Execute a command in a running container
+```
+
+### Ansible Playbooks:
+
+*Ansible documentation : http://docs.ansible.com/ansible/latest/playbooks.html*
+
+Usage: yalla ap | ansible-playbook [-vikCKbe] [-e ANSIBLE EXTRA VARS] [options]...
+
+##### Options:
+```
+    -v          verbose mode. Can be used multiple times for increased verbosity.
+    -h          display this help and exit
+    --ask-vault-pass      ask for vault password
+
+    -e                    set additional variables as key=value
+    --flush-cache         clear the fact cache
+    -C, --check           no changes; instead, try to predict some
+    -k, --ask-pass        ask for connection password
+    -u                    connect as this user (default=None)
+```
+##### Privilege Escalation Options:
+```
+    control how and which user you become as on target hosts
+
+    -b, --become        run operations with become (does not imply password prompting)
+    --become-method=BECOME_METHOD
+                        privilege escalation method to use (default=sudo),
+                        valid choices: [ sudo | su | pbrun | pfexec | doas |
+                        dzdo | ksu | runas | pmrun ]
+    --become-user=BECOME_USER
+                        run operations as this user (default=root)
+    -K, --ask-become-pass
+```
+
+##### Available Playbooks:
+
+
+mysql-sync.yml : pull database from remote host
+
+
+**Example :**
+```
+    yalla ap mysql-sync -e "source=staging"
+```
+
+##### Access all ansible-playbook variables:
+
+If you need to run others and non available options within Ansible, run :
+```
+docker-compose -f yalla/docker/docker-compose.yml run --rm  ansible_playbook /ansible-playbook/[PLAYBOOK-NAME].yml [options]
+```
+
+### Ansible Vault:
+
+* Ansible documentation : http://docs.ansible.com/ansible/latest/playbooks_vault.html *
+
+##### Options:
+
+```
+yalla av create      Create encrypted files
+yalla av edit        Editing encrypted files
+yalla av rekey       Rekeying encrypted files
+yalla av view        Viewing encrypted files
+yalla av decrypt     Decrypting encrypted files
+yalla av encrypt     Encrypting unencrypted files
+yalla av -h, --help  display this help and exit
+```
+
+**Example :**
+```shell
+yalla av | ansible-vault create
+```
+
+#### Run ansible vault in a regular way:
+
+If you need to run others and non available options within Ansible, run :
+```shell
+docker-compose -f yalla/docker/docker-compose.yml run --rm  ansible_vault [options]
+```
