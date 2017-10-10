@@ -149,7 +149,8 @@ NB : Only Mysql, Mariadb or Perconna server are available
 # Main command yalla docker | dr
 yalla docker config            Validate and view the Compose file
 yalla docker stop              Stop services
-yalla docker start             Start services
+yalla docker start | up        Start services
+yalla dr restart               Stop and restart container with cleanup
 yalla docker build             Build or rebuild services
 yalla docker cleanup           Remove stopped containers
 yalla docker ssh               Connect to main docker container, where the code is and where the commands are available (wp cli, node, ...)

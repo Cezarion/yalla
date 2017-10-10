@@ -73,12 +73,13 @@ case "$DV_ACTION" in
             echo '
       config            Validate and view the Compose file
       stop              Stop services
-      start             Start services
+      start | up        Start services
       build             Build or rebuild services
       cleanup           Remove stopped containers
       ssh               Connect to main docker container, where the code is and where the commands are available (wp cli, node, ...)
       connect           Connect to main docker container, directly in path to project
       exec              Execute a command in a running container
+      restart           Stop and restart container with cleanup
         '
         ;;
     *)
