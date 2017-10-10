@@ -160,7 +160,7 @@ HEREDOC
           curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
           ;;
       update)
-          echo "@todo"
+          ./yalla/main update
           ;;
       shortlist)
         cat <<HEREDOC
