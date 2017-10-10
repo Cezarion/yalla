@@ -101,6 +101,6 @@ case "$action" in
         _ansible_vault "${ARGS[@]}"
     ;;
     update )
-        cd yalla && git pull origin yalla && cd $WORKING_DIR
+        cd ./yalla && git pull origin yalla && cd $WORKING_DIR
     ;;
 esac
