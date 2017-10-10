@@ -31,7 +31,7 @@ yalla drush [cmd]
 yalla drupal-console [cmd]      
 
 
-## @Todo
+## @ Todo
 
 * Setting up the readme template and copy to project
 * During app setup-config : copy .env sample
@@ -39,18 +39,19 @@ yalla drupal-console [cmd]
 * When config exist, add command | readme to create db
 * Notify if local apache or mysql is running
 * How to start with an existing yalla project
-  -> @missing clone yalla
-  -> @missing create user and database
-  -> @missing import db
-  -> @missing instructions
-  -> @missing setup project with db info
-* Cmd yalla dr restart = yalla dr stop && yalla dr cleanup && yalla dr up
+  -> @missing clone yalla   
+  -> @missing create user and database   
+  -> @missing import db   
+  -> @missing instructions    
+  -> @missing setup project with db info   
 
-## @Check
+* Setup script for symfony,d8,angular,themosis
 
+
+## @ Failed
 * Error during mysql import / run container
 
-## @test
+## @ Test
 
 * Pull database from target (staging|preprod|prod)
-* Setup script for symfony,d8,angular,themosis
+* Cmd yalla dr restart = yalla dr stop && yalla dr cleanup && yalla dr up   => Do comannd  
