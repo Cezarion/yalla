@@ -25,11 +25,14 @@ readonly DV_ACTION=$1
 shift
 
 case "$DV_ACTION" in
-    config | stop | build | start )
+    config | stop | build )
         $docker_cmd "$DV_ACTION"
         ;;
-    up)
+    up | start)
         $docker_cmd up -d $DOCKER_STACK
+        ;;
+    restart)
+        $docker_cmd stop && $docker_cmd cleanup && $docker_cmd up -d $DOCKER_STACK
         ;;
     cleanup)
         $docker_cmd rm -f
@@ -84,4 +87,3 @@ case "$DV_ACTION" in
         _error "${DV_ACTION} is not a registered command"
         exit 1
 esac
-
