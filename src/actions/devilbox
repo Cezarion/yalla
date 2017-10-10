@@ -32,7 +32,7 @@ case "$DV_ACTION" in
         $docker_cmd up -d $DOCKER_STACK
         ;;
     restart)
-        $docker_cmd stop && $docker_cmd cleanup && $docker_cmd up -d $DOCKER_STACK
+        $docker_cmd stop && $docker_cmd rm -f && $docker_cmd up -d $DOCKER_STACK
         ;;
     cleanup)
         $docker_cmd rm -f
