@@ -188,6 +188,48 @@ function _yalla_settings() {
     _line
     _br
 
+
+    ###############################################################################
+    ## Check if a yalla settings already exist
+    ##
+
+    if [ -f ".env" ]; then
+        _warning "A .env file alreay exists, do you want to overwrite it"
+
+        while true; do
+        read -p "yes / no ? " yn
+            case $yn in
+                [Yy]* )
+                    _br
+                    printf "Ok, let's go ! \xF0\x9F\x98\x8B\n";
+                    break;;
+                [Nn]* )
+                    _br
+                    printf "Ok, bye ! \xF0\x9F\x98\x98 \n";
+                    exit;
+                    break;;
+                * ) printf "Please answer y or n. \n";;
+            esac
+        done
+    else 
+        cp ./yalla/samples/.devil-box-runtime-settings .env
+        _info "Please, now edit file .env and adust your project requirements. (vi/subl .env)"
+        read -p "Is it done ?" yn
+            case $yn in
+                [Yy] | yes | Yes )
+                    _br
+                    printf "Ok, continue ! \xF0\x9F\x98\x8B\n";
+                    break;;
+                *)
+                    _notice "Ok, you must do it later"
+                    break
+                    ;;
+            esac
+    fi 
+
+    _line
+    _br
+
     ###############################################################################
     ## Define project properties
     ##
