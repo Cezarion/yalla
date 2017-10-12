@@ -66,12 +66,13 @@ shift
 # the _arg_list function converts the array to a string.
 # Now you convert the string to a table
 #
-#
-#
+
+declare -a ARGS=()
 
 
-IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
-#readonly ARGS=("$@")
+if ! [ -z "${@}" ]; then
+    IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
+fi
 
 # Run Specific wrapper for
 # Mysql, devilbox (docker), ansible or yalla (app) actions
