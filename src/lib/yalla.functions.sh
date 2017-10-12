@@ -212,7 +212,7 @@ function _yalla_settings() {
             esac
         done
     else 
-        cp ./yalla/samples/.devil-box-runtime-settings .env
+        cp ./yalla/samples/.devilbox-run-time-settings .env
         _info "Please, now edit file .env and adust your project requirements. (vi/subl .env)"
         read -p "Is it done ?" yn
             case $yn in
