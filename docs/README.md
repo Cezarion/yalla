@@ -33,21 +33,20 @@ yalla drupal-console [cmd]
 Main commands:
 ------------
 
+### A tester
 yalla start : start containers (= yalla dr start) + show local uri    
-
 yalla restart : restart containers (= yalla dr restart)  + show local uri
-
 yalla stop : stop containers (= yalla dr stop)
-
-
 yalla init =  yalla create-project + edit .env
               yalla app setup-settings if cat .gitignore | grep yalla = ''
+              + edit /etc/hosts
+yalla connect = yalla dr connect => enter into container into current project
+
 
 yalla install =  clone yalla + yalla start + create database + import database  + edit /etc/hosts + show local uri
-
 yalla info = yalla dr status = show running container, database params, project uri, remote infos (db,uri)
 
-yalla connect = yalla dr connect => enter into container into current project
+
 
 ## @ Todo
 
