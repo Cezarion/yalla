@@ -288,15 +288,15 @@ HEREDOC
 }
 
 ###############################################################################
-# _yalla_settings()
+# _yalla_init_project()
 #
 # Usage:
-#   _yalla_settings
+#   _yalla_init_project
 #
 # Generate the yalla.settings file
 #
 
-function _yalla_settings() {
+function _yalla_init_project() {
     _line
     _br
     clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Init a new yalla project"
@@ -611,7 +611,7 @@ HEREDOC
     _line
 }
 
-declare -x -f _yalla_settings;
+declare -x -f _yalla_init_project;
 
 
 ###############################################################################

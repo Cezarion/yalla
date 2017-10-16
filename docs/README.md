@@ -73,3 +73,12 @@ yalla info = yalla dr status = show running container, database params, project 
 
 * Pull database from target (staging|preprod|prod)
 * Cmd yalla dr restart = yalla dr stop && yalla dr cleanup && yalla dr up   => Do comannd  
+
+## @ Sources articles :
+https://medium.com/@pimterry/testing-your-shell-scripts-with-bats-abfca9bdc5b9
+https://github.com/shellfire-dev/shellfire
+http://www.bashoneliners.com/
+http://www.bpkg.sh/pkg/
+https://github.com/ash-shell/yaml-parse
+http://www.bpkg.sh/pkg/bashsh
+https://github.com/johnlane/random-toolbox/blob/master/usr/lib/yay
