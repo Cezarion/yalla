@@ -300,7 +300,6 @@ function _yalla_settings() {
     _line
     _br
     clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Init a new yalla project"
-    _br
 
     local TEMPLATE="${_SRC_}/templates/yalla.settings.tpl"
 

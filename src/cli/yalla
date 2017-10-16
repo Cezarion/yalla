@@ -46,11 +46,18 @@ Devilbox : https://bitbucket.org/buzzaka/devilbox
 
 ----------------------------------------------------------------------
 
-Setup commands :
+Main commands :
+---------------
 
-  init                  Init a new project with the new skeleton workflow
-                        Alias of yalla project init
+  init                  Init a new project with the new skeleton workflow (Alias of yalla project init)
+  start                 Start services (alias of yalla dr start)
+  restart               Restart services (alias of yalla dr restart)
+  stop                  Stop services (alias of yalla dr stop)
+  connect               Connect to main docker container, directly in path to project (alias of yalla dr connect)
+  update-cli            Update global yalla cli commands
+  update-yalla            Update local yalla cli commands and tools
 
+Tools commands :
 ---------------
 
   project               Execute project commands
@@ -139,6 +146,8 @@ HEREDOC
           # Run command
           ./yalla/main "$CMD" "${PARAMS[@]}"
           ;;
+
+      # Utilities commands
       -v | --version)
           echo 'yalla version ' ${YALLA_VERSION}
           echo 'yalla path ' $(which yalla)
@@ -146,24 +155,35 @@ HEREDOC
       -h | --help)
           _yalla_usage
           ;;
-      self-update)
+      update-cli)
           curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
           ;;
-      update)
+      update-yalla)
           ./yalla/main update
           ;;
+
+      # Autocomplete
       shortlist)
         cat <<HEREDOC
 init
-docker           | dr
-mysql            | db
-ansible-playbook | ap
-ansible-vault    | av
-app
+stop
+start
+restart
+connect
+docker
+dr
+mysql
+db
+ansible-playbook
+ap
+ansible-vault
+av
+project
 ssh
 -h --help
 -v, --version
-update
+update-cli
+update-yalla
 HEREDOC
         ;;
        *)
