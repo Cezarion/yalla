@@ -104,6 +104,43 @@ _yalla_version(){
 
 
 ###############################################################################
+# _yalla_check_requirements()
+#
+# Usage:
+#   _yalla_check_requirements
+#
+# Verify if devilbox and docker are installed
+#
+
+_yalla_check_requirements(){
+
+  # check docker
+  if ! _command_exists docker; then
+    _error "Docker is required to use yalla."
+    echo -e "Please install Docker CE ${DOCKER_VERSION_MIN} \nhttps://www.docker.com/docker-mac"
+    exit 0
+  fi
+
+  if ! [[ $(docker version | grep "${DOCKER_VERSION_MIN}") ]]; then
+    _bad_exit "Minimum docker version requirements: ${DOCKER_VERSION_MIN}"
+  fi
+
+  # check devilbox
+  if ! [ -f "${WORKING_DIR}/../.devilbox" ]; then
+    _error "Devilbox config file is missing"
+    echo -e "https://bitbucket.org/buzzaka/devilbox/src#markdown-header-usage-as-a-common-stack-fabernovel-code-stack"
+    exit 0
+  fi
+
+  if ! [ -d "${DEVILBOX_LOCAL_PATH}" ]; then
+    _error "Devilbox is missing"
+    echo -e "Please install Devilbox"
+    echo -e "https://bitbucket.org/buzzaka/devilbox/src#markdown-header-usage-as-a-common-stack-fabernovel-code-stack"
+    exit 0
+  fi
+}
+
+###############################################################################
 # _yalla_version()
 #
 # Usage:
@@ -208,6 +245,34 @@ _yalla_copy_samples(){
 }
 
 ###############################################################################
+# _yalla_mysql_create_user_and_db()
+#
+# Usage:
+#   _yalla_mysql_create_user_and_db
+#
+# Create user and datanse. Add rights and flush privilèges
+#
+
+_yalla_mysql_create_user_and_db() {
+  _br
+  clr_magenta "Do you want create user database ? "
+  while true; do
+      read -p "yes / no ? " yn
+          case $yn in
+              [Yy]* )
+                  _mysql_create_user_and_database
+                  break;;
+              *)
+                  break
+                  ;;
+          esac
+  done
+
+  _br
+  _line
+}
+
+###############################################################################
 # _yalla_generate_gitignore()
 #
 # Usage:
@@ -297,6 +362,8 @@ HEREDOC
 #
 
 function _yalla_init_project() {
+    _yalla_check_requirements
+
     _line
     _br
     clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Init a new yalla project"
@@ -550,23 +617,7 @@ HEREDOC
     ## Create user and database
     ##
 
-    _br
-    clr_magenta "Do you want create user database ? "
-    while true; do
-        read -p "yes / no ? " yn
-            case $yn in
-                [Yy]* )
-                    yalla dr up;
-                    _mysql_create_user_and_database
-                    break;;
-                *)
-                    break
-                    ;;
-            esac
-    done
-
-    _br
-    _line
+    _yalla_mysql_create_user_and_db
 
     ###############################################################################
     ## end message
@@ -613,6 +664,25 @@ HEREDOC
 
 declare -x -f _yalla_init_project;
 
+###############################################################################
+# _yalla_install_project()
+#
+# Usage:
+#   _yalla_install_project
+#
+# Install project from an existing yalla configuration
+#
+
+_yalla_install_project(){
+  _yalla_check_requirements
+
+  # Check if yalla is ready
+  if ! [ -f "${YALLA_SETTINGS_FILE}" ] && ! [ -f "hosts.yml " ]; then
+    _bad_exit "Yalla files not found. Please run <yalla init> first"
+  fi
+
+  _yalla_mysql_create_user_and_db
+}
 
 ###############################################################################
 # _check_is_yalla_app()
@@ -624,11 +694,11 @@ declare -x -f _yalla_init_project;
 #
 
 _check_is_yalla_app() {
-  if [ ! -d "./yalla" ] && [ "$1" != "create-project" ]; then
+  if [ ! -d "./yalla" ] && [ "$1" != "init" ]; then
       echo -e "\n\xE2\x9C\x97 Error ! \n"
       cat <<HEREDOC
 The "yalla" directory does not appear to be present.
-Run <yalla create-project> or go to a directory where yall is installed
+Run <yalla init> or go to a directory where yall is installed
 
 HEREDOC
       exit 1;

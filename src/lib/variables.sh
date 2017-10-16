@@ -9,6 +9,9 @@ readonly APPLICATION_PATH_NAME='application'
 # Yalla setting file
 readonly YALLA_SETTINGS_FILE='yalla.settings'
 
+# Yalla setting file
+readonly DOCKER_VERSION_MIN='17.*'
+
 # export current path
 readonly _SRC_="./yalla"
 

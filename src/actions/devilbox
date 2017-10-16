@@ -11,8 +11,11 @@ case "$DV_ACTION" in
     config | stop | build )
         $docker_cmd "$DV_ACTION"
         ;;
-    up | start)
+    start )
         $docker_cmd up -d $DOCKER_STACK
+        ;;
+    up )
+        $docker_cmd up -d "${@}"
         ;;
     restart)
         $docker_cmd stop && $docker_cmd rm -f && $docker_cmd up -d $DOCKER_STACK
