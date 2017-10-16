@@ -14,8 +14,14 @@ readonly YALLA_VERSION=0.1.2
 export WORKING_DIR=$(pwd)
 
 ## Parse args
-CMD=${1:--h}
-shift
+if [ $# -eq 0 ]; then
+  CMD="-h"
+else
+  CMD=$1
+  shift
+fi
+
+
 
 # Exit if not args or not a yalla project
 _check_is_yalla_app() {
