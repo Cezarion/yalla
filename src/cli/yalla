@@ -147,12 +147,12 @@ HEREDOC
 #while [ $# -gt 0 ]; do
   case "$CMD" in
       # Shortcuts commands
-      init)
+      init | install )
           if ! [ -d 'yalla' ]; then
             echo "Clone yalla commands and tools"
             _yalla_self_install
           fi
-          yalla project init
+          yalla project "${CMD}"
           ;;
       stop | start | restart | connect )
           yalla dr "${CMD}"
