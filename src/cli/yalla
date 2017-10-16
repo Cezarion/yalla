@@ -73,6 +73,7 @@ Main commands :
 ---------------
 
   init                  Init a new project with the new skeleton workflow (Alias of yalla project init)
+  install               Install yalla requirements from an existing yalla settings
   start                 Start services (alias of yalla dr start)
   restart               Restart services (alias of yalla dr restart)
   stop                  Stop services (alias of yalla dr stop)
@@ -189,6 +190,7 @@ HEREDOC
       shortlist)
         cat <<HEREDOC
 init
+install
 stop
 start
 restart
