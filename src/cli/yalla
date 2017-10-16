@@ -116,13 +116,19 @@ HEREDOC
 
 #while [ $# -gt 0 ]; do
   case "$CMD" in
+      # Shortcuts commands
       init)
           if ! [ -d 'yalla' ]; then
+            echo "Clone yalla commands and tools"
             git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
           fi
           yalla project init
           ;;
+      stop | start | restart | connect )
+          yalla dr "${CMD}"
+          ;;
 
+      # Global commands
       docker | dr | ssh | db | mysql | ap | ansible-playbook | ansible-vault | av | project )
           # Store args, prevent $@ collision between scripts
           readonly PARAMS=("$@")

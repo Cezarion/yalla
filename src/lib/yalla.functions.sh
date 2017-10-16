@@ -190,7 +190,7 @@ _yalla_copy_samples(){
       filename=$(basename $file)
 
       if [ -f "${file}" ] && [ "$filename" != ".devilbox-run-time-settings" ]; then
-            if [ -f "$file" ]; then
+            if ! [ -f "$file" ]; then
                 if _ask "Do you want to overwrite ${filename} ? "; then
                   cp $file ./
                   _success "Overwrite file ${filename}"
