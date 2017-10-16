@@ -67,10 +67,7 @@ shift
 # Now you convert the string to a table
 #
 
-declare -a ARGS=()
-
-
-if ! [ -z "${@}" ]; then
+if [ "${#@}" -ge 1 ]; then
     IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
 fi
 
@@ -93,7 +90,7 @@ case "$action" in
         "${APP_YALLA_ACTIONS}/devilbox" "${ARGS[@]}"
     ;;
     db | mysql)
-        _mysql "${@}"
+        _mysql "${@}" #$(_args_list "${@}") #"${@}"
     ;;
     ap | ansible-playbook)
         _ansible_playbook "${ARGS[@]}"
