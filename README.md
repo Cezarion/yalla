@@ -86,7 +86,7 @@ Go to `~/Webserver/www-docker`
 ```shell
 $ $user@machine:~/Webserver| cd www-docker
 $ $user@machine:~/Webserver| mkdir new-project && cd $_
-$ $user@machine:~/Webserver/new-project| yalla create-project
+$ $user@machine:~/Webserver/new-project| yalla init
 ```
 
 
@@ -96,7 +96,7 @@ Go to `~/Webserver/www-docker`
 ```shell
 $ $user@machine:~/Webserver| cd www-docker
 $ $user@machine:~/Webserver| git clone my-project && cd $_
-$ $user@machine:~/Webserver/my-project| yalla app setup-settings
+$ $user@machine:~/Webserver/my-project| yalla init
 ```
 
 ## Main config files
