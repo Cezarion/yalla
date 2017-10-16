@@ -516,8 +516,7 @@ HEREDOC
     ## Finally write file
     ##
 
-    _info "Write database parameters into $(clr_bold clr_white "yalla.settings")"
-    _br
+
     PROJECT=$PROJECT \
     CHANNEL=$CHANNEL \
     APP_TYPE=$APP_TYPE \
@@ -528,7 +527,8 @@ HEREDOC
     PRODUCTION_URI="${PRODUCTION_URI}" \
     ./yalla/src/lib/templater.sh ./yalla/templates/yalla.settings.tpl > yalla.settings
 
-    _info "Write database parameters into $(clr_bold clr_white "hosts.yml")"
+    _success "Write database parameters into $(clr_bold clr_white "yalla.settings")"
+
 
     DB_DEV_USER="${DB_DEV_USER}" \
     DB_DEV_PASS="${DB_DEV_PASS}" \
@@ -536,6 +536,7 @@ HEREDOC
     PRODUCTION_URI="${PRODUCTION_URI}" \
     ./yalla/src/lib/templater.sh ./yalla/templates/hosts.yml.tpl > hosts.yml
 
+    _success "Write database parameters into $(clr_bold clr_white "hosts.yml")"
     # Load params file
     source yalla.settings
 
