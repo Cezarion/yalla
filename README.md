@@ -22,6 +22,7 @@ project/
     logs/
     shared/
     tests/
+    vaults/
     yalla/
 ```
 --------------
