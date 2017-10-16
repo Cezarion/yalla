@@ -39,7 +39,7 @@ project/
 
 --------------
 
-## Requirements
+# Requirements
 
 | Prerequisite    | How to check | How to install |
 | --------------- | ------------ | ------------- |
@@ -81,7 +81,7 @@ $ $user@machine:~/Webserver| devilbox www-docker
 ```
 
 
-## Init a new project
+# Init a new project
 
 Go to `~/Webserver/www-docker`
 ```shell
@@ -91,7 +91,7 @@ $ $user@machine:~/Webserver/new-project| yalla init
 ```
 
 
-## Init from an existing project
+# Init from an existing project
 
 Go to `~/Webserver/www-docker`
 ```shell
