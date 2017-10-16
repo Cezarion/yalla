@@ -36,6 +36,29 @@ HEREDOC
   fi
 }
 
+
+###############################################################################
+# _yalla_self_install()
+#
+# Usage:
+#   _yalla_self_install
+#
+# clone remote repository
+#
+# @todo :
+#  * install a specific version
+#  * clone a tag not a branche
+#
+
+_yalla_self_install(){
+    echo "Pull yalla tools"
+    echo ""
+    git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
+    echo ""
+}
+
+declare -x -f _yalla_self_install;
+
 _yalla_usage(){
 cat <<HEREDOC
 Yalla is a command set to simplify the creation or maintenance of a project.
@@ -127,7 +150,7 @@ HEREDOC
       init)
           if ! [ -d 'yalla' ]; then
             echo "Clone yalla commands and tools"
-            git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
+            _yalla_self_install
           fi
           yalla project init
           ;;
