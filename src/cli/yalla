@@ -117,7 +117,7 @@ HEREDOC
 #while [ $# -gt 0 ]; do
   case "$CMD" in
       init)
-          if [ -d 'yalla' ]; then
+          if ! [ -d 'yalla' ]; then
             git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
           fi
           yalla project init
