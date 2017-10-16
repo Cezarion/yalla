@@ -343,16 +343,6 @@ function _yalla_settings() {
 
 
     ###############################################################################
-    ## If it's a new project, generate folders
-    ##
-
-    if ! [ -f ".gitignore" ]; then
-      _yalla_make_directories
-      _yalla_copy_samples
-    fi
-
-
-    ###############################################################################
     ## Check if a yalla settings already exist
     ##
 
