@@ -9,28 +9,6 @@ trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
 readonly YALLA_VERSION=0.1.2
 
-# Preserve original arguments with quotes
-# @see : https://stackoverflow.com/questions/3755772/how-to-preserve-double-quotes-in-in-a-shell-script/26733366#26733366
-_args_list(){
-    local argList=""
-    #iterate on each argument
-    for arg in "$@"
-    do
-      #if an argument contains a white space, enclose it in double quotes and append to the list
-      #otherwise simply append the argument to the list
-      if echo $arg | grep -q " "; then
-       argList="$argList \"$arg\""
-      else
-       argList="$argList $arg"
-      fi
-    done
-
-    #remove a possible trailing space at the beginning of the list
-    argList=$(echo $argList | sed 's/^ *//')
-
-    echo "$argList"
-}
-
 ## Set Variables
 
 export WORKING_DIR=$(pwd)
@@ -64,12 +42,13 @@ Devilbox : https://bitbucket.org/buzzaka/devilbox
 
 Setup commands :
 
-  create-project        Init a new project with the new skeleton workflow
+  init                  Init a new project with the new skeleton workflow
+                        Alias of yalla project init
 
 ---------------
 
-  app                   Execute app commands
-      setup-settings    Initializes and configures a project to work with devilbox.
+  project               Execute project commands
+      init              Initializes and configures a project to work with devilbox.
                         This command simplifies the initialization of an old project in the devilbox workflow.
                         It also allows to create the database and to use yalla commands
                         to download the database from a remote environment
@@ -131,21 +110,19 @@ HEREDOC
 
 #while [ $# -gt 0 ]; do
   case "$CMD" in
-      create-project)
-          #git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla && 
-          ./yalla/create-project
+      init)
+          if [ -d 'yalla' ]; then
+            git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
+          fi
+          yalla project init
           ;;
 
-      docker | dr | ssh | db | mysql | ap | ansible-playbook | ansible-vault | av | app )
+      docker | dr | ssh | db | mysql | ap | ansible-playbook | ansible-vault | av | project )
           # Store args, prevent $@ collision between scripts
           readonly PARAMS=("$@")
 
           #Check if yalla path exist or create it if it's a setup task
-          if ! [ -d "yalla" ] && [ "$CMD" == 'app' ] && [ "${PARAMS[0]}" == "setup-settings" ]; then
-            git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
-          else
-            _check_is_yalla_app
-          fi;
+          _check_is_yalla_app
 
           # Run command
           ./yalla/main "$CMD" "${PARAMS[@]}"
@@ -165,8 +142,7 @@ HEREDOC
           ;;
       shortlist)
         cat <<HEREDOC
-create-project
-app setup-settings
+init
 docker           | dr
 mysql            | db
 ansible-playbook | ap

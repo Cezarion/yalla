@@ -6,6 +6,9 @@ trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); 
 # Folder path where application code is located
 readonly APPLICATION_PATH_NAME='application'
 
+# Yalla setting file
+readonly YALLA_SETTINGS_FILE='yalla.settings'
+
 # export current path
 readonly _SRC_="./yalla"
 

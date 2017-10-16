@@ -67,18 +67,16 @@ shift
 # Now you convert the string to a table
 #
 
-declare -a ARGS=()
-
-if ! [ -z "${@}" ]; then
+if [ "${#@}" -ge 1 ]; then
     IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
 fi
 
 # Run Specific wrapper for
 # Mysql, devilbox (docker), ansible or yalla (app) actions
 case "$action" in
-    app)
+    project)
         case "${ARGS}" in
-            setup-settings )
+            init )
                 # Create required settings files for a new or old project
                 # In this way it allows to use yalla whatever the project tree.
                 _yalla_settings

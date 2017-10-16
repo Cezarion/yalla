@@ -94,9 +94,8 @@ _yalla_version(){
             VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' /usr/local/bin/yalla)
             ;;
         remote | -r )
-            VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' ./yalla/src/cmd/yalla)
+            VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' ./yalla/src/cli/yalla)
             ;;
-        * ) printf "Please answer y or n. \n";;
     esac
 
     echo "${VERSION}"
@@ -141,6 +140,153 @@ _yalla_check_update(){
     fi
 
     _br
+}
+
+
+###############################################################################
+# _yalla_make_directories()
+#
+# Usage:
+#   _yalla_make_directories
+#
+# Generate skeleton directories, not necessary for old project
+#
+_yalla_make_directories(){
+
+  declare -a FOLDERS=(application shared logs tests)
+
+  _line
+  _br
+  clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Generate directories : " -n; echo ${FOLDERS[@]}
+  _br
+
+  for folder in "${FOLDERS[@]}"; do
+      mkdir -p $folder;
+      touch $folder/.gitkeep
+  done
+
+  _success "Create directories and add .gitkeep \n"
+
+}
+
+
+###############################################################################
+# _yalla_copy_samples()
+#
+# Usage:
+#   _yalla_make_directories
+#
+# Generate skeleton directories, not necessary for old project
+#
+_yalla_copy_samples(){
+
+  _line
+  _br
+  clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Copy files samples : "
+  _br
+
+  for file in ./yalla/samples/{*,.*}
+  do
+      filename=$(basename $file)
+
+      if [ -f "${file}" ] && [ "$filename" != ".devilbox-run-time-settings" ]; then
+            if [ -f "$file" ]; then
+                if _ask "Do you want to overwrite ${filename} ? "; then
+                  cp $file ./
+                  _success "Overwrite file ${filename}"
+                else
+                  _info "Skip"
+                fi
+            else
+                cp $file ./
+                _success "Copy sample file ${filename}"
+            fi
+      fi
+  done
+
+
+}
+
+###############################################################################
+# _yalla_generate_gitignore()
+#
+# Usage:
+#   _yalla_generate_gitignore
+#
+# Generate gitignore files for project and application
+#
+_yalla_generate_gitignore(){
+
+  . $YALLA_SETTINGS_FILE
+
+  _line
+  _br
+  _info "\xE2\x86\x92 Create base .gitignore in project directory"
+  _br
+
+  local create_gitignore=1
+  local baseIgnore="linux,osx,windows,PhpStorm,SublimeText,VisualStudio"
+  local projectIgnore="node,${APP_TYPE}"
+
+  # Check if a gitignore file exiss and what we do if yes
+  if [ -f ".gitignore" ]; then
+    _ask "A gitignore file exist in $(pwd)/.gitignore, do you want to overwrite it ?" || create_gitignore=0
+  fi
+
+  # Create base gitignore if lines doesn't exists and if user it's ok
+  if [ -z "$(grep "End of https://www.gitignore.io" ".gitignore")" ] && [ "${create_gitignore}" -eq 1 ]; then
+    _gi "${baseIgnore}" > .gitignore
+    _success "Create base .gitignore in application directory with config : ${baseIgnore}"
+    _br
+  fi
+
+
+  CONTENT=$(cat <<HEREDOC
+# Created by the yalla init script
+
+# Ignore local yalla folder
+./yalla/
+
+# Local env files
+/shared/*.local
+/shared/*.local.*
+/shared/local.*
+
+# Ignore local secrets folders
+vaults.yml
+vault.yml
+vaults/
+vaults/vault.yml
+
+# End of yalla create-project script
+
+HEREDOC
+)
+
+  # Put yalla ignore params if not exists
+  if [ -z "$(grep "Created by the yalla init script" ".gitignore")" ]; then
+    # Yalla .gitignore
+    printf "${CONTENT}" >> .gitignore
+    _success "Add yalla .gitignore params"
+    _br
+  fi
+
+  # Put project ignore settings if not exist or if overwrite = 1
+  if [ -f "${APPLICATION_PATH_NAME}/.gitignore" ]; then
+    if _ask "A gitignore file exist in ${APPLICATION_PATH_NAME}/.gitignore, do you want to overwrite it ?"; then
+      create_gitignore=1
+    else
+      create_gitignore=0
+    fi
+  fi
+
+  if [ -z "$(grep "https://www.gitignore.io/api/node,${APP_TYPE}" "${APPLICATION_PATH_NAME}/.gitignore")" ] || [ "${create_gitignore}" -eq 1 ]; then
+    _gi "${projectIgnore}" > "${APPLICATION_PATH_NAME}/.gitignore"
+    _success ".gitignore was generated with ${projectIgnore}"
+  fi
+
+  _line
+  _br
 }
 
 ###############################################################################
@@ -188,6 +334,25 @@ function _yalla_settings() {
     _line
     _br
 
+    ###############################################################################
+    ## If it's a new project, generate folders
+    ##
+
+    if ! [ -f ".gitignore" ]; then
+      _yalla_make_directories
+      _yalla_copy_samples
+    fi
+
+
+    ###############################################################################
+    ## If it's a new project, generate folders
+    ##
+
+    if ! [ -f ".gitignore" ]; then
+      _yalla_make_directories
+      _yalla_copy_samples
+    fi
+
 
     ###############################################################################
     ## Check if a yalla settings already exist
@@ -211,7 +376,7 @@ function _yalla_settings() {
                 * ) printf "Please answer y or n. \n";;
             esac
         done
-    else 
+    else
         cp ./yalla/samples/.devilbox-run-time-settings .env
         _info "Please, now edit file .env and adust your project requirements. (vi/subl .env)"
         read -p "Is it done ?" yn
@@ -225,7 +390,7 @@ function _yalla_settings() {
                     break
                     ;;
             esac
-    fi 
+    fi
 
     _line
     _br
@@ -385,28 +550,8 @@ HEREDOC
     ###############################################################################
     ## Set .gitignore
     ##
-    if [ ! -z $(grep "Ignore local secrets folders" ".gitignore") ]; then
-        _notice "Secrets folders already ignored"
-    else
-        _notice "Ignore secret files into .gitignore"
-        CONTENT=$(cat <<HEREDOC
 
-# Created by the yalla_settings script
-
-# Ignore local secrets folders
-vaults.yml
-vault.yml
-vaults/
-vaults/vault.yml
-
-# Ignore this project
-yalla
-# End of yalla yalla_settings script
-
-HEREDOC)
-        printf "${CONTENT}" >> .gitignore
-    fi
-    _br
+    _yalla_generate_gitignore
 
     ###############################################################################
     ## end message
