@@ -69,7 +69,6 @@ shift
 
 declare -a ARGS=()
 
-
 if ! [ -z "${@}" ]; then
     IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
 fi

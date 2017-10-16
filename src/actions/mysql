@@ -18,7 +18,6 @@ Examples :
 }
 
 function _mysql() {
-
     local args=("$@")
 
     local INLINE=
