@@ -133,8 +133,6 @@ ansible-vault | av    Execute ansible available actions.
 
 -h --help.            Display this help
 -v, --version         Show yalla version
-
-update                Not yet available
 HEREDOC
 }
 
