@@ -299,7 +299,7 @@ HEREDOC
 function _yalla_settings() {
     _line
     _br
-    clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Generate yalla.settings and hosts.yml files :"
+    clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Init a new yalla project"
     _br
 
     local TEMPLATE="${_SRC_}/templates/yalla.settings.tpl"
@@ -310,6 +310,7 @@ function _yalla_settings() {
     ##
 
     if [ -f "yalla.settings" ]; then
+        _line
         _warning "A settings file alreay exists, do you want to overwrite it"
 
         while true; do
@@ -329,7 +330,6 @@ function _yalla_settings() {
         done
     fi
 
-    _line
     _br
 
     ###############################################################################
