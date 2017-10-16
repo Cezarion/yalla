@@ -16,13 +16,9 @@ _mysql_install_actions(){
 
 
 _mysql_ensure_service_is_started(){
-    local mysql_status=$(docker inspect -f {{.State.Running}} devilbox_mysql_1)
-
-    if [ $mysql_status != "true" ]; then
-        _notice "Start docker stack"
-        yalla dr up
-    else
-        _success "Docker stack already Running"
+    if [[ -z $(docker ps | grep "devilbox_mysql_1") ]]; then
+      _notice "Mysql is not running, start it"
+      yalla dr up mysql
     fi
 }
 
@@ -40,35 +36,40 @@ _mysql_create_user_and_database() {
         . yalla.settings
     fi
 
-
-    _info "Create user, database and add privileges"
-
     # Generating the sql script that will create the user and the database.
     #if [ ! -f "${LOCAL_BACKUP_PATH}/create_user_and_database.sql" ]; then
-        echo -e "\
-        CREATE DATABASE IF NOT EXISTS \`$DB_DEV_DATABASE_NAME\`;\n\
-        CREATE USER IF NOT EXISTS '$DB_DEV_USER'@'%' IDENTIFIED BY '$DB_DEV_PASS';\n\
-        GRANT ALL PRIVILEGES ON \`$DB_DEV_DATABASE_NAME\`. * TO '$DB_DEV_USER'@'%';\n\
-        FLUSH PRIVILEGES;" > "${LOCAL_BACKUP_PATH}/create_user_and_database.sql";
+    echo -e "\
+    CREATE DATABASE IF NOT EXISTS \`$DB_DEV_DATABASE_NAME\`;\n\
+    CREATE USER IF NOT EXISTS '$DB_DEV_USER'@'%' IDENTIFIED BY '$DB_DEV_PASS';\n\
+    GRANT ALL PRIVILEGES ON \`$DB_DEV_DATABASE_NAME\`. * TO '$DB_DEV_USER'@'%';\n\
+    FLUSH PRIVILEGES;" > "${LOCAL_BACKUP_PATH}/create_user_and_database.sql";
     #fi
 
+    _info "Create user, database and add privileges"
     # Run script
-    yalla mysql -f "${LOCAL_BACKUP_PATH}/create_user_and_database.sql" #./backup/create_user_and_database.sql
+    yalla mysql -f "${BACKUP_PATH}/create_user_and_database.sql" #./backup/create_user_and_database.sql
 
+    _br
     _info "Check databases : "
     yalla mysql -i 'SHOW DATABASES;' | grep $DB_DEV_DATABASE_NAME;
-
-    # Now import an existing database if a file exist
-    #_import_database
 }
 
 
 _mysql_import_database() {
-    echo "${LOCAL_BACKUP_PATH}/${DB_DEV_DATABASE_NAME}.sql"
-    if [ -f "${LOCAL_BACKUP_PATH}/${DB_DEV_DATABASE_NAME}.sql" ]; then
-        _info "Import database ${DB_DEV_DATABASE_NAME}"
+    if _ask $(clr_magenta "Do you want to import ax existing dump ?"); then
+      read -p "Please specify the dump path (from current project directory) " DB_FILE
+      if [ -f "${DB_FILE}" ]; then
+          _info "Import ${DB_FILE} into database ${DB_DEV_DATABASE_NAME}"
 
-        # Run script
-        yalla mysql -d $DB_DEV_DATABASE_NAME -f "./databases/${DB_DEV_DATABASE_NAME}.sql"
+          # Run script
+          yalla mysql -d $DB_DEV_DATABASE_NAME -f "${DB_FILE}"
+      else
+        _warning "${DB_FILE} not found."
+        if _ask "retry"; then
+          _mysql_import_database
+        else
+          exit 0
+        fi
+      fi
     fi
 }

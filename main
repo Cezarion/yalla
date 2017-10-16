@@ -79,9 +79,10 @@ case "$action" in
     project)
         case "${ARGS}" in
             init )
-                # Create required settings files for a new or old project
-                # In this way it allows to use yalla whatever the project tree.
                 _yalla_init_project
+            ;;
+            install )
+                _yalla_install_project
             ;;
             *)
                 _error "${ARGS} is not a registered command"
