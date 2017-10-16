@@ -370,7 +370,7 @@ function _yalla_settings() {
                     break;;
                 [Nn]* )
                     _br
-                    printf "Ok, skip it ! \xF0\x9F\x98\x98 \n";
+                    printf "Ok, skip it ! \xE2\x9B\x90 \n";
                     break;;
                 * ) printf "Please answer y or n. \n";;
             esac
