@@ -219,8 +219,6 @@ _yalla_generate_gitignore(){
 
   . $YALLA_SETTINGS_FILE
 
-  _line
-  _br
   _info "\xE2\x86\x92 Create base .gitignore in project directory"
   _br
 
@@ -531,14 +529,12 @@ HEREDOC
     ./yalla/src/lib/templater.sh ./yalla/templates/yalla.settings.tpl > yalla.settings
 
     _info "Write database parameters into $(clr_bold clr_white "hosts.yml")"
-    _br
+
     DB_DEV_USER="${DB_DEV_USER}" \
     DB_DEV_PASS="${DB_DEV_PASS}" \
     DB_DEV_DATABASE_NAME="${DB_DEV_DATABASE_NAME}" \
     PRODUCTION_URI="${PRODUCTION_URI}" \
     ./yalla/src/lib/templater.sh ./yalla/templates/hosts.yml.tpl > hosts.yml
-
-    _br
 
     # Load params file
     source yalla.settings
@@ -591,7 +587,7 @@ HEREDOC
     cat <<HEREDOC
 $(_line)
 
-$(clr_bold "Yalla settings are no completed")
+$(clr_bold "Yalla settings are ok. To Finalize or start using follow instrcutions below.")
 $(_line)
 
 $(clr_underscore clr_cyan "Main config files are : ")
