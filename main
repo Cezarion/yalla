@@ -32,7 +32,9 @@ readonly APP_YALLA_LIB="${APP_YALLA_PATH}/src/lib"
 readonly APP_YALLA_ACTIONS="${APP_YALLA_PATH}/src/actions"
 readonly APP_YALLA_PLUGINS="${APP_YALLA_PATH}/src/plugins"
 
-readonly LOCAL_BACKUP_PATH="${WORKING_DIR}/backup"
+readonly BACKUP_PATH="backup"
+readonly LOCAL_BACKUP_PATH="${WORKING_DIR}/${BACKUP_PATH}"
+
 
 readonly LOCAL_DOCKER_DB_HOST="127.0.0.1"
 
