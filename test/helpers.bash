@@ -24,7 +24,7 @@ assert_contains() {
 setupYallaEnv() {
   export YALLA_DIRECTORY="$(mktemp -d)"
   export YALLA_HOME="$(mktemp -d)"
-  export HOME=$YALLA_HOME
+  #export HOME=$YALLA_HOME
 }
 
 setupYallaFullEnv() {

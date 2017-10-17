@@ -169,6 +169,7 @@ main() {
       # Global commands
       docker | dr | ssh | db | mysql | ap | ansible-playbook | ansible-vault | av | project )
           # Store args, prevent $@ collision between scripts
+
           if ! [ $# -eq 0 ]; then
             params=("$@")
           fi

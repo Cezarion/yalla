@@ -105,3 +105,5 @@ case "$DV_ACTION" in
         _error "${DV_ACTION} is not a registered command"
         exit 1
 esac
+
+exit 0

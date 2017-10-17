@@ -48,7 +48,7 @@ export USER_EMAIL
 ## This file dispatch yalla command
 ##
 
-. "${HOME}/../.devilbox"
+. "${HOME}/.devilbox"
 if [ -f "${WORKING_DIR}/yalla.settings" ]; then
     . "${WORKING_DIR}/yalla.settings"
 fi
@@ -69,10 +69,12 @@ shift
 # the _arg_list function converts the array to a string.
 # Now you convert the string to a table
 #
-declare -a ARGS=()
 
-if [ "${#@}" -ge 1 ]; then
+# If there is at least one parameter
+if [ -n "${1}" ]; then
   IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
+else
+  ARGS="-h"
 fi
 
 # Run Specific wrapper for

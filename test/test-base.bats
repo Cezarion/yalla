@@ -23,7 +23,6 @@ yalla="./yalla/src/cli/yalla"
   rsync -avz . $HOME/yalla --exclude=.git
 
   cd $HOME
-    ls -la yalla
 
   run $yalla install
 
