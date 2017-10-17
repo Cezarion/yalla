@@ -51,7 +51,12 @@ HEREDOC
 #
 
 _yalla_self_install(){
-    echo "Pull yalla tools"
+    if ! [ -z $( pwd | grep 'yalla') ]; then
+      echo -e $'\e[31;01m' "\n\xE2\x9C\x97 Error !"
+      echo -e "It seems that's you try to install yalla inside yalla ! \n"
+    fi
+    
+    echo "Clone yalla commands and tools"
     echo ""
     git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
     echo ""
@@ -150,7 +155,6 @@ HEREDOC
       # Shortcuts commands
       init | install )
           if ! [ -d 'yalla' ]; then
-            echo "Clone yalla commands and tools"
             _yalla_self_install
           fi
           yalla project "${CMD}"
