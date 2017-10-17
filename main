@@ -48,7 +48,7 @@ export USER_EMAIL
 ## This file dispatch yalla command
 ##
 
-. "${WORKING_DIR}/../.devilbox"
+. "${HOME}/../.devilbox"
 if [ -f "${WORKING_DIR}/yalla.settings" ]; then
     . "${WORKING_DIR}/yalla.settings"
 fi
