@@ -9,7 +9,7 @@ trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); 
 
 _usage() {
     echo '
-Examples :
+Usage :
     yalla db | mysql -d database_name -f path/to/file.sql : import a database
     yalla db | mysql -d database_name -i "SHOW TABLES;" : run an inline sql command script
     yalla db | mysql -i "SHOW DATABASES;" : run an inline sql command script

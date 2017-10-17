@@ -2,7 +2,7 @@
 
 # Exit immediately on error
 set -e
-trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
+trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 # Load common vars and functions
 . "./yalla/src/lib/variables.sh"

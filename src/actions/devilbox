@@ -7,6 +7,28 @@ trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); 
 readonly DV_ACTION=$1
 shift
 
+usage() {
+cat << EOF
+
+Usage : yalla dr [options]
+
+Options
+----------------------------------------------------------------------
+  config             Validate and view the Compose file
+  stop               Stop services
+  start              Start local docker stack
+  up                 Start a specific container
+  build              Build or rebuild services
+  cleanup [ -v]      Remove stopped containers without asking to confirm removal.
+                     < -v > Remove any anonymous volumes attached to containers
+  ssh                Connect to main docker container, where the code is and where the commands are available (wp cli, node, ...)
+  connect            Connect to main docker container, directly in path to project
+  exec               Execute a command in a running container
+  restart            Stop and restart container with cleanup
+
+EOF
+}
+
 case "$DV_ACTION" in
     config | stop | build )
         $docker_cmd "$DV_ACTION"
@@ -21,7 +43,12 @@ case "$DV_ACTION" in
         $docker_cmd stop && $docker_cmd rm -f && $docker_cmd up -d $DOCKER_STACK
         ;;
     cleanup)
-        $docker_cmd rm -f
+        $docker_cmd stop
+        if [ $# -eq 1 ] && [ "${1}" == "-v" ]; then
+            $docker_cmd rm -v
+        else
+            $docker_cmd rm -f
+        fi
         ;;
     ssh)
         $docker_exec "cd ${CWD}; exec bash -l"
@@ -55,21 +82,25 @@ case "$DV_ACTION" in
     #     $docker_exec "cd ${CWD}/${CURRENT_DIR_NAME}/; ./code install";
     #     ;;
     # ------ / really
-    shortlist | -h | --help )
+    shortlist )
             echo '
-      config            Validate and view the Compose file
-      stop              Stop services
-      start | up        Start services
-      build             Build or rebuild services
-      cleanup           Remove stopped containers
-      ssh               Connect to main docker container, where the code is and where the commands are available (wp cli, node, ...)
-      connect           Connect to main docker container, directly in path to project
-      exec              Execute a command in a running container
-      restart           Stop and restart container with cleanup
+      config
+      stop
+      start
+      up
+      build
+      cleanup
+      ssh
+      connect
+      exec
+      restart
         '
         ;;
+    -h | --help )
+          usage
+        ;;
     *)
-        yalla -h
+        usage
         _br
         _error "${DV_ACTION} is not a registered command"
         exit 1

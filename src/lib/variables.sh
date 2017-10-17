@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-trap 'echo "Aborting due to errexit on line $LINENO. file $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
+trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 # Folder path where application code is located
 readonly APPLICATION_PATH_NAME='application'

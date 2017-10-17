@@ -11,7 +11,7 @@
 ###############################################################################
 # Exit immediately on error
 set -e
-trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
+trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 
 ###############################################################################
@@ -68,9 +68,10 @@ shift
 # the _arg_list function converts the array to a string.
 # Now you convert the string to a table
 #
+declare -a ARGS=()
 
 if [ "${#@}" -ge 1 ]; then
-    IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
+  IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
 fi
 
 # Run Specific wrapper for
@@ -85,6 +86,7 @@ case "$action" in
                 _yalla_install_project
             ;;
             *)
+                yalla -h
                 _error "${ARGS} is not a registered command"
             ;;
         esac
