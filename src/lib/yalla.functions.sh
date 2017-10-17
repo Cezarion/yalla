@@ -189,9 +189,6 @@ _yalla_check_update(){
 # Generate skeleton directories, not necessary for old project
 #
 _yalla_make_directories(){
-
-  declare -a FOLDERS=(application shared logs tests vaults)
-
   _line
   _br
   clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Generate directories : " -n; echo ${FOLDERS[@]}
@@ -211,7 +208,7 @@ _yalla_make_directories(){
 # _yalla_copy_samples()
 #
 # Usage:
-#   _yalla_make_directories
+#   _yalla_copy_samples
 #
 # Generate skeleton directories, not necessary for old project
 #

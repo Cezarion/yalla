@@ -15,6 +15,10 @@ readonly DOCKER_VERSION_MIN='17.*'
 # export current path
 readonly _SRC_="./yalla"
 
+# Skeleton required foilders
+declare -a FOLDERS=(application shared logs test vaults)
+export FOLDERS
+
 # Icons
 readonly CHECKMARK=$'\xE2\x9C\x93'
 readonly CROSSMARK=$'\xE2\x9C\x97'

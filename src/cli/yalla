@@ -129,15 +129,19 @@ ansible-vault | av    Execute ansible available actions.
 
 -h --help.            Display this help
 -v, --version         Show yalla version
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/yalla-ci-tests
 HEREDOC
 }
 
 main() {
-  ret=0
-  CMD=""
-  params="" # Extra args
+
+  local ret=0
+  local CMD=""
+  local params
 
   ## Parse args
   if [ $# -eq 0 ]; then
