@@ -190,7 +190,7 @@ _yalla_check_update(){
 #
 _yalla_make_directories(){
 
-  declare -a FOLDERS=(application shared logs tests vaults)
+  declare -a FOLDERS=(application shared logs test vaults)
 
   _line
   _br
