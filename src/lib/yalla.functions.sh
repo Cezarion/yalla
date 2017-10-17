@@ -126,7 +126,7 @@ _yalla_check_requirements(){
   fi
 
   # check devilbox
-  if ! [ -f "${WORKING_DIR}/../.devilbox" ]; then
+  if ! [ -f "${HOME}/.devilbox" ]; then
     _error "Devilbox config file is missing"
     echo -e "https://bitbucket.org/buzzaka/devilbox/src#markdown-header-usage-as-a-common-stack-fabernovel-code-stack"
     exit 0

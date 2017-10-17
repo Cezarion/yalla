@@ -30,10 +30,10 @@ setupYallaEnv() {
 setupYallaFullEnv() {
   setupYallaEnv
 
-  mkdir -p $HOME/yalla
-  rsync -az . $HOME/yalla --exclude=.git
+  mkdir -p $YALLA_HOME/yalla
+  rsync -az . $YALLA_HOME/yalla --exclude=.git
 
-  cd $HOME
+  cd $YALLA_HOME
 }
 
 teardownYallaEnv() {
