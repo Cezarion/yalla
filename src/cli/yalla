@@ -13,14 +13,6 @@ readonly YALLA_VERSION=0.1.2
 
 export WORKING_DIR=$(pwd)
 
-## Parse args
-if [ $# -eq 0 ]; then
-  CMD="-h"
-else
-  CMD=$1
-  shift
-fi
-
 
 
 # Exit if not args or not a yalla project
@@ -134,18 +126,23 @@ ansible-vault | av    Execute ansible available actions.
 
 -h --help.            Display this help
 -v, --version         Show yalla version
-
-update                Not yet available
 HEREDOC
 }
 
-# if ! [ -z "$@" ]
-#   then
-#     shift
-#     ARGS=$@
-# fi
+main() {
+  local ret=0
+  local CMD=""
 
-#while [ $# -gt 0 ]; do
+  ## Parse args
+  if [ $# -eq 0 ]; then
+    printf "No command specified\n\n"
+    _yalla_usage
+    exit 1
+  else
+    CMD=$1
+    shift
+  fi
+
   case "$CMD" in
       # Shortcuts commands
       init | install )
@@ -178,6 +175,7 @@ HEREDOC
           ;;
       -h | --help)
           _yalla_usage
+          exit 0
           ;;
       update-cli)
           curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
@@ -213,7 +211,13 @@ HEREDOC
         ;;
        *)
           echo "${CMD} is not a registered command"
-          exit 1
+          _yalla_usage
+          ret=1
   esac
-#  shift
-#done
+  shift
+
+  ret=$[$ret+$?]
+  exit $ret
+}
+
+main "$@"
