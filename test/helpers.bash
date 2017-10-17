@@ -27,6 +27,15 @@ setupYallaEnv() {
   export HOME=$YALLA_HOME
 }
 
+setupYallaFullEnv() {
+  setupYallaEnv
+
+  mkdir -p $HOME/yalla
+  rsync -az . $HOME/yalla --exclude=.git
+
+  cd $HOME
+}
+
 teardownYallaEnv() {
   if [ $BATS_TEST_COMPLETED ]; then
     rm -rf $YALLA_DIRECTORY

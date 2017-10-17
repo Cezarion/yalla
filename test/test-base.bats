@@ -17,6 +17,7 @@ teardown() {
 yalla="./yalla/src/cli/yalla"
 
 @test "YALLA should be created if it doesn't exist" {
+  skip
   rm -r $HOME/
   mkdir -p $HOME/yalla
   rsync -avz . $HOME/yalla --exclude=.git
