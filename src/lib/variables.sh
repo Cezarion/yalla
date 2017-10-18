@@ -29,7 +29,12 @@ readonly CROSSMARK=$'\xE2\x9C\x97'
 readonly INFOMARK=$'\xE2\x84\xB9'
 readonly WARNINGMARK=$'\xE2\x9A\xA0'
 readonly ARROWMARK=$'\xE2\x9E\xA5'
+readonly ARROWMARK2=$'\xE2\x86\x92'
 readonly LAMPMARK=$'\xF0\x9F\x92\xA1'
+readonly ALIEN=$'\xE2\x98\xA0'
+readonly ALIEN2=$'\xF0\x9F\x91\xBE'
+readonly UNICORN="🦄  "
+readonly JOYSTICK="🕹️  "
 
 # Colors
 readonly RED=$'\e[31;01m'

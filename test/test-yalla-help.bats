@@ -5,7 +5,7 @@ load 'libs/bats-assert/load'
 load 'helpers'
 
 setup() {
-  setupYallaEnv
+  setupYallaFullEnv
 }
 
 teardown() {

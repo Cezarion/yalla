@@ -24,14 +24,14 @@ assert_contains() {
 setupYallaEnv() {
   export YALLA_DIRECTORY="$(mktemp -d)"
   export YALLA_HOME="$(mktemp -d)"
-  #export HOME=$YALLA_HOME
+  export HOME=$YALLA_HOME
 }
 
 setupYallaFullEnv() {
   setupYallaEnv
 
   mkdir -p $YALLA_HOME/yalla
-  rsync -az . $YALLA_HOME/yalla --exclude=.git
+  rsync -avz . $YALLA_HOME/yalla --exclude=.git
 
   cd $YALLA_HOME
 }

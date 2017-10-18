@@ -6,6 +6,7 @@ load 'helpers'
 
 setup() {
   setupYallaFullEnv
+  pwd
 }
 
 teardown() {
@@ -18,8 +19,10 @@ yalla="./src/cli/yalla"
 @test "[YALLA] Test init" {
 
   #yalla="${YALLA_HOME}/${yalla}"
-
-  run { echo Y; Y;} | $yalla init
+  echo $YALLA_HOME
+  echo 'popo'
+  exit 1
+  run $(which $yalla)
 
   assert_success
   [ "$status" -eq 0 ]

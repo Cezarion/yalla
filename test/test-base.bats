@@ -5,7 +5,7 @@ load 'libs/bats-assert/load'
 load 'helpers'
 
 setup() {
-  setupYallaEnv
+  setupYallaFullEnv
   echo $YALLA_HOME
   ln -s "$(pwd)/src/cli/yalla" "${YALLA_HOME}/yalla"
 }

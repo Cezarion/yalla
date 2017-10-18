@@ -10,5 +10,7 @@ trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); 
 . "./yalla/src/lib/helpers.sh"
 . "./yalla/src/lib/functions.sh"
 . "./yalla/src/lib/docker.cmd.sh"
+. "./yalla/src/lib/yalla.helpers.sh"
+. "./yalla/src/lib/yalla.usage.sh"
 . "./yalla/src/lib/yalla.functions.sh"
 . "./yalla/src/lib/mysql.functions.sh"

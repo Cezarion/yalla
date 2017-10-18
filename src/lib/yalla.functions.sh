@@ -10,28 +10,17 @@
 set -e
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 
-# Load common vars and functions
-
-# for file in $(pwd)/yalla/src/lib/*
-# do
-#     FILENAME=$(basename $file)
-
-#     if [ "${FILENAME}" != "yalla.functions.sh" ] && [ "${FILENAME}" != "common.sh" ] && [ "${FILENAME}" != "templater.sh" ]
-#         then
-#             . $file
-#     fi
-# done
 
 ###############################################################################
-# _install_yalla_bin()
+# _yalla_install_bin()
 #
 # Usage:
-#   _install_yalla_bin
+#   _yalla_install_bin
 #
 # Install yalla command in /usr/local/bin
 # @todo download script from remote repository
 #
-_install_yalla_bin() {
+_yalla_install_bin() {
   _info "yalla command is not installed. We install it" >&2
   cp './yalla/src/cmd/yalla' /usr/local/bin/
 
@@ -63,282 +52,9 @@ _install_yalla_bin() {
 
   fi
   _success 'Check yalla version'
-  echo '---------------------------------------'
+  _line =
   yalla -v
-  echo '---------------------------------------'
-}
-
-###############################################################################
-# _yalla_version()
-#
-# Usage:
-#   __yalla_version <local|remote>
-#
-# get version of a yalla script
-#
-
-_yalla_version() {
-  local ARGS="${1}"
-  local VERSION
-
-  case $ARGS in
-  local | -l)
-    VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' /usr/local/bin/yalla)
-    ;;
-  remote | -r)
-    VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' ./yalla/src/cli/yalla)
-    ;;
-  esac
-
-  echo "${VERSION}"
-}
-
-###############################################################################
-# _yalla_check_requirements()
-#
-# Usage:
-#   _yalla_check_requirements
-#
-# Verify if devilbox and docker are installed
-#
-
-_yalla_check_requirements() {
-
-  # check docker
-  if ! _command_exists docker; then
-    _error "Docker is required to use yalla."
-    echo -e "Please install Docker CE ${DOCKER_VERSION_MIN} \nhttps://www.docker.com/docker-mac"
-    exit 0
-  fi
-
-  if ! [[ $(docker version | grep "${DOCKER_VERSION_MIN}") ]]; then
-    _bad_exit "Minimum docker version requirements: ${DOCKER_VERSION_MIN}"
-  fi
-
-  # check devilbox
-  if ! [ -f "${HOME}/.devilbox" ]; then
-    _error "Devilbox config file is missing"
-    echo -e "https://bitbucket.org/buzzaka/devilbox/src#markdown-header-usage-as-a-common-stack-fabernovel-code-stack"
-    exit 0
-  fi
-
-  if ! [ -d "${DEVILBOX_LOCAL_PATH}" ]; then
-    _error "Devilbox is missing"
-    echo -e "Please install Devilbox"
-    echo -e "https://bitbucket.org/buzzaka/devilbox/src#markdown-header-usage-as-a-common-stack-fabernovel-code-stack"
-    exit 0
-  fi
-}
-
-###############################################################################
-# _yalla_version()
-#
-# Usage:
-#   __yalla_version <local|remote>
-#
-# get version of a yalla script
-#
-_yalla_check_update() {
-  local remote_version=$(_yalla_version -r)
-  local local_version=$(_yalla_version -l)
-  local NEED_UPDATE=0
-
-  echo "Yalla Local version : ${local_version}\n"
-  echo "Yalla Remote version : ${remote_version}\n"
-
-  if [ $(_version $local_version) -gt $(_version $remote_version) ]; then
-    _warning "Remote version is older than local version"
-  elif [ $(_version $local_version) -lt $(_version $remote_version) ]; then
-    _notice "Local version need update, do you want to run update ?"
-    while true; do
-      read -p "yes / no ? " yn
-      case $yn in
-      [Yy]*)
-        _install_yalla_bin
-        break
-        ;;
-      [Nn]*)
-        exit
-        break
-        ;;
-      *) printf "Please answer y or n. \n" ;;
-      esac
-    done
-  else
-    _info "Version is up to date"
-  fi
-
-  _br
-}
-
-###############################################################################
-# _yalla_make_directories()
-#
-# Usage:
-#   _yalla_make_directories
-#
-# Generate skeleton directories, not necessary for old project
-#
-_yalla_make_directories() {
-  _line
-  _br
-  clr_green clr_bold "\xE2\x86\x92 " -n
-  clr_reset clr_bold "Generate directories : " -n
-  echo ${FOLDERS[@]}
-  _br
-
-  for folder in "${FOLDERS[@]}"; do
-    mkdir -p $folder
-    touch $folder/.gitkeep
-  done
-
-  _success "Create directories and add .gitkeep \n"
-
-}
-
-###############################################################################
-# _yalla_copy_samples()
-#
-# Usage:
-#   _yalla_copy_samples
-#
-# Generate skeleton directories, not necessary for old project
-#
-_yalla_copy_samples() {
-
-  _line
-  _br
-  clr_green clr_bold "\xE2\x86\x92 " -n
-  clr_reset clr_bold "Copy files samples : "
-  _br
-
-  for file in ./yalla/samples/{*,.*}; do
-    filename=$(basename $file)
-
-    if [ -f "${file}" ] && [ "$filename" != ".devilbox-run-time-settings" ]; then
-      if ! [ -f "$file" ]; then
-        if _ask "Do you want to overwrite ${filename} ? "; then
-          cp $file ./
-          _success "Overwrite file ${filename}"
-        else
-          _info "Skip"
-        fi
-      else
-        cp $file ./
-        _success "Copy sample file ${filename}"
-      fi
-    fi
-  done
-
-}
-
-###############################################################################
-# _yalla_mysql_create_user_and_db()
-#
-# Usage:
-#   _yalla_mysql_create_user_and_db
-#
-# Create user and datanse. Add rights and flush privilèges
-#
-
-_yalla_mysql_create_user_and_db() {
-  _br
-  clr_magenta "Do you want create user and database ? "
-  while true; do
-    read -p "yes / no ? " yn
-    case $yn in
-    [Yy]*)
-      _mysql_create_user_and_database
-      break
-      ;;
-    *)
-      break
-      ;;
-    esac
-  done
-
-  _br
-  _line
-}
-
-###############################################################################
-# _yalla_generate_gitignore()
-#
-# Usage:
-#   _yalla_generate_gitignore
-#
-# Generate gitignore files for project and application
-#
-_yalla_generate_gitignore() {
-
-  . $YALLA_SETTINGS_FILE
-
-  _info "\xE2\x86\x92 Create base .gitignore in project directory"
-  _br
-
-  local create_gitignore=1
-  local baseIgnore="linux,osx,windows,PhpStorm,SublimeText,VisualStudio"
-  local projectIgnore="node,${APP_TYPE}"
-
-  # Check if a gitignore file exiss and what we do if yes
-  if [ -f ".gitignore" ]; then
-    _ask "A gitignore file exist in $(pwd)/.gitignore, do you want to overwrite it ?" || create_gitignore=0
-  fi
-
-  # Create base gitignore if lines doesn't exists and if user it's ok
-  if [ -z "$(grep "End of https://www.gitignore.io" ".gitignore")" ] && [ "${create_gitignore}" -eq 1 ]; then
-    _gi "${baseIgnore}" >.gitignore
-    _success "Create base .gitignore in application directory with config : ${baseIgnore}"
-    _br
-  fi
-
-  CONTENT=$(
-    cat <<HEREDOC
-# Created by the yalla init script
-
-# Ignore local yalla folder
-./yalla/
-
-# Local env files
-/shared/*.local
-/shared/*.local.*
-/shared/local.*
-
-# Ignore local secrets folders
-vaults.yml
-vault.yml
-vaults/
-vaults/vault.yml
-
-# End of yalla create-project script
-
-HEREDOC
-  )
-
-  # Put yalla ignore params if not exists
-  if [ -z "$(grep "Created by the yalla init script" ".gitignore")" ]; then
-    # Yalla .gitignore
-    printf "${CONTENT}" >>.gitignore
-    _success "Add yalla .gitignore params"
-    _br
-  fi
-
-  # Put project ignore settings if not exist or if overwrite = 1
-  if [ -f "${APPLICATION_PATH_NAME}/.gitignore" ]; then
-    if _ask "A gitignore file exist in ${APPLICATION_PATH_NAME}/.gitignore, do you want to overwrite it ?"; then
-      create_gitignore=1
-    else
-      create_gitignore=0
-    fi
-  fi
-
-  if [ -z "$(grep "https://www.gitignore.io/api/node,${APP_TYPE}" "${APPLICATION_PATH_NAME}/.gitignore")" ] || [ "${create_gitignore}" -eq 1 ]; then
-    _gi "${projectIgnore}" >"${APPLICATION_PATH_NAME}/.gitignore"
-    _success ".gitignore was generated with ${projectIgnore}"
-  fi
-
-  _line
-  _br
+  _line =
 }
 
 ###############################################################################
@@ -352,11 +68,12 @@ HEREDOC
 
 function _yalla_init_project() {
   _yalla_check_requirements
+  _step_counter --init 10
 
-  _line
-  _br
+  _line =
   clr_green clr_bold "\xE2\x86\x92 " -n
-  clr_reset clr_bold "Init a new yalla project"
+  clr_reset clr_bold _toupper "Init a new yalla project"
+  _line =
 
   local TEMPLATE="${_SRC_}/templates/yalla.settings.tpl"
 
@@ -365,7 +82,6 @@ function _yalla_init_project() {
   ##
 
   if [ -f "yalla.settings" ]; then
-    _line
     _warning "A settings file alreay exists, do you want to overwrite it"
 
     while true; do
@@ -391,16 +107,22 @@ function _yalla_init_project() {
 
   ###############################################################################
   ## If it's a new project, generate folders
-  ##
+  ## @TODO : Check paths and files not only .gitignore
+
+  _h1 "Create directories and add sample files :"
 
   if ! [ -f ".gitignore" ]; then
     _yalla_make_directories
     _yalla_copy_samples
+    _br
+  else
+    _notice "Folders and samples seems to be exist"
   fi
 
   ###############################################################################
-  ## Check if a yalla settings already exist
+  ## 1/10 Check if a yalla settings already exist
   ##
+  _h1 "Add Devilbox environment variables :"
 
   if [ -f ".env" ]; then
     _warning "A .env file alreay exists, do you want to overwrite it"
@@ -438,27 +160,23 @@ function _yalla_init_project() {
     esac
   fi
 
-  _line
-  _br
-
   ###############################################################################
   ## Define project properties
   ##
+  _h1_step "Configure project parameters :"
 
-  clr_magenta "Project parameters."
-  _br
   read -p "Project name (ex: fabernovel) : " PROJECT
   read -p "Channel Slack (ex: random) : " CHANNEL
 
-  _line
+
   _br
 
   ###############################################################################
   ## Select app type
   ##
 
-  clr_magenta "Select application type :"
-  _br
+  _h1_step "Select application type :"
+
   select APP_TYPE in Symfony Drupal8 Drupal7 Wordpress Angular Other; do
     case $APP_TYPE in
     Symfony | Drupal8 | Drupal7 | Wordpress | Angular)
@@ -476,14 +194,13 @@ function _yalla_init_project() {
     esac
   done
 
-  _line
   _br
 
   ###############################################################################
   ## Select docker stack type
   ##
 
-  clr_magenta "Now select required docker stack."
+  _h1_step "Now select required docker stack."
   cat <<HEREDOC
     Default: http php mysql
     Available :
@@ -499,7 +216,7 @@ HEREDOC
   options=("Php" "Httpd" "Nginx" "MySql" "PgSql" "Mongo" "Redis" "Memcd")
 
   menu() {
-    echo "Avaliable options:"
+    echo "Available options:"
     for i in ${!options[@]}; do
       printf "%3d%s) %s\n" $((i + 1)) "${choices[i]:- }" "${options[i]}"
     done
@@ -535,12 +252,11 @@ HEREDOC
   DOCKER_STACK=$(_tolower $DOCKER_STACK)
 
   _br
-  _line
 
   ###############################################################################
   ## If production environment exist populate files
   ##
-  clr_magenta "does the production environment exist? "
+  _h1_step "Does the production environment exist? "
   while true; do
     read -p "yes / no ? " yn
     case $yn in
@@ -558,20 +274,19 @@ HEREDOC
   done
 
   _br
-  _line
 
   ###############################################################################
   ## Setup db params
   ##
 
-  clr_magenta "Database parameters."
-  _br
+  _h1_step "Local database parameters."
+
   read -p "Database name : " DB_DEV_DATABASE_NAME
   read -p "Database user name : " DB_DEV_USER
   read -p "Database user password : " DB_DEV_PASS
 
   ###############################################################################
-  ## Finally write file
+  ## Write project config
   ##
 
   PROJECT=$PROJECT \
@@ -597,12 +312,18 @@ HEREDOC
   source yalla.settings
 
   _br
-  _line
+
+  ###############################################################################
+  ## Configure remote config
+  ##
+  _h1_step "Setup remote access and database parameters"
+  _yalla_write_hosts_config
 
   ###############################################################################
   ## Set .gitignore
   ##
 
+  _h1_step "Set up .gitignore"
   _yalla_generate_gitignore
 
   ###############################################################################
@@ -621,16 +342,14 @@ HEREDOC
   ###############################################################################
   ## Import an existing database ?
   ##
-
+  _h1_step "Import a database ? "
   _mysql_import_database
 
   ###############################################################################
   ## end message
   ##
+  _line $(clr_bright _)
   _yalla_final_help
-
-  _br
-  _line
 }
 
 declare -x -f _yalla_init_project
@@ -646,6 +365,12 @@ declare -x -f _yalla_init_project
 
 _yalla_install_project() {
   _yalla_check_requirements
+  _step_counter --init 10
+
+  _line =
+  clr_green clr_bold "\xE2\x86\x92 " -n
+  clr_reset clr_bold _toupper "Install yalla project from existing configuration"
+  _line =
 
   # Check if yalla is ready
   if ! [ -f "${YALLA_SETTINGS_FILE}" ] && ! [ -f "hosts.yml " ]; then
@@ -654,166 +379,10 @@ _yalla_install_project() {
 
   _yalla_mysql_create_user_and_db
 
+  _h1_step "Import a database ? "
   _mysql_import_database
 
+  _line $(clr_bright _)
   _yalla_final_help
-}
-
-###############################################################################
-# _yalla_final_help()
-#
-# Usage:
-#   _yalla_final_help
-#
-# Show end help
-#
-
-_yalla_final_help() {
-
-  _br
-  _success "Yalla settings are now completed"
-  cat <<HEREDOC
-  $(_line)
-
-  $(clr_bold "Yalla settings are ok. To Finalize or start using follow instructions below.")
-  $(_line)
-
-  $(clr_underscore clr_cyan "Main config files are : ")
-
-  $(clr_bold "yalla.settings : ")
-      Set variables for yalla, define slack channel to notify on deploy, ...
-
-  $(clr_bold "hosts.yml : ")
-      Set up base config to allow ansible mysql sync
-
-  $(clr_bold "Pull database from remote host :")
-      • Populate $(clr_bold "hosts.yml") with remote datas
-      • Edit secrets (vault) : run
-          $(clr_cyan '<yalla av create>')
-      • Edit like that :
-          $(clr_bright "vault_staging_db_pass: your-staging-pass")
-          $(clr_bright "vault_preprod_db_pass: your-preprod-pass")
-          $(clr_bright "vault_live_db_pass:    your-db-pass")
-      • Run
-          $(clr_cyan '<yalla ap mysql-sync -e "source="staging|preprod|live" --ask-vault-pass>')
-
-      • List of available commands
-          $(clr_cyan '<yalla -h>')
-
-  $(_line)
-
-  If there is a problem, open a ticket
-  https://bitbucket.org/buzzaka/project-skeleton/issues?status=new&status=open
-
-  If you need help, slack : @mathias
-
-HEREDOC
-}
-
-###############################################################################
-# _yalla_write_hosts()
-#
-# Usage:
-#   _yalla_write_hosts
-#
-# Exit if not args or not a yalla project
-#
-
-#
-# popo=$(cat <<EOF
-# #{{ ansible_env }}:
-#     #  ansible_host: {{ ansible_host }}       #server ip / hostname
-#     #  ansible_user: {{ ansible_user }}       #no sudo user
-#     #  become_user:  unknown        #sudo user
-#     #
-#     #  #for db password create or edit a vault. See below
-#     #  db_name: {{ db_name }}     #database-name
-#     #  db_user: {{ db_user }}     #database-user
-#     #
-#     #  host_url: {{ host_url }}
-#     #  project_root: {{ project_root }}
-# EOF
-# )
-#
-# echo "${popo}" | sed -r '/unknown/! s/(#\s*)//'
-
-_yalla_write_hosts() {
-
-  ###############################################################################
-  ## __setup_remote_values
-  ## Usage :
-  ##    __setup_remote_values [ env name ]
-  ##
-  ## Setup remote params
-  ##
-  __setup_remote_values() {
-    local env=$1
-    local ansible_host ansible_user project_root db_name db_user host_url
-
-    _br
-    clr_green "[ ${env} ] Server parameters :"
-
-    read -p "Server Ip / hostname: " ansible_host
-    read -p "Ssh user: " ansible_user
-    read -p "Project path on server: " project_root
-
-    _br
-    clr_green "[ ${env} ] Database parameters :"
-
-    read -p "Database name: " db_name
-    read -p "Database user name: " db_user
-
-    read -p "Site url: " host_url
-
-    _line
-    clr_blue "Use ansible vault <yalla av create> to store securely secret password : "
-    clr_blue "vault_${env}_db_pass: \"your-password\""
-    _line
-
-    # Share vars to template,
-    # Removing comments for known rows
-    # Append to hosts.yml
-    ANSIBLE_ENV="${env}" \
-    ANSIBLE_HOST="${ansible_host}" \
-    ANSIBLE_USER="${ansible_user}" \
-    PROJECT_ROOT="${project_root}" \
-    DB_NAME="${db_name}" \
-    DB_USER="${db_user}" \
-    HOST_URL="${host_url}" \
-    ./yalla/src/lib/templater.sh ./yalla/templates/hosts-tests.yml.tpl | sed -E '/unknown/! s/(#\s*)//' >> hosts.yml
-  }
-
-  _br
-  for env in "${REMOTE_ENV_TYPE[@]}"; do
-    if _ask "$(clr_magenta "Would you like to setup remote ennvironment ${env} ?")"; then
-      if grep -q "${env}:" "hosts.yml"; then
-        _warning "${env} is already set. Edit manually, please"
-        continue
-      else
-        __setup_remote_values $env
-      fi
-    fi
-  done
-
-}
-
-###############################################################################
-# _check_is_yalla_app()
-#
-# Usage:
-#   _check_is_yalla_app
-#
-# Exit if not args or not a yalla project
-#
-
-_check_is_yalla_app() {
-  if [ ! -d "./yalla" ] && [ "$1" != "init" ]; then
-    echo -e "\n\xE2\x9C\x97 Error ! \n"
-    cat <<HEREDOC
-The "yalla" directory does not appear to be present.
-Run <yalla init> or go to a directory where yall is installed
-
-HEREDOC
-    exit 1
-  fi
+  _line $(clr_bright _)
 }
