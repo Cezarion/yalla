@@ -19,6 +19,10 @@ readonly _SRC_="./yalla"
 declare -a FOLDERS=(application shared logs test vaults)
 export FOLDERS
 
+# Ansible available remote env name
+declare -a REMOTE_ENV_TYPE=(staging preprod live)
+export REMOTE_ENV_NAMES
+
 # Icons
 readonly CHECKMARK=$'\xE2\x9C\x93'
 readonly CROSSMARK=$'\xE2\x9C\x97'

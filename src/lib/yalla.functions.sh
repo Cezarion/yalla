@@ -31,50 +31,42 @@ trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 # Install yalla command in /usr/local/bin
 # @todo download script from remote repository
 #
-_install_yalla_bin(){
-    _info "yalla command is not installed. We install it" >&2
-    cp './yalla/src/cmd/yalla' /usr/local/bin/
+_install_yalla_bin() {
+  _info "yalla command is not installed. We install it" >&2
+  cp './yalla/src/cmd/yalla' /usr/local/bin/
 
-    if [ ! -f "${HOME}/.yalla.autocomplete" ]
-        then
-            cp './yalla/src/cmd/autocomplete.sh' "${HOME}/.yalla.autocomplete"
+  if [ ! -f "${HOME}/.yalla.autocomplete" ]; then
+    cp './yalla/src/cmd/autocomplete.sh' "${HOME}/.yalla.autocomplete"
 
-            CONTENT="\n#Add yalla autocomplete\nsource \$HOME/.yalla.autocomplete"
+    CONTENT="\n#Add yalla autocomplete\nsource \$HOME/.yalla.autocomplete"
 
-            if [ -f "${HOME}/.zshrc" ]
-                then
-                    if ! grep -q ".yalla.autocomplete" "${HOME}/.zshrc"
-                    then
-                        echo  "${CONTENT}" >> "${HOME}/.zshrc"
-                    fi
-                    source "${HOME}/.yalla.autocomplete"
-            fi
-
-            if [ -f "${HOME}/.profile" ]
-                then
-                    if ! grep -q ".yalla.autocomplete" "${HOME}/.profile"
-                    then
-                        echo "${CONTENT}" >> "${HOME}/.profile"
-                    fi
-                    source "${HOME}/.yalla.autocomplete"
-            fi
-
-            if [ -f "${HOME}/.bashrc" ]
-                then
-                    if ! grep -q ".yalla.autocomplete" "${HOME}/.bashrc"
-                    then
-                        echo "${CONTENT}" >> "${HOME}/.bashrc"
-                    fi
-                    source "${HOME}/.yalla.autocomplete"
-            fi
-
+    if [ -f "${HOME}/.zshrc" ]; then
+      if ! grep -q ".yalla.autocomplete" "${HOME}/.zshrc"; then
+        echo "${CONTENT}" >>"${HOME}/.zshrc"
+      fi
+      source "${HOME}/.yalla.autocomplete"
     fi
-    _success 'Check yalla version'
-    echo '---------------------------------------'
-    yalla -v
-    echo '---------------------------------------'
-}
 
+    if [ -f "${HOME}/.profile" ]; then
+      if ! grep -q ".yalla.autocomplete" "${HOME}/.profile"; then
+        echo "${CONTENT}" >>"${HOME}/.profile"
+      fi
+      source "${HOME}/.yalla.autocomplete"
+    fi
+
+    if [ -f "${HOME}/.bashrc" ]; then
+      if ! grep -q ".yalla.autocomplete" "${HOME}/.bashrc"; then
+        echo "${CONTENT}" >>"${HOME}/.bashrc"
+      fi
+      source "${HOME}/.yalla.autocomplete"
+    fi
+
+  fi
+  _success 'Check yalla version'
+  echo '---------------------------------------'
+  yalla -v
+  echo '---------------------------------------'
+}
 
 ###############################################################################
 # _yalla_version()
@@ -85,23 +77,21 @@ _install_yalla_bin(){
 # get version of a yalla script
 #
 
-_yalla_version(){
-    local ARGS="${1}"
-    local VERSION=
+_yalla_version() {
+  local ARGS="${1}"
+  local VERSION
 
-    case $ARGS in
-        local | -l)
-            VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' /usr/local/bin/yalla)
-            ;;
-        remote | -r )
-            VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' ./yalla/src/cli/yalla)
-            ;;
-    esac
+  case $ARGS in
+  local | -l)
+    VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' /usr/local/bin/yalla)
+    ;;
+  remote | -r)
+    VERSION=$(sed -n -e '/YALLA_VERSION/ s/.*\= *//p' ./yalla/src/cli/yalla)
+    ;;
+  esac
 
-    echo "${VERSION}"
+  echo "${VERSION}"
 }
-
-
 
 ###############################################################################
 # _yalla_check_requirements()
@@ -112,7 +102,7 @@ _yalla_version(){
 # Verify if devilbox and docker are installed
 #
 
-_yalla_check_requirements(){
+_yalla_check_requirements() {
 
   # check docker
   if ! _command_exists docker; then
@@ -148,37 +138,38 @@ _yalla_check_requirements(){
 #
 # get version of a yalla script
 #
-_yalla_check_update(){
-    local remote_version=$(_yalla_version -r)
-    local local_version=$(_yalla_version -l)
-    local NEED_UPDATE=0
+_yalla_check_update() {
+  local remote_version=$(_yalla_version -r)
+  local local_version=$(_yalla_version -l)
+  local NEED_UPDATE=0
 
-    echo "Yalla Local version : ${local_version}\n"
-    echo "Yalla Remote version : ${remote_version}\n"
+  echo "Yalla Local version : ${local_version}\n"
+  echo "Yalla Remote version : ${remote_version}\n"
 
-    if [ $(_version $local_version) -gt $(_version $remote_version) ]; then
-      _warning "Remote version is older than local version"
-    elif [ $(_version $local_version) -lt $(_version $remote_version) ]; then
-      _notice "Local version need update, do you want to run update ?"
-      while true; do
-        read -p "yes / no ? " yn
-            case $yn in
-                [Yy]* )
-                    _install_yalla_bin
-                    break;;
-                [Nn]* )
-                    exit;
-                    break;;
-                * ) printf "Please answer y or n. \n";;
-            esac
-        done
-    else
-      _info "Version is up to date"
-    fi
+  if [ $(_version $local_version) -gt $(_version $remote_version) ]; then
+    _warning "Remote version is older than local version"
+  elif [ $(_version $local_version) -lt $(_version $remote_version) ]; then
+    _notice "Local version need update, do you want to run update ?"
+    while true; do
+      read -p "yes / no ? " yn
+      case $yn in
+      [Yy]*)
+        _install_yalla_bin
+        break
+        ;;
+      [Nn]*)
+        exit
+        break
+        ;;
+      *) printf "Please answer y or n. \n" ;;
+      esac
+    done
+  else
+    _info "Version is up to date"
+  fi
 
-    _br
+  _br
 }
-
 
 ###############################################################################
 # _yalla_make_directories()
@@ -188,21 +179,22 @@ _yalla_check_update(){
 #
 # Generate skeleton directories, not necessary for old project
 #
-_yalla_make_directories(){
+_yalla_make_directories() {
   _line
   _br
-  clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Generate directories : " -n; echo ${FOLDERS[@]}
+  clr_green clr_bold "\xE2\x86\x92 " -n
+  clr_reset clr_bold "Generate directories : " -n
+  echo ${FOLDERS[@]}
   _br
 
   for folder in "${FOLDERS[@]}"; do
-      mkdir -p $folder;
-      touch $folder/.gitkeep
+    mkdir -p $folder
+    touch $folder/.gitkeep
   done
 
   _success "Create directories and add .gitkeep \n"
 
 }
-
 
 ###############################################################################
 # _yalla_copy_samples()
@@ -212,32 +204,31 @@ _yalla_make_directories(){
 #
 # Generate skeleton directories, not necessary for old project
 #
-_yalla_copy_samples(){
+_yalla_copy_samples() {
 
   _line
   _br
-  clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Copy files samples : "
+  clr_green clr_bold "\xE2\x86\x92 " -n
+  clr_reset clr_bold "Copy files samples : "
   _br
 
-  for file in ./yalla/samples/{*,.*}
-  do
-      filename=$(basename $file)
+  for file in ./yalla/samples/{*,.*}; do
+    filename=$(basename $file)
 
-      if [ -f "${file}" ] && [ "$filename" != ".devilbox-run-time-settings" ]; then
-            if ! [ -f "$file" ]; then
-                if _ask "Do you want to overwrite ${filename} ? "; then
-                  cp $file ./
-                  _success "Overwrite file ${filename}"
-                else
-                  _info "Skip"
-                fi
-            else
-                cp $file ./
-                _success "Copy sample file ${filename}"
-            fi
+    if [ -f "${file}" ] && [ "$filename" != ".devilbox-run-time-settings" ]; then
+      if ! [ -f "$file" ]; then
+        if _ask "Do you want to overwrite ${filename} ? "; then
+          cp $file ./
+          _success "Overwrite file ${filename}"
+        else
+          _info "Skip"
+        fi
+      else
+        cp $file ./
+        _success "Copy sample file ${filename}"
       fi
+    fi
   done
-
 
 }
 
@@ -254,15 +245,16 @@ _yalla_mysql_create_user_and_db() {
   _br
   clr_magenta "Do you want create user and database ? "
   while true; do
-      read -p "yes / no ? " yn
-          case $yn in
-              [Yy]* )
-                  _mysql_create_user_and_database
-                  break;;
-              *)
-                  break
-                  ;;
-          esac
+    read -p "yes / no ? " yn
+    case $yn in
+    [Yy]*)
+      _mysql_create_user_and_database
+      break
+      ;;
+    *)
+      break
+      ;;
+    esac
   done
 
   _br
@@ -277,7 +269,7 @@ _yalla_mysql_create_user_and_db() {
 #
 # Generate gitignore files for project and application
 #
-_yalla_generate_gitignore(){
+_yalla_generate_gitignore() {
 
   . $YALLA_SETTINGS_FILE
 
@@ -295,13 +287,13 @@ _yalla_generate_gitignore(){
 
   # Create base gitignore if lines doesn't exists and if user it's ok
   if [ -z "$(grep "End of https://www.gitignore.io" ".gitignore")" ] && [ "${create_gitignore}" -eq 1 ]; then
-    _gi "${baseIgnore}" > .gitignore
+    _gi "${baseIgnore}" >.gitignore
     _success "Create base .gitignore in application directory with config : ${baseIgnore}"
     _br
   fi
 
-
-  CONTENT=$(cat <<HEREDOC
+  CONTENT=$(
+    cat <<HEREDOC
 # Created by the yalla init script
 
 # Ignore local yalla folder
@@ -321,12 +313,12 @@ vaults/vault.yml
 # End of yalla create-project script
 
 HEREDOC
-)
+  )
 
   # Put yalla ignore params if not exists
   if [ -z "$(grep "Created by the yalla init script" ".gitignore")" ]; then
     # Yalla .gitignore
-    printf "${CONTENT}" >> .gitignore
+    printf "${CONTENT}" >>.gitignore
     _success "Add yalla .gitignore params"
     _br
   fi
@@ -341,7 +333,7 @@ HEREDOC
   fi
 
   if [ -z "$(grep "https://www.gitignore.io/api/node,${APP_TYPE}" "${APPLICATION_PATH_NAME}/.gitignore")" ] || [ "${create_gitignore}" -eq 1 ]; then
-    _gi "${projectIgnore}" > "${APPLICATION_PATH_NAME}/.gitignore"
+    _gi "${projectIgnore}" >"${APPLICATION_PATH_NAME}/.gitignore"
     _success ".gitignore was generated with ${projectIgnore}"
   fi
 
@@ -359,137 +351,140 @@ HEREDOC
 #
 
 function _yalla_init_project() {
-    _yalla_check_requirements
+  _yalla_check_requirements
 
+  _line
+  _br
+  clr_green clr_bold "\xE2\x86\x92 " -n
+  clr_reset clr_bold "Init a new yalla project"
+
+  local TEMPLATE="${_SRC_}/templates/yalla.settings.tpl"
+
+  ###############################################################################
+  ## Check if a yalla settings already exist
+  ##
+
+  if [ -f "yalla.settings" ]; then
     _line
-    _br
-    clr_green clr_bold "\xE2\x86\x92 " -n;  clr_reset clr_bold "Init a new yalla project"
+    _warning "A settings file alreay exists, do you want to overwrite it"
 
-    local TEMPLATE="${_SRC_}/templates/yalla.settings.tpl"
-
-
-    ###############################################################################
-    ## Check if a yalla settings already exist
-    ##
-
-    if [ -f "yalla.settings" ]; then
-        _line
-        _warning "A settings file alreay exists, do you want to overwrite it"
-
-        while true; do
-        read -p "yes / no ? " yn
-            case $yn in
-                [Yy]* )
-                    _br
-                    printf "Ok, let's go ! \xF0\x9F\x98\x8B\n";
-                    break;;
-                [Nn]* )
-                    _br
-                    printf "Ok, bye ! \xF0\x9F\x98\x98 \n";
-                    exit;
-                    break;;
-                * ) printf "Please answer y or n. \n";;
-            esac
-        done
-    fi
-
-    _br
-
-    ###############################################################################
-    ## If it's a new project, generate folders
-    ##
-
-    if ! [ -f ".gitignore" ]; then
-      _yalla_make_directories
-      _yalla_copy_samples
-    fi
-
-
-    ###############################################################################
-    ## Check if a yalla settings already exist
-    ##
-
-    if [ -f ".env" ]; then
-        _warning "A .env file alreay exists, do you want to overwrite it"
-
-        while true; do
-        read -p "yes / no ? " yn
-            case $yn in
-                [Yy]* )
-                    _br
-                    printf "Ok, let's go ! \xF0\x9F\x98\x8B\n";
-                    break;;
-                [Nn]* )
-                    _br
-                    printf "Ok, skip it ! 👀";
-                    break;;
-                * ) printf "Please answer y or n. \n";;
-            esac
-        done
-    else
-        cp ./yalla/samples/.devilbox-run-time-settings .env
-        _info "Please, now edit file .env and adust your project requirements. (vi/subl .env)"
-        read -p "Is it done ?" yn
-            case $yn in
-                [Yy] | yes | Yes )
-                    _br
-                    printf "Ok, continue ! \xF0\x9F\x98\x8B\n";
-                    break;;
-                *)
-                    _notice "Ok, you must do it later"
-                    break
-                    ;;
-            esac
-    fi
-
-    _line
-    _br
-
-    ###############################################################################
-    ## Define project properties
-    ##
-
-    clr_magenta "Project parameters."
-    _br
-    read -p "Project name (ex: fabernovel) : " PROJECT
-    read -p "Channel Slack (ex: random) : " CHANNEL
-
-    _line
-    _br
-
-    ###############################################################################
-    ## Select app type
-    ##
-
-    clr_magenta "Select application type :"
-    _br
-    select APP_TYPE in Symfony Drupal8 Drupal7 Wordpress Angular Other
-    do
-            case $APP_TYPE in
-            Symfony|Drupal8|Drupal7|Wordpress|Angular)
-                    APP_TYPE=$(_tolower $APP_TYPE)
-                    break
-                    ;;
-            Other )
-                    read -p "Please specify : " APP_TYPE_OTHER
-                    APP_TYPE=$(_tolower $APP_TYPE_OTHER)
-                    break
-                    ;;
-            *)
-                    echo "Invalid choice"
-                    ;;
-            esac
+    while true; do
+      read -p "yes / no ? " yn
+      case $yn in
+      [Yy]*)
+        _br
+        printf "Ok, let's go ! \xF0\x9F\x98\x8B\n"
+        break
+        ;;
+      [Nn]*)
+        _br
+        printf "Ok, bye ! \xF0\x9F\x98\x98 \n"
+        exit
+        break
+        ;;
+      *) printf "Please answer y or n. \n" ;;
+      esac
     done
+  fi
 
-    _line
-    _br
+  _br
 
-    ###############################################################################
-    ## Select docker stack type
-    ##
+  ###############################################################################
+  ## If it's a new project, generate folders
+  ##
 
-clr_magenta "Now select required docker stack."
-    cat <<HEREDOC
+  if ! [ -f ".gitignore" ]; then
+    _yalla_make_directories
+    _yalla_copy_samples
+  fi
+
+  ###############################################################################
+  ## Check if a yalla settings already exist
+  ##
+
+  if [ -f ".env" ]; then
+    _warning "A .env file alreay exists, do you want to overwrite it"
+
+    while true; do
+      read -p "yes / no ? " yn
+      case $yn in
+      [Yy]*)
+        _br
+        printf "Ok, let's go ! \xF0\x9F\x98\x8B\n"
+        break
+        ;;
+      [Nn]*)
+        _br
+        printf "Ok, skip it ! 👀"
+        break
+        ;;
+      *) printf "Please answer y or n. \n" ;;
+      esac
+    done
+  else
+    cp ./yalla/samples/.devilbox-run-time-settings .env
+    _info "Please, now edit file .env and adust your project requirements. (vi/subl .env)"
+    read -p "Is it done ?" yn
+    case $yn in
+    [Yy] | yes | Yes)
+      _br
+      printf "Ok, continue ! \xF0\x9F\x98\x8B\n"
+      break
+      ;;
+    *)
+      _notice "Ok, you must do it later"
+      break
+      ;;
+    esac
+  fi
+
+  _line
+  _br
+
+  ###############################################################################
+  ## Define project properties
+  ##
+
+  clr_magenta "Project parameters."
+  _br
+  read -p "Project name (ex: fabernovel) : " PROJECT
+  read -p "Channel Slack (ex: random) : " CHANNEL
+
+  _line
+  _br
+
+  ###############################################################################
+  ## Select app type
+  ##
+
+  clr_magenta "Select application type :"
+  _br
+  select APP_TYPE in Symfony Drupal8 Drupal7 Wordpress Angular Other; do
+    case $APP_TYPE in
+    Symfony | Drupal8 | Drupal7 | Wordpress | Angular)
+      APP_TYPE=$(_tolower $APP_TYPE)
+      break
+      ;;
+    Other)
+      read -p "Please specify : " APP_TYPE_OTHER
+      APP_TYPE=$(_tolower $APP_TYPE_OTHER)
+      break
+      ;;
+    *)
+      echo "Invalid choice"
+      ;;
+    esac
+  done
+
+  _line
+  _br
+
+  ###############################################################################
+  ## Select docker stack type
+  ##
+
+  clr_magenta "Now select required docker stack."
+  cat <<HEREDOC
     Default: http php mysql
     Available :
     * Php
@@ -498,79 +493,88 @@ clr_magenta "Now select required docker stack."
     * Redis | Memcd
 To define the versions and other configuration elements of the docker environment, edit the file .devil-box-runtime-settings
 HEREDOC
-    _br
+  _br
 
-    # customize with your own.
-    options=("Php" "Httpd" "Nginx" "MySql" "PgSql" "Mongo" "Redis" "Memcd")
+  # customize with your own.
+  options=("Php" "Httpd" "Nginx" "MySql" "PgSql" "Mongo" "Redis" "Memcd")
 
-    menu() {
-        echo "Avaliable options:"
-        for i in ${!options[@]}; do
-            printf "%3d%s) %s\n" $((i+1)) "${choices[i]:- }" "${options[i]}"
-        done
-        [[ "$DOCKER_CHOICES" ]] && echo "$DOCKER_CHOICES"; :
-    }
-
-    prompt="Check an option (${BLUE}again to uncheck${NORMAL}, ${GREEN}ENTER when done${NORMAL}): "
-    while menu && read -rp "$prompt" num && [[ "$num" ]]; do
-        [[ "$num" != *[![:digit:]]* ]] &&
-        (( num > 0 && num <= ${#options[@]} )) ||
-        { DOCKER_CHOICES="Invalid option: $num"; continue; }
-        ((num--)); DOCKER_CHOICES="${options[num]} was ${choices[num]:+un}checked"
-        [[ "${choices[num]}" ]] && choices[num]="" || choices[num]="+"
-    done
-
-    DOCKER_STACK=
-    printf "\nYou selected"; DOCKER_CHOICES=" nothing"
+  menu() {
+    echo "Avaliable options:"
     for i in ${!options[@]}; do
-        [[ "${choices[i]}" ]] && { printf " %s" "${options[i]}"; DOCKER_CHOICES=""; DOCKER_STACK="${DOCKER_STACK} ${options[i]}"; }
+      printf "%3d%s) %s\n" $((i + 1)) "${choices[i]:- }" "${options[i]}"
     done
+    [[ "$DOCKER_CHOICES" ]] && echo "$DOCKER_CHOICES"
+    :
+  }
 
-    # Convert to lowercase
-    DOCKER_STACK=$(_tolower $DOCKER_STACK)
+  prompt="Check an option (${BLUE}again to uncheck${NORMAL}, ${GREEN}ENTER when done${NORMAL}): "
+  while menu && read -rp "$prompt" num && [[ "$num" ]]; do
+    [[ "$num" != *[![:digit:]]* ]] &&
+      ((num > 0 && num <= ${#options[@]})) ||
+      {
+        DOCKER_CHOICES="Invalid option: $num"
+        continue
+      }
+    ((num--))
+    DOCKER_CHOICES="${options[num]} was ${choices[num]:+un}checked"
+    [[ "${choices[num]}" ]] && choices[num]="" || choices[num]="+"
+  done
 
-    _br
-    _line
+  DOCKER_STACK=
+  printf "\nYou selected"
+  DOCKER_CHOICES=" nothing"
+  for i in ${!options[@]}; do
+    [[ "${choices[i]}" ]] && {
+      printf " %s" "${options[i]}"
+      DOCKER_CHOICES=""
+      DOCKER_STACK="${DOCKER_STACK} ${options[i]}"
+    }
+  done
 
-    ###############################################################################
-    ## If production environment exist populate files
-    ##
-    clr_magenta "does the production environment exist? "
-    while true; do
-        read -p "yes / no ? " yn
-            case $yn in
-                [Yy] | yes | Yes )
-                    clr_magenta "Production url."
-                    _br
-                    read -p "Production url: " PRODUCTION_URI
-                    break;;
-                 *)
-                    _notice "Ok, continue"
-                    break
-                    ;;
-            esac
-    done
+  # Convert to lowercase
+  DOCKER_STACK=$(_tolower $DOCKER_STACK)
 
-    _br
-    _line
+  _br
+  _line
 
-    ###############################################################################
-    ## Setup db params
-    ##
+  ###############################################################################
+  ## If production environment exist populate files
+  ##
+  clr_magenta "does the production environment exist? "
+  while true; do
+    read -p "yes / no ? " yn
+    case $yn in
+    [Yy] | yes | Yes)
+      clr_magenta "Production url."
+      _br
+      read -p "Production url: " PRODUCTION_URI
+      break
+      ;;
+    *)
+      _notice "Ok, continue"
+      break
+      ;;
+    esac
+  done
 
-    clr_magenta "Database parameters."
-    _br
-    read -p "Database name : " DB_DEV_DATABASE_NAME
-    read -p "Database user name : " DB_DEV_USER
-    read -p "Database user password : " DB_DEV_PASS
+  _br
+  _line
 
+  ###############################################################################
+  ## Setup db params
+  ##
 
-    ###############################################################################
-    ## Finally write file
-    ##
+  clr_magenta "Database parameters."
+  _br
+  read -p "Database name : " DB_DEV_DATABASE_NAME
+  read -p "Database user name : " DB_DEV_USER
+  read -p "Database user password : " DB_DEV_PASS
 
+  ###############################################################################
+  ## Finally write file
+  ##
 
-    PROJECT=$PROJECT \
+  PROJECT=$PROJECT \
     CHANNEL=$CHANNEL \
     APP_TYPE=$APP_TYPE \
     DOCKER_STACK="${DOCKER_STACK}" \
@@ -578,61 +582,58 @@ HEREDOC
     DB_DEV_PASS="${DB_DEV_PASS}" \
     DB_DEV_DATABASE_NAME="${DB_DEV_DATABASE_NAME}" \
     PRODUCTION_URI="${PRODUCTION_URI}" \
-    ./yalla/src/lib/templater.sh ./yalla/templates/yalla.settings.tpl > yalla.settings
+    ./yalla/src/lib/templater.sh ./yalla/templates/yalla.settings.tpl >yalla.settings
 
-    _success "Write database parameters into $(clr_bold clr_white "yalla.settings")"
+  _success "Write database parameters into $(clr_bold clr_white "yalla.settings")"
 
-
-    DB_DEV_USER="${DB_DEV_USER}" \
+  DB_DEV_USER="${DB_DEV_USER}" \
     DB_DEV_PASS="${DB_DEV_PASS}" \
     DB_DEV_DATABASE_NAME="${DB_DEV_DATABASE_NAME}" \
     PRODUCTION_URI="${PRODUCTION_URI}" \
-    ./yalla/src/lib/templater.sh ./yalla/templates/hosts.yml.tpl > hosts.yml
+    ./yalla/src/lib/templater.sh ./yalla/templates/hosts.yml.tpl >hosts.yml
 
-    _success "Write database parameters into $(clr_bold clr_white "hosts.yml")"
-    # Load params file
-    source yalla.settings
+  _success "Write database parameters into $(clr_bold clr_white "hosts.yml")"
+  # Load params file
+  source yalla.settings
 
-    _br
-    _line
+  _br
+  _line
 
-    ###############################################################################
-    ## Set .gitignore
-    ##
+  ###############################################################################
+  ## Set .gitignore
+  ##
 
-    _yalla_generate_gitignore
+  _yalla_generate_gitignore
 
-    ###############################################################################
-    ## end message
-    ##
+  ###############################################################################
+  ## end message
+  ##
 
-    _br
-    _success "Yalla settings are now completed"
+  _br
+  _success "Yalla settings are now completed"
 
+  ###############################################################################
+  ## Create user and database
+  ##
 
-    ###############################################################################
-    ## Create user and database
-    ##
+  _yalla_mysql_create_user_and_db
 
-    _yalla_mysql_create_user_and_db
+  ###############################################################################
+  ## Import an existing database ?
+  ##
 
+  _mysql_import_database
 
-    ###############################################################################
-    ## Import an existing database ?
-    ##
+  ###############################################################################
+  ## end message
+  ##
+  _yalla_final_help
 
-    _mysql_import_database
-
-    ###############################################################################
-    ## end message
-    ##
-    _yalla_final_help
-
-    _br
-    _line
+  _br
+  _line
 }
 
-declare -x -f _yalla_init_project;
+declare -x -f _yalla_init_project
 
 ###############################################################################
 # _yalla_install_project()
@@ -643,7 +644,7 @@ declare -x -f _yalla_init_project;
 # Install project from an existing yalla configuration
 #
 
-_yalla_install_project(){
+_yalla_install_project() {
   _yalla_check_requirements
 
   # Check if yalla is ready
@@ -667,7 +668,7 @@ _yalla_install_project(){
 # Show end help
 #
 
-_yalla_final_help(){
+_yalla_final_help() {
 
   _br
   _success "Yalla settings are now completed"
@@ -710,6 +711,93 @@ HEREDOC
 }
 
 ###############################################################################
+# _yalla_write_hosts()
+#
+# Usage:
+#   _yalla_write_hosts
+#
+# Exit if not args or not a yalla project
+#
+
+#
+# popo=$(cat <<EOF
+# #{{ ansible_env }}:
+#     #  ansible_host: {{ ansible_host }}       #server ip / hostname
+#     #  ansible_user: {{ ansible_user }}       #no sudo user
+#     #  become_user:  unknown        #sudo user
+#     #
+#     #  #for db password create or edit a vault. See below
+#     #  db_name: {{ db_name }}     #database-name
+#     #  db_user: {{ db_user }}     #database-user
+#     #
+#     #  host_url: {{ host_url }}
+#     #  project_root: {{ project_root }}
+# EOF
+# )
+#
+# echo "${popo}" | sed -r '/unknown/! s/(#\s*)//'
+
+_yalla_write_hosts() {
+
+  ###############################################################################
+  ## __setup_remote_values
+  ## Usage :
+  ##    __setup_remote_values [ env name ]
+  ##
+  ## Setup remote params
+  ##
+  __setup_remote_values() {
+    local env=$1
+    local ansible_host ansible_user project_root db_name db_user host_url
+
+    _br
+    clr_green "[ ${env} ] Server parameters :"
+
+    read -p "Server Ip / hostname: " ansible_host
+    read -p "Ssh user: " ansible_user
+    read -p "Project path on server: " project_root
+
+    _br
+    clr_green "[ ${env} ] Database parameters :"
+
+    read -p "Database name: " db_name
+    read -p "Database user name: " db_user
+
+    read -p "Site url: " host_url
+
+    _line
+    clr_blue "Use ansible vault <yalla av create> to store securely secret password : "
+    clr_blue "vault_${env}_db_pass: \"your-password\""
+    _line
+
+    # Share vars to template,
+    # Removing comments for known rows
+    # Append to hosts.yml
+    ANSIBLE_ENV="${env}" \
+    ANSIBLE_HOST="${ansible_host}" \
+    ANSIBLE_USER="${ansible_user}" \
+    PROJECT_ROOT="${project_root}" \
+    DB_NAME="${db_name}" \
+    DB_USER="${db_user}" \
+    HOST_URL="${host_url}" \
+    ./yalla/src/lib/templater.sh ./yalla/templates/hosts-tests.yml.tpl | sed -E '/unknown/! s/(#\s*)//' >> hosts.yml
+  }
+
+  _br
+  for env in "${REMOTE_ENV_TYPE[@]}"; do
+    if _ask "$(clr_magenta "Would you like to setup remote ennvironment ${env} ?")"; then
+      if grep -q "${env}:" "hosts.yml"; then
+        _warning "${env} is already set. Edit manually, please"
+        continue
+      else
+        __setup_remote_values $env
+      fi
+    fi
+  done
+
+}
+
+###############################################################################
 # _check_is_yalla_app()
 #
 # Usage:
@@ -720,12 +808,12 @@ HEREDOC
 
 _check_is_yalla_app() {
   if [ ! -d "./yalla" ] && [ "$1" != "init" ]; then
-      echo -e "\n\xE2\x9C\x97 Error ! \n"
-      cat <<HEREDOC
+    echo -e "\n\xE2\x9C\x97 Error ! \n"
+    cat <<HEREDOC
 The "yalla" directory does not appear to be present.
 Run <yalla init> or go to a directory where yall is installed
 
 HEREDOC
-      exit 1;
+    exit 1
   fi
 }
