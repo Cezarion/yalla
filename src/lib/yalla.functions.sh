@@ -365,7 +365,7 @@ declare -x -f _yalla_init_project
 
 _yalla_install_project() {
   _yalla_check_requirements
-  _step_counter --init 10
+  _step_counter --init 3
 
   _line =
   clr_green clr_bold "\xE2\x86\x92 " -n
@@ -384,5 +384,4 @@ _yalla_install_project() {
 
   _line $(clr_bright _)
   _yalla_final_help
-  _line $(clr_bright _)
 }
