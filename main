@@ -39,8 +39,9 @@ readonly LOCAL_BACKUP_PATH="${WORKING_DIR}/${BACKUP_PATH}"
 readonly LOCAL_DOCKER_DB_HOST="127.0.0.1"
 
 ### Current user mail
-readonly USER_EMAIL=$(git config user.email)
-if [ -z "${USER_EMAIL}" ]; then readonly USER_EMAIL="admin@local.host"; fi
+USER_EMAIL=$(git config user.email)
+if [ -z "${USER_EMAIL}" ]; then USER_EMAIL="admin@local.host"; fi
+export USER_EMAIL
 
 ###############################################################################
 ##
