@@ -153,6 +153,18 @@ _join() {
 }
 
 ###############################################################################
+# _toupper()
+#
+# Usage:
+#   _toupper <string>
+#
+
+_toupper() {
+  local str="${*:-}"
+  echo "${str}" | awk '{print toupper($0)}'
+}
+
+###############################################################################
 # _tolower()
 #
 # Usage:
@@ -297,6 +309,31 @@ _spinner() {
 }
 
 ###############################################################################
+# _step_counter
+#
+# Usage:
+#   _step_counter [--reset]
+#
+# Description:
+#   An autocrement counter
+#   Init _step_counter --init [ step number ]
+#
+# Example Usage:
+#   _step_counter --init 10
+#   _step_counter
+#
+
+_step_counter(){
+    if [ "${1}" == "--init" ] && ! [ -z "$2" ]; then
+      export YALLA_STEP_NUMBER=$2
+      export YALLA_STEP_COUNTER=0
+    else
+      YALLA_STEP_COUNTER=$((YALLA_STEP_COUNTER+1))
+      export YALLA_STEP="${YALLA_STEP_COUNTER}/${YALLA_STEP_NUMBER})"
+    fi
+}
+
+###############################################################################
 # _success() _info() _notice() _error()
 #
 # Usage:
@@ -327,7 +364,7 @@ _info(){
 
 _notice(){
   #echo "${BLUE}[ ! ]${NORMAL} ${1} \n" >&2;
-  clr_blue clr_bold "[!]" -n; clr_reset " ${1}" >&2;
+  clr_blue clr_bold "[!]" -n; clr_reset clr_blue " ${1}" >&2;
 }
 #declare -x -f _notice;
 
@@ -337,7 +374,9 @@ _error(){
 #declare -x -f _error;
 
 _line(){
-  printf "\n---------------------------------------------\n"
+  _br
+  printf -v _hr "%*s" $(tput cols) && echo ${_hr// /${1--}}
+  _br
 }
 
 _br(){
@@ -345,8 +384,15 @@ _br(){
 }
 
 _h1(){
-    _line
-    clr_magenta "${1}"
+    _line .
+    clr_magenta clr_bold "${UNICORN}" -n; clr_reset clr_magenta clr_bold _toupper "${1}"
+    _br
+}
+
+_h1_step(){
+    _line $(clr_bright .)
+    _step_counter
+    clr_magenta "${YALLA_STEP} ${1} "
     _br
 }
 

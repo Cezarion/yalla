@@ -11,7 +11,7 @@
 ###############################################################################
 # Exit immediately on error
 set -e
-trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
+trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 
 ###############################################################################
@@ -48,7 +48,7 @@ export USER_EMAIL
 ## This file dispatch yalla command
 ##
 
-. "${WORKING_DIR}/../.devilbox"
+. "${HOME}/.devilbox"
 if [ -f "${WORKING_DIR}/yalla.settings" ]; then
     . "${WORKING_DIR}/yalla.settings"
 fi
@@ -70,8 +70,11 @@ shift
 # Now you convert the string to a table
 #
 
-if [ "${#@}" -ge 1 ]; then
-    IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
+# If there is at least one parameter
+if [ -n "${1}" ]; then
+  IFS=$'\n'; ARGS=($(echo "${@}" | grep -E -o '"[^"]*"|\S+'))
+else
+  ARGS="-h"
 fi
 
 # Run Specific wrapper for
@@ -86,6 +89,7 @@ case "$action" in
                 _yalla_install_project
             ;;
             *)
+                yalla -h
                 _error "${ARGS} is not a registered command"
             ;;
         esac

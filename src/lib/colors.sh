@@ -2,7 +2,7 @@
 
 # Exit immediately on error
 set -e
-trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
+trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 #
 # Constants and functions for terminal colors.
@@ -183,4 +183,3 @@ function clr_dump
     47       clr_whiteb         $CLR_WHITEB
 '
 }
-
