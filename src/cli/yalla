@@ -5,21 +5,13 @@ set -o nounset
 set -o errexit
 set -o pipefail
 IFS=$'\n\t'
-trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
+trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 readonly YALLA_VERSION=0.1.2
 
 ## Set Variables
 
 export WORKING_DIR=$(pwd)
-
-## Parse args
-if [ $# -eq 0 ]; then
-  CMD="-h"
-else
-  CMD=$1
-  shift
-fi
 
 
 
@@ -61,6 +53,7 @@ declare -x -f _yalla_self_install;
 
 _yalla_usage(){
 cat <<HEREDOC
+
 Yalla is a command set to simplify the creation or maintenance of a project.
 
 Requirements :
@@ -77,6 +70,8 @@ Main commands :
   start                 Start services (alias of yalla dr start)
   restart               Restart services (alias of yalla dr restart)
   stop                  Stop services (alias of yalla dr stop)
+  cleanup [ -v]         Remove stopped containers without asking to confirm removal.
+                        < -v > Remove any anonymous volumes attached to containers
   connect               Connect to main docker container, directly in path to project (alias of yalla dr connect)
   update-cli            Update global yalla cli commands
   update-yalla            Update local yalla cli commands and tools
@@ -134,16 +129,26 @@ ansible-vault | av    Execute ansible available actions.
 
 -h --help.            Display this help
 -v, --version         Show yalla version
+
 HEREDOC
 }
 
-# if ! [ -z "$@" ]
-#   then
-#     shift
-#     ARGS=$@
-# fi
+main() {
 
-#while [ $# -gt 0 ]; do
+  local ret=0
+  local CMD=""
+  local params
+
+  ## Parse args
+  if [ $# -eq 0 ]; then
+    printf "No command specified\n\n"
+    _yalla_usage
+    exit 1
+  else
+    CMD=$1
+    shift
+  fi
+
   case "$CMD" in
       # Shortcuts commands
       init | install )
@@ -153,20 +158,27 @@ HEREDOC
           fi
           yalla project "${CMD}"
           ;;
-      stop | start | restart | connect )
-          yalla dr "${CMD}"
+      stop | start | restart | connect | cleanup )
+          if ! [ $# -eq 0 ]; then
+            params=("$@")
+          fi
+
+          yalla dr "${CMD}" "${params[@]}"
           ;;
 
       # Global commands
       docker | dr | ssh | db | mysql | ap | ansible-playbook | ansible-vault | av | project )
           # Store args, prevent $@ collision between scripts
-          readonly PARAMS=("$@")
+
+          if ! [ $# -eq 0 ]; then
+            params=("$@")
+          fi
 
           #Check if yalla path exist or create it if it's a setup task
           _check_is_yalla_app
 
           # Run command
-          ./yalla/main "$CMD" "${PARAMS[@]}"
+          ./yalla/main "$CMD" "${params[@]}"
           ;;
 
       # Utilities commands
@@ -176,6 +188,7 @@ HEREDOC
           ;;
       -h | --help)
           _yalla_usage
+          exit 0
           ;;
       update-cli)
           curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
@@ -192,6 +205,7 @@ install
 stop
 start
 restart
+cleanup
 connect
 docker
 dr
@@ -211,7 +225,13 @@ HEREDOC
         ;;
        *)
           echo "${CMD} is not a registered command"
-          exit 1
+          _yalla_usage
+          ret=1
   esac
-#  shift
-#done
+  shift
+
+  ret=$[$ret+$?]
+  exit $ret
+}
+
+main "$@"

@@ -9,7 +9,7 @@
 
 # Exit immediately on error
 set -e
-trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
+trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
 [[ -d /usr/local/bin ]] || mkdir -p /usr/local/bin
 

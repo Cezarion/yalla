@@ -53,44 +53,8 @@ app:
     db_name: {{DB_DEV_DATABASE_NAME}}
     db_user: {{DB_DEV_USER}}
     db_pwd:  {{DB_DEV_PASS}}
-    db_host: localhost
+    db_host: 127.0.0.1
 
   hosts:
     dev:
       ansible_host: localhost
-
-    staging:
-      ansible_host: 37.187.57.175 # fabernovel.co
-
-      #for db password create or edit a vault. See below
-      db_name:      #database-name
-      #db_user:     #database-user
-
-      host_url:     #https://project-staging.fabernovel.co
-      project_root: #/home/webdev/skeleton-test/project-skeleton-ansible/
-
-    # Uncomment to enable
-    # preprod:
-    #   ansible_host:        #server ip / hostname
-    #   ansible_user: deploy #no sudo user
-    #   become_user:  devops #sudo user
-    #
-    #   #for db password create or edit a vault. See below
-    #   db_name:      #database-name
-    #   db_user:      #database-user
-    #
-    #   host_url:
-    #   project_root:
-
-    # Uncomment to enable
-    # live:
-    #   ansible_host:        #server ip / hostname
-    #   ansible_user: deploy #no sudo user
-    #   become_user:  devops #sudo user
-
-    #   #for db password create or edit a vault. See below
-    #   db_name:
-    #   db_user:      #database-user
-    #
-    #   host_url:
-    #   project_root:
