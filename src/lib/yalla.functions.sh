@@ -205,7 +205,7 @@ function _yalla_init_project() {
     Default: http php mysql
     Available :
     * Php
-    * Httpd | Nginx
+    * Nginx | Apapche
     * MySql | PgSql | Mongo
     * Redis | Memcd
 To define the versions and other configuration elements of the docker environment, edit the file .devil-box-runtime-settings
@@ -213,7 +213,7 @@ HEREDOC
   _br
 
   # customize with your own.
-  options=("Php" "Httpd" "Nginx" "MySql" "PgSql" "Mongo" "Redis" "Memcd")
+  options=("Php" "Httpd" "MySql" "PgSql" "Mongo" "Redis" "Memcd")
 
   menu() {
     echo "Available options:"

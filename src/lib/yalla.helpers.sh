@@ -264,7 +264,7 @@ _yalla_generate_gitignore() {
 # Created by the yalla init script
 
 # Ignore local yalla folder
-./yalla/
+yalla/
 
 # Local env files
 /shared/*.local
