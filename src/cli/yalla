@@ -157,7 +157,7 @@ main() {
 
   case "$CMD" in
       # Shortcuts commands
-      init | install )
+      init | install | info )
           if ! [ -d 'yalla' ]; then
             echo "Clone yalla commands and tools"
             _yalla_self_install

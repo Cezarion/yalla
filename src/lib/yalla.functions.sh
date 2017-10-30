@@ -385,3 +385,18 @@ _yalla_install_project() {
   _line $(clr_bright _)
   _yalla_final_help
 }
+
+###############################################################################
+# _yalla_info_project()
+#
+# Usage:
+#   _yalla_info_project
+#
+# List info from current project
+#
+
+_yalla_info_project() {
+  eval $(_parse_yaml ./hosts.yml "info_")
+
+  echo $info_app_vars_db_name
+}
