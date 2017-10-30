@@ -387,6 +387,23 @@ _yalla_install_project() {
 }
 
 ###############################################################################
+# _yalla_env_url()
+#
+# Usage:
+#   _yalla_env_url
+#
+# Return local url
+#
+
+_yalla_env_url(){
+  # Load local devilbox configuration
+  . ./.env
+  local dirname=$(basename $(pwd))
+  echo "http://${dirname}.${TLD_SUFFIX}"
+
+}
+
+###############################################################################
 # _yalla_info_project()
 #
 # Usage:
@@ -397,6 +414,33 @@ _yalla_install_project() {
 
 _yalla_info_project() {
   eval $(_parse_yaml ./hosts.yml "info_")
+  declare -a available_entries=( ansible_host ansible_user become_user db_name db_user host_url project_root )
+  declare -a available_env=( dev staging preprod live )
 
-  echo $info_app_vars_db_name
+  for env in "${available_env[@]}"; do
+    _h1 $env
+
+    for entry in "${available_entries[@]}"; do
+      # If it's dev env, some hosts var are set in app/vars and not in app/hosts
+      if [ "${env}" == "dev" ] && [ "${entry}" != "ansible_host" ]; then
+        eval d=(\${info_app_vars_$entry})
+
+        # Adjust settings for local env
+        if [ "${entry}" == "project_root" ]; then d=$(pwd); fi
+        if [ "${entry}" == "host_url" ]; then d=$(_yalla_env_url); fi
+      else
+        eval d=(\${info_app_hosts_${env}_$entry})
+      fi
+
+      echo "${entry}: ${d}"
+    done
+  done
+
+  _yalla_env_url
+  #
+  # if [ ! -z "${info_app_hosts_live_db_name}" ]; then
+  #   echo $info_app_hosts_live_db_name
+  # else
+  #   echo "nop ${info_app_hosts_live_db_name}"
+  # fi;
 }
