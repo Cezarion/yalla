@@ -2,6 +2,12 @@
 
 pipelines:
   branches:
+    dafault:
+      - step:
+          name: Build archive
+          script:
+            - export BITBUCKET_COMMIT=$BITBUCKET_COMMIT
+            - ./ci/bitbucket-deploy.sh
     yalla:
       - step:
           name: Build archive
