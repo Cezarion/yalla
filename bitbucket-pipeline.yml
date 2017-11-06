@@ -5,4 +5,4 @@ pipelines:
     yalla:
       - step:
           script:
-            - ssh deploy@37.187.57.175 ls -l /home/webdev/yalla/site/dl/
+            - ssh deploy@37.187.57.175 ls -l /home/webdev/yalla/site/
