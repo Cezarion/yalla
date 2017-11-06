@@ -2,23 +2,11 @@
 
 pipelines:
   branches:
-    default:
-      - step:
-          name: Build archive
-          script:
-            - echo "Make git archive for commit ${BITBUCKET_COMMIT}"
-            - git archive --format=tar.gz -o deploy.tgz $BITBUCKET_COMMIT
-      - step:
-          name: Transfert archive
-          script:
-            - scp deploy.tgz deploy@37.187.57.175:/home/webdev/yalla/site/dl/
     yalla:
       - step:
           name: Build archive
           script:
             - echo "Make git archive for commit ${BITBUCKET_COMMIT}"
             - git archive --format=tar.gz -o deploy.tgz $BITBUCKET_COMMIT
-      - step:
-          name: Transfert archive
-          script:
+            - echo "Transfert archive"
             - scp deploy.tgz deploy@37.187.57.175:/home/webdev/yalla/site/dl/
