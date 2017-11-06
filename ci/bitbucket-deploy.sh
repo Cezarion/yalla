@@ -19,7 +19,7 @@ version=`git diff HEAD^..HEAD -- "$(git rev-parse --show-toplevel)"/src/cli/yall
 if [ "$version" != "" ]; then
     git tag -a "v$version" -m "`git log -1 --format=%s`"
     echo "Created a new tag, v$version"
-    git push && git push --tags
+    git push --tags
 else
     echo "No new version"
 fi

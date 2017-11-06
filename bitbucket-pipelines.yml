@@ -1,8 +1,14 @@
 #image: alpine:3.6
 
 pipelines:
-  branches:
-    dafault:
+  default:
+    - step:
+        name: Build archive
+        script:
+          - export BITBUCKET_COMMIT=$BITBUCKET_COMMIT
+          - ./ci/bitbucket-deploy.sh
+  custom:
+    testci:
       - step:
           name: Build archive
           script:
