@@ -4,8 +4,12 @@
 
 echo "Make git archive for commit ${BITBUCKET_COMMIT}"
 #git archive --format=tar.gz -o deploy.tgz $BITBUCKET_COMMIT
-version1=`git diff HEAD^..HEAD -- "$(git rev-parse --show-toplevel)"/src/cli/yalla | grep '^\+.*YALLA_VERSION' | sed -E 's/[^0-9\.]//g'` | echo $version1
-version2=`git diff HEAD^..HEAD -- "$(git rev-parse --show-toplevel)"/src/cli/yalla | grep '^\+.*YALLA_VERSION' | sed -s 's/[^0-9\.]//g'` | echo $version2
+
+#Darwin
+#version=`git diff HEAD^..HEAD -- "$(git rev-parse --show-toplevel)"/src/cli/yalla | grep '^\+.*YALLA_VERSION' | sed -E 's/[^0-9\.]//g'`
+
+# Lnux
+version=`git diff HEAD^..HEAD -- "$(git rev-parse --show-toplevel)"/src/cli/yalla | grep '^\+.*YALLA_VERSION' | sed -s 's/[^0-9\.]//g'`
 
 if [ "$version" != "" ]; then
     git tag -a "v$version" -m "`git log -1 --format=%s`"
