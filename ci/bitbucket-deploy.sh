@@ -5,6 +5,11 @@
 echo "Make git archive for commit ${BITBUCKET_COMMIT}"
 #git archive --format=tar.gz -o deploy.tgz $BITBUCKET_COMMIT
 
+user=`git --no-pager show -s --format='%an'`
+userEmail=`git --no-pager show -s --format='%ae'`
+
+git config --global user.email "${userEmail}"
+git config --global user.name "${user}"
 #Darwin
 #version=`git diff HEAD^..HEAD -- "$(git rev-parse --show-toplevel)"/src/cli/yalla | grep '^\+.*YALLA_VERSION' | sed -E 's/[^0-9\.]//g'`
 
