@@ -7,7 +7,9 @@ set -o pipefail
 IFS=$'\n\t'
 trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
-readonly YALLA_VERSION=0.1.4.5
+## Never edit manually this line.
+## Run sh ci/bumversion.sh instead
+readonly YALLA_VERSION=0.1.2
 
 ## Set Variables
 
