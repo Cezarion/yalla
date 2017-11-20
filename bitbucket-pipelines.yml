@@ -1,12 +1,12 @@
 #image: tennox/rsync-ssh-git
 
 pipelines:
-  default:
-    - step:
-        name: Build archive
-        script:
-          - export BITBUCKET_COMMIT=$BITBUCKET_COMMIT
-          - ./ci/bitbucket-deploy.sh
+  # default:
+  #   - step:
+  #       name: Build archive
+  #       script:
+  #         - export BITBUCKET_COMMIT=$BITBUCKET_COMMIT
+  #         - ./ci/bitbucket-deploy.sh
   tags:
     v*:
       - step:
