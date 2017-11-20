@@ -1,4 +1,4 @@
-image: tennox/rsync-ssh-git
+#image: tennox/rsync-ssh-git
 
 pipelines:
   default:
