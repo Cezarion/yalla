@@ -7,16 +7,10 @@ pipelines:
         script:
           - export BITBUCKET_COMMIT=$BITBUCKET_COMMIT
           - ./ci/bitbucket-deploy.sh
-  custom:
-    testci:
+  tags:
+    v*:
       - step:
           name: Build archive
           script:
-            - export BITBUCKET_COMMIT=$BITBUCKET_COMMIT
-            - ./ci/bitbucket-deploy.sh
-    yalla:
-      - step:
-          name: Build archive
-          script:
-            - export BITBUCKET_COMMIT=$BITBUCKET_COMMIT
-            - ./ci/bitbucket-deploy.sh
+            - export BITBUCKET_TAG=$BITBUCKET_COMMIT
+            - git push ssh://webdev@37.187.57.175:/home/webdev/yalla/deploy.git $BITBUCKET_TAG
