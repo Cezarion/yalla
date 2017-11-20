@@ -33,7 +33,7 @@ if [ ! -a BASE_VERSION ]; then
         INPUT_STRING=$SUGGESTED_VERSION
     fi
     echo "Will set new version to be $INPUT_STRING"
-
+    echo "${INPUT_STRING}" > VERSION
     echo "Version $INPUT_STRING:" > tmpfile
     git log --pretty=format:" - %s" "v$BASE_VERSION"...HEAD >> tmpfile
     echo "" >> tmpfile

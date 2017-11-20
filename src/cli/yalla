@@ -193,7 +193,7 @@ main() {
           exit 0
           ;;
       update-cli)
-          curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
+          curl -s https://yalla-stable.fabernovel.co/cli-install | sh
           ;;
       update-yalla)
           ./yalla/main update
