@@ -111,13 +111,9 @@ function _yalla_init_project() {
 
   _h1 "Create directories and add sample files :"
 
-  if ! [ -f ".gitignore" ]; then
-    _yalla_make_directories
-    _yalla_copy_samples
-    _br
-  else
-    _notice "Folders and samples seems to be exist"
-  fi
+  _yalla_make_directories
+  _yalla_copy_samples
+  _br
 
   ###############################################################################
   ## 1/10 Check if a yalla settings already exist
