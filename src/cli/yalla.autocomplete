@@ -1,9 +1,15 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html><head>
-<title>404 Not Found</title>
-</head><body>
-<h1>Not Found</h1>
-<p>The requested URL /yalla.autocomplete was not found on this server.</p>
-<hr>
-<address>Apache/2.4.10 (Debian) Server at yalla-stable.fabernovel.co Port 443</address>
-</body></html>
+#!/usr/bin/env bash
+
+_script()
+{
+  _script_commands=$(/usr/local/bin/yalla shortlist)
+
+  local cur
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  COMPREPLY=( $(compgen -W "${_script_commands}" -- ${cur}) )
+
+  return 0
+}
+
+complete -F _script /usr/local/bin/yalla
