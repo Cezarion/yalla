@@ -201,7 +201,7 @@ function _yalla_init_project() {
     Default: http php mysql
     Available :
     * Php
-    * Nginx | Apapche
+    * Nginx | Apache
     * MySql | PgSql | Mongo
     * Redis | Memcd
 To define the versions and other configuration elements of the docker environment, edit the file .devil-box-runtime-settings
