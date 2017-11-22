@@ -1,12 +1,14 @@
 #image: tennox/rsync-ssh-git
 
 pipelines:
-  default:
-    - step:
-        name: "Deploy nightly version ${BITBUCKET_BRANCH} / ${BITBUCKET_COMMIT}"
-        script:
-          - echo $BITBUCKET_BRANCH / $BITBUCKET_COMMIT
-          - git push ssh://webdev@37.187.57.175:/home/webdev/yalla/deploy-nightly.git $BITBUCKET_BRANCH
+  branche:
+    yalla:
+      - step:
+          name: "Deploy nightly version ${BITBUCKET_BRANCH} / ${BITBUCKET_COMMIT}"
+          script:
+            - echo $BITBUCKET_BRANCH / $BITBUCKET_COMMIT
+            - echo $(git describes --tags)
+            - git push ssh://webdev@37.187.57.175:/home/webdev/yalla/deploy-nightly.git $BITBUCKET_BRANCH
   tags:
     v*:
       - step:
