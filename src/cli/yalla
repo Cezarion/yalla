@@ -53,7 +53,10 @@ _yalla_self_install(){
     echo "Clone yalla commands and tools"
 
     echo ""
-    git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
+    git clone git@bitbucket.org:buzzaka/project-skeleton.git yalla && \
+    cd yalla && \
+    git checkout -b "v${YALLA_VERSION}" "v${YALLA_VERSION}" && \
+    cd ..
     echo ""
 }
 
@@ -161,7 +164,6 @@ main() {
       # Shortcuts commands
       init | install | info )
           if ! [ -d 'yalla' ]; then
-            echo "Clone yalla commands and tools"
             _yalla_self_install
           fi
           yalla project "${CMD}"
@@ -191,15 +193,17 @@ main() {
 
       # Utilities commands
       -v | --version)
+          local VERSION=$(curl -s https://yalla-stable.fabernovel.co/VERSION)
           echo 'yalla version ' ${YALLA_VERSION}
           echo 'yalla path ' $(which yalla)
+          echo "Remote Version ${VERSION}"
           ;;
       -h | --help)
           _yalla_usage
           exit 0
           ;;
       update-cli)
-          curl -s https://yalla-stable.fabernovel.co/cli-install | sh
+          curl -s https://yalla-stable.fabernovel.co/src/cli-install | sh
           ;;
       update-yalla)
           ./yalla/main update
@@ -226,7 +230,7 @@ av
 project
 ssh
 -h --help
--v, --version
+-v --version
 update-cli
 update-yalla
 HEREDOC
