@@ -1,3 +1,27 @@
+Version 0.1.4:
+ - Merged in yalla#ci (pull request #30)
+ - Fix typo
+ - fixes #4, remove .gitignore check, it is no more necessary, yalla asks to user before overwriting the file
+ - Restore autocomplete
+ - Cleanup changelog
+ - Move nightly build from all branche to main branche (yalla)
+ - Yalla install is now mapped to a semantic versioning schema, and yalla tools are installed from a tag
+ - increase version
+ - Version bump to 0.1.3
+ - Merge branch 'yalla#ci' of bitbucket.org:buzzaka/project-skeleton into yalla#ci
+ - increase version
+ - Version bump to 0.1.3
+ - Now to target repository are available : -> push to a branch : see pipeline:default -> sh ci/make-release.sh : build a new release with semantique versioning workflow.
+ - Merge branch 'EX-16-etq-dev-je-peux-initier-un-nouveau' of bitbucket.org:buzzaka/project-skeleton into EX-16-etq-dev-je-peux-initier-un-nouveau
+ - Fix sercices names during install. @todo test and update this section
+ - Add a <yalla info> cmd that's return current project informations
+ - Add a <yalla info> cmd
+ - Add a bash yaml parser
+ - Remove no spaces for autocomplete
+ - Merge remote-tracking branch 'origin/yalla' into EX-16-etq-dev-je-peux-initier-un-nouveau
+ - Fix conflicts
+ - Fix readonly
+
 Version 0.1.3:
  - Add to script to create semantic versionning tag
  - Add custom actions to pipeline
