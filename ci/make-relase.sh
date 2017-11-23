@@ -43,7 +43,7 @@ if [ ! -a BASE_VERSION ]; then
     sed -i '' "s/YALLA_VERSION=${BASE_VERSION}/YALLA_VERSION=${INPUT_STRING=}/g" src/cli/yalla
     mv tmpfile CHANGELOG
     git add CHANGELOG
-    git commit -m "Version bump to $INPUT_STRING" VERSION src/cli/yalla src/lib/variables.sh
+    git commit -m "Version bump to $INPUT_STRING" VERSION src/cli/yalla src/lib/variables.sh CHANGELOG
     git tag -a -m "Tagging version $INPUT_STRING" "v$INPUT_STRING"
     git push origin --tags
 else
