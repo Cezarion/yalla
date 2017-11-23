@@ -9,7 +9,7 @@ trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); 
 
 ## Never edit manually this line.
 ## Run sh ci/bumversion.sh instead
-readonly YALLA_VERSION=0.1.4
+readonly YALLA_VERSION=0.1.5
 
 ## Set Variables
 
