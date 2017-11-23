@@ -14,13 +14,13 @@ trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); 
 [[ -d /usr/local/bin ]] || mkdir -p /usr/local/bin
 
 # Download cli script
-curl -o /usr/local/bin/yalla  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/yalla;
+curl -o /usr/local/bin/yalla  https://yalla-stable.fabernovel.co/src/cli/yalla;
 
 # Set script as executable
 chmod +x /usr/local/bin/yalla;
 
 # Download autocomplete
-curl -o "${HOME}/.yalla.autocomplete"  https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/yalla.autocomplete;
+curl -o "${HOME}/.yalla.autocomplete"  https://yalla-stable.fabernovel.co/src/cli/yalla.autocomplete;
 
 chmod +x "${HOME}/.yalla.autocomplete";
 

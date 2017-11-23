@@ -3,6 +3,10 @@
 set -e
 trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
+## Never edit manually this line.
+## Run sh ci/bumversion.sh instead
+readonly YALLA_VERSION=1.1.4
+
 # Folder path where application code is located
 readonly APPLICATION_PATH_NAME='application'
 

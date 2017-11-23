@@ -48,6 +48,7 @@ export USER_EMAIL
 ## This file dispatch yalla command
 ##
 
+# shellcheck source=/Users/$(whoami)/devilbox
 . "${HOME}/.devilbox"
 if [ -f "${WORKING_DIR}/yalla.settings" ]; then
     . "${WORKING_DIR}/yalla.settings"
@@ -87,6 +88,9 @@ case "$action" in
             ;;
             install )
                 _yalla_install_project
+            ;;
+            info )
+                _yalla_info_project
             ;;
             *)
                 yalla -h

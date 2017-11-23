@@ -7,7 +7,9 @@ set -o pipefail
 IFS=$'\n\t'
 trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); pwd)/$(basename "$0"). Exit code: $?" >&2' ERR
 
-readonly YALLA_VERSION=0.1.4.4
+## Never edit manually this line.
+## Run sh ci/bumversion.sh instead
+readonly YALLA_VERSION=1.1.4
 
 ## Set Variables
 
@@ -43,7 +45,13 @@ HEREDOC
 #
 
 _yalla_self_install(){
-    echo "Pull yalla tools"
+    if ! [ -z $( pwd | grep 'yalla') ]; then
+      echo -e $'\e[31;01m' "\n\xE2\x9C\x97 Error !"
+      echo -e "It seems that you are trying to install yalla inside yalla ! \n"
+    fi
+
+    echo "Clone yalla commands and tools"
+
     echo ""
     git clone -b yalla --single-branch git@bitbucket.org:buzzaka/project-skeleton.git yalla
     echo ""
@@ -151,7 +159,7 @@ main() {
 
   case "$CMD" in
       # Shortcuts commands
-      init | install )
+      init | install | info )
           if ! [ -d 'yalla' ]; then
             echo "Clone yalla commands and tools"
             _yalla_self_install
@@ -191,7 +199,7 @@ main() {
           exit 0
           ;;
       update-cli)
-          curl -s https://buzzaka:Buzz06\$dev@yalla-dl.fabernovel.co/cli-install | sh
+          curl -s https://yalla-stable.fabernovel.co/cli-install | sh
           ;;
       update-yalla)
           ./yalla/main update
