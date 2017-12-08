@@ -2,7 +2,7 @@
 
 pipelines:
   branche:
-    release-*:
+    release*:
       - step:
           name: "Deploy nightly version ${BITBUCKET_BRANCH} / ${BITBUCKET_COMMIT}"
           script:
