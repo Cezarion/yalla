@@ -329,17 +329,21 @@ HEREDOC
   _br
   _success "Yalla settings are now completed"
 
-  ###############################################################################
-  ## Create user and database
-  ##
+  if [ ! -z "${DB_DEV_DATABASE_NAME}" ]; then
+    ###############################################################################
+    ## Create user and database
+    ##
 
-  _yalla_mysql_create_user_and_db
+    _yalla_mysql_create_user_and_db
 
-  ###############################################################################
-  ## Import an existing database ?
-  ##
-  _h1_step "Import a database ? "
-  _mysql_import_database
+    ###############################################################################
+    ## Import an existing database ?
+    ##
+    _h1_step "Import a database ? "
+    _mysql_import_database
+
+  fi
+
 
   ###############################################################################
   ## end message

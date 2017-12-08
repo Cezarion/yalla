@@ -25,7 +25,7 @@ _check_is_yalla_app() {
       echo -e "\n\xE2\x9C\x97 Error ! \n"
       cat <<HEREDOC
 The "yalla" directory does not appear to be present.
-Run <yalla create-project> or go to a directory where yall is installed
+Run <yalla create-project> or go to a directory where yalla is installed
 
 HEREDOC
       exit 1;
@@ -224,6 +224,8 @@ main() {
           curl -s https://yalla-stable.fabernovel.co/src/cli-install | sh
           ;;
       update-yalla)
+          _check_is_yalla_app
+
           ## recently, repository project-skeleton was rename yalla.
           ## It's necessary to update old remote references
           readonly old_repo=$(cat ./yalla/.git/config | grep 'git@bitbucket.org:buzzaka/project-skeleton.git')
