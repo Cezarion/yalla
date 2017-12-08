@@ -200,7 +200,7 @@ main() {
 
       # Utilities commands
       -v | --version)
-          local VERSION=$(curl -s https://yalla-stable.fabernovel.co/VERSION)
+          local VERSION=$(curl -s -L https://yalla-stable.fabernovel.co/VERSION)
           echo 'Local cli version ' ${YALLA_VERSION}
           echo "Remote cli Version ${VERSION}"
 
@@ -221,7 +221,7 @@ main() {
           exit 0
           ;;
       update-cli)
-          curl -s https://yalla-stable.fabernovel.co/src/cli-install | sh
+          curl -s -L https://yalla-stable.fabernovel.co/src/cli-install | sh
           ;;
       update-yalla)
           _check_is_yalla_app
