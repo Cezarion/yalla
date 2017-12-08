@@ -309,6 +309,48 @@ _spinner() {
 }
 
 ###############################################################################
+# _parse_yaml
+#
+# Usage:
+#   eval $(_parse_yaml yaml.filename.yml "prefix_")
+#   echo $prefix_yaml_entry
+#
+# Description:
+#   read yaml from bash script
+#
+# Example Usage:
+#   zconfig.yml :
+#   development:
+#     adapter: mysql2
+#     encoding: utf8
+#     database: my_database
+#     username: root
+#     password:
+#
+# read yaml file
+# eval $(_parse_yaml zconfig.yml "config_")
+#
+# access yaml content
+#  echo $config_development_database
+#
+
+_parse_yaml() {
+   local prefix=$2
+   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+   sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+   awk -F$fs '{
+      indent = length($1)/2;
+      vname[indent] = $2;
+      for (i in vname) {if (i > indent) {delete vname[i]}}
+      if (length($3) > 0) {
+         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+         printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
+      }
+   }'
+}
+
+###############################################################################
 # _step_counter
 #
 # Usage:
