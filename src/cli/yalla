@@ -11,6 +11,8 @@ trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); 
 ## Run sh ci/bumversion.sh instead
 readonly YALLA_VERSION=0.1.5
 
+## Main repo
+
 ## Set Variables
 
 export WORKING_DIR=$(pwd)
@@ -53,7 +55,7 @@ _yalla_self_install(){
     echo "Clone yalla commands and tools"
 
     echo ""
-    git clone git@bitbucket.org:buzzaka/project-skeleton.git yalla && \
+    git clone git@bitbucket.org:buzzaka/yalla.git yalla && \
     cd yalla && \
     git checkout -b "v${YALLA_VERSION}" "v${YALLA_VERSION}" && \
     cd ..
@@ -72,6 +74,11 @@ Docker   : https://www.docker.com/community-edition#download
 Devilbox : https://bitbucket.org/buzzaka/devilbox
 
 ----------------------------------------------------------------------
+
+Alias :
+---------------
+
+  yalla-projects        Move to main folder that contains the projects (/Users/[USER]/Webserver/devilbox/../www-docker)
 
 Main commands :
 ---------------
@@ -236,9 +243,10 @@ update-yalla
 HEREDOC
         ;;
        *)
-          echo "${CMD} is not a registered command"
           _yalla_usage
+          echo -e $'\e[31;01m' "\n[\xE2\x9C\x97] ${CMD} is not a registered command"
           ret=1
+          ;;
   esac
   shift
 

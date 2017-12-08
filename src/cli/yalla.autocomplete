@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# Load devilbox settings
+# HOST_PATH_HTTPD_DATADIR : projects path
+# DEVILBOX_LOCAL_PATH : path to devilbox
+
+if [ -f "${HOME}/.devilbox" ]; then
+  . "${HOME}/.devilbox"
+  alias yalla-projects="cd ${HOST_PATH_HTTPD_DATADIR}"
+fi
+
+
 _script()
 {
   _script_commands=$(/usr/local/bin/yalla shortlist)
