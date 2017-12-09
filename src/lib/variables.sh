@@ -5,7 +5,7 @@ trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); 
 
 ## Never edit manually this line.
 ## Run sh ci/bumversion.sh instead
-readonly YALLA_VERSION=0.1.6
+readonly YALLA_VERSION=0.1.7
 
 # Folder path where application code is located
 readonly APPLICATION_PATH_NAME='application'
