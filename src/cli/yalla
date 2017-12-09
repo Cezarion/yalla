@@ -9,7 +9,9 @@ trap 'echo "Aborting due to errexit on line $LINENO. File $(cd $(dirname "$0"); 
 
 ## Never edit manually this line.
 ## Run sh ci/bumversion.sh instead
-readonly YALLA_VERSION=0.1.5
+readonly YALLA_VERSION=0.1.7
+
+## Main repo
 
 ## Set Variables
 
@@ -23,7 +25,7 @@ _check_is_yalla_app() {
       echo -e "\n\xE2\x9C\x97 Error ! \n"
       cat <<HEREDOC
 The "yalla" directory does not appear to be present.
-Run <yalla create-project> or go to a directory where yall is installed
+Run <yalla create-project> or go to a directory where yalla is installed
 
 HEREDOC
       exit 1;
@@ -53,7 +55,7 @@ _yalla_self_install(){
     echo "Clone yalla commands and tools"
 
     echo ""
-    git clone git@bitbucket.org:buzzaka/project-skeleton.git yalla && \
+    git clone git@bitbucket.org:buzzaka/yalla.git yalla && \
     cd yalla && \
     git checkout -b "v${YALLA_VERSION}" "v${YALLA_VERSION}" && \
     cd ..
@@ -72,6 +74,11 @@ Docker   : https://www.docker.com/community-edition#download
 Devilbox : https://bitbucket.org/buzzaka/devilbox
 
 ----------------------------------------------------------------------
+
+Alias :
+---------------
+
+  yalla-projects        Move to main folder that contains the projects (/Users/[USER]/Webserver/devilbox/../www-docker)
 
 Main commands :
 ---------------
@@ -193,20 +200,58 @@ main() {
 
       # Utilities commands
       -v | --version)
-          local VERSION=$(curl -s https://yalla-stable.fabernovel.co/VERSION)
-          echo 'yalla version ' ${YALLA_VERSION}
-          echo 'yalla path ' $(which yalla)
-          echo "Remote Version ${VERSION}"
+          local VERSION=$(curl -s -L https://yalla-stable.fabernovel.co/VERSION)
+          echo 'Local cli version ' ${YALLA_VERSION}
+          echo "Remote cli Version ${VERSION}"
+
+          if [ ! -f "yalla/VERSION" ]; then
+            echo -e $'\e[31;01m' "\n[\xE2\x9C\x97] Unable to find yalla tools version."
+            echo "Please run <yalla update-yalla>"
+          else
+            CURRENT=$(cat yalla/VERSION)
+            if [ "${CURRENT}" != ${YALLA_VERSION} ]; then
+              echo -e $'\e[31;01m' "\n[\xE2\x9C\x97] Your cli version (${YALLA_VERSION}) and your tools version (${CURRENT}) mismatch."
+              echo "Please run <yalla update-yalla> or/and <yalla update-cli>"
+            fi
+          fi
+
           ;;
       -h | --help)
           _yalla_usage
           exit 0
           ;;
       update-cli)
-          curl -s https://yalla-stable.fabernovel.co/src/cli-install | sh
+          curl -s -L https://yalla-stable.fabernovel.co/src/cli/cli-install.sh | sh
           ;;
       update-yalla)
-          ./yalla/main update
+          _check_is_yalla_app
+
+          ## recently, repository project-skeleton was rename yalla.
+          ## It's necessary to update old remote references
+          readonly old_repo=$(cat ./yalla/.git/config | grep 'git@bitbucket.org:buzzaka/project-skeleton.git')
+
+          if [ ! -z "$old_repo" ]; then
+            echo -e $'\e[33;01m' "\n[\xE2\x9A\xA0 ] An outdated remote is detected in Yalla tools. Patch it" $'\e[0m'
+            sed -i '' "s/git@bitbucket.org:buzzaka\/project-skeleton.git/git@bitbucket.org:buzzaka\/yalla.git/g" ./yalla/.git/config
+            git -C ./yalla/.git fetch --tags origin
+          fi
+
+          # Check if there are pending changes
+          readonly output=$(git -C $(pwd)/yalla status --porcelain)
+
+          if [ ! -z "$output" ]; then
+              echo -e $'\e[33;01m' "\n[\xE2\x9A\xA0 ] There are pending changes. Please commit or abort and re-run <yalla update-yalla>" $'\e[0m'
+              exit 0
+          fi
+
+          CURRENT=$(cat yalla/VERSION)
+          if [ "${CURRENT}" != ${YALLA_VERSION} ]; then
+            git -C ./yalla/.git fetch origin --tags --prune
+            echo -e $'\e[32;01m' "\n[\xE2\x84\xB9] Now checkout last version v${YALLA_VERSION}" $'\e[0m'
+            git -C $(pwd)/yalla checkout "tags/v${YALLA_VERSION}" -B "v${YALLA_VERSION}"
+          else
+            echo -e $'\e[32;01m' "\n[\xE2\x84\xB9] You already have latest version v${YALLA_VERSION}" $'\e[0m'
+          fi
           ;;
 
       # Autocomplete
@@ -236,9 +281,10 @@ update-yalla
 HEREDOC
         ;;
        *)
-          echo "${CMD} is not a registered command"
           _yalla_usage
+          echo -e $'\e[31;01m' "\n[\xE2\x9C\x97] ${CMD} is not a registered command"
           ret=1
+          ;;
   esac
   shift
 
