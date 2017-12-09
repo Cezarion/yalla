@@ -221,7 +221,7 @@ main() {
           exit 0
           ;;
       update-cli)
-          curl -s -L https://yalla-stable.fabernovel.co/src/cli-install | sh
+          curl -s -L https://yalla-stable.fabernovel.co/src/cli/cli-install.sh | sh
           ;;
       update-yalla)
           _check_is_yalla_app
