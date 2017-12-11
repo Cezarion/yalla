@@ -87,7 +87,7 @@ NEW_GID=1000
 ###
 ### Timezone for all dockers and service config files
 ###
-TIMEZONE=Europe/Berlin
+TIMEZONE=Europe/Paris
 
 
 
@@ -181,8 +181,8 @@ PHP_SERVER=php-fpm-7.2
 ### 1.2 Choose HTTPD Server Image
 ###
 #HTTPD_SERVER=apache-2.2
-#HTTPD_SERVER=apache-2.4
-HTTPD_SERVER=nginx-stable
+HTTPD_SERVER=apache-2.4
+#HTTPD_SERVER=nginx-stable
 #HTTPD_SERVER=nginx-mainline
 
 
@@ -277,7 +277,8 @@ MONGO_SERVER=3.4
 ###
 ### $ docker-compose rm -f
 ###
-HOST_PATH_HTTPD_DATADIR=~/Webserver/www-docker
+### This variable is already set in devilbox. It's not necessary to reset here
+### HOST_PATH_HTTPD_DATADIR=./data/www
 
 ###
 ### Local filesystem path to mysql/mariadb datadir.
@@ -397,7 +398,7 @@ HTTPD_DOCROOT_DIR=htdocs
 ###
 ### When changing this value, restart the devilbox.
 ###
-HTTPD_TEMPLATE_DIR=.devilbox
+HTTPD_TEMPLATE_DIR=.code
 
 
 ###
