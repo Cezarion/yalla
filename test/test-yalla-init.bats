@@ -5,24 +5,16 @@ load 'libs/bats-assert/load'
 load 'helpers'
 
 setup() {
-  setupYallaFullEnv
-  pwd
+  setupYallaEnv
 }
 
 teardown() {
   teardownYallaEnv
 }
 
-yalla="./src/cli/yalla"
-
-
 @test "[YALLA] Test init" {
-
-  #yalla="${YALLA_HOME}/${yalla}"
-  echo $YALLA_HOME
-  echo 'popo'
-  exit 1
-  run $(which $yalla)
+  skip
+  run echo { Y; Y; } | $YALLA_CLI init
 
   assert_success
   [ "$status" -eq 0 ]

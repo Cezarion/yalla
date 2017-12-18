@@ -52,7 +52,7 @@ _yalla_check_requirements() {
   if ! _command_exists docker; then
     _error "Docker is required to use yalla."
     echo -e "Please install Docker CE ${DOCKER_VERSION_MIN} \nhttps://www.docker.com/docker-mac"
-    exit 0
+    exit 1
   fi
 
   if ! [[ $(docker version | grep "${DOCKER_VERSION_MIN}") ]]; then
@@ -63,14 +63,14 @@ _yalla_check_requirements() {
   if ! [ -f "${HOME}/.devilbox" ]; then
     _error "Devilbox config file is missing"
     echo -e "https://bitbucket.org/buzzaka/devilbox/src#markdown-header-usage-as-a-common-stack-fabernovel-code-stack"
-    exit 0
+    exit 1
   fi
 
   if ! [ -d "${DEVILBOX_LOCAL_PATH}" ]; then
     _error "Devilbox is missing"
     echo -e "Please install Devilbox"
     echo -e "https://bitbucket.org/buzzaka/devilbox/src#markdown-header-usage-as-a-common-stack-fabernovel-code-stack"
-    exit 0
+    exit 1
   fi
 }
 

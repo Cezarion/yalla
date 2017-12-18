@@ -22,24 +22,32 @@ assert_contains() {
 }
 
 setupYallaEnv() {
-  export YALLA_DIRECTORY="$(mktemp -d)"
-  export YALLA_HOME="$(mktemp -d)"
-  export HOME=$YALLA_HOME
-}
+  if ! [ -f "${HOME}/.devilbox" ]; then
+    echo "Devilbox settings are missing in ${HOME}"
+    echo "Install devilbox"
+    exit 1
+  fi
 
-setupYallaFullEnv() {
-  setupYallaEnv
+  . "${HOME}/.devilbox"
 
-  mkdir -p $YALLA_HOME/yalla
-  rsync -avz . $YALLA_HOME/yalla --exclude=.git
+  # Create a test directory
+  mkdir -p $HOST_PATH_HTTPD_DATADIR/yalla-test
+  export YALLA_HOME="${HOST_PATH_HTTPD_DATADIR}/yalla-test"
+
+  # Put yalla code
+  rsync -az . $YALLA_HOME/yalla --exclude=.git
+  export YALLA_DIRECTORY="${YALLA_HOME}/yalla"
+
+  # Setup Yalla cli script
+  export YALLA_CLI="$YALLA_DIRECTORY/src/cli/yalla"
 
   cd $YALLA_HOME
 }
 
 teardownYallaEnv() {
   if [ $BATS_TEST_COMPLETED ]; then
-    rm -rf $YALLA_DIRECTORY
-    rm -rf $YALLA_HOME
+    rm -r $YALLA_DIRECTORY
+    rm -r $YALLA_HOME
   else
     echo "** Did not delete $YALLA_DIRECTORY, as test failed **"
   fi

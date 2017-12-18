@@ -5,31 +5,30 @@ load 'libs/bats-assert/load'
 load 'helpers'
 
 setup() {
-  setupYallaFullEnv
+  setupYallaEnv
 }
 
 teardown() {
   teardownYallaEnv
 }
 
-yalla="./src/cli/yalla"
 
 @test "[YALLA] Should print help successfully if requested" {
-  run $yalla --help
+  run $YALLA_CLI --help
 
   assert_success
   assert_line "Main commands :"
 }
 
 @test "[YALLA] Should print help if no arguments are provided, and exit unsuccessfully" {
-  run $yalla
+  run $YALLA_CLI
 
   assert_failure
   assert_line "Main commands :"
 }
 
 @test "[YALLA] Should print help if an unrecognized command is used, and exit unsuccessfully" {
-  run $yalla imaginary-command
+  run $YALLA_CLI imaginary-command
 
   assert_failure
   assert_line "Main commands :"
