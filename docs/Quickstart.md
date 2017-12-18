@@ -37,7 +37,6 @@ $ $user@machine:www-docker:
 
 ```
 $ $user@machine:www-docker: mkdir new-project && cd $_
-$ $user@machine:www-docker/new-project: mkdir new-project && cd $_
 $ $user@machine:www-docker/new-project: yalla init
 ```
 
