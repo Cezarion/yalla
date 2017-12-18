@@ -43,12 +43,13 @@ Table of content
 Requirements
 ============
 
-| Prerequisite                      | How to check    | How to install                                                                          |
-|-----------------------------------|-----------------|-----------------------------------------------------------------------------------------|
-| git >= 2                          | `git --version` | [git-scm.com](https://git-scm.com/book/fr/v1/D%C3%A9marrage-rapide-Installation-de-Git) |
-| docker >= 1.12                    | `docker -v`     | [docker.com](https://www.docker.com/community-edition)                                  |
-| devilbox / Forked by Code >= 0.11 | `git branch`    | [devilbox](https://bitbucket.org/buzzaka/devilbox)                                      |
-| Yalla cli                         | `which yalla`   | [yalla-cli](#markdown-header-install-yalla-cli)                                         |
+| Prerequisite                      | How to check        | How to install                                                                          |
+|-----------------------------------|---------------------|-----------------------------------------------------------------------------------------|
+| git >= 2                          | `git --version`     | [git-scm.com](https://git-scm.com/book/fr/v1/D%C3%A9marrage-rapide-Installation-de-Git) |
+| docker >= 1.17                    | `docker -v`         | [docker.com](https://www.docker.com/community-edition)                                  |
+| docker-compose >= 1.16.1          | `docker-compose -v` | [docker.com](https://www.docker.com/community-edition)                                  |
+| devilbox / Forked by Code >= 0.11 | `git branch`        | [devilbox](https://bitbucket.org/buzzaka/devilbox)                                      |
+| Yalla cli                         | `which yalla`       | [yalla-cli](#markdown-header-install-yalla-cli)                                         |
 
 Install yalla-cli
 -----------------
