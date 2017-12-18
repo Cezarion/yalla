@@ -1,4 +1,9 @@
 Version 0.1.8:
+ - Fix an error on sed implementation during make-release script
+ - Version bump to 0.1.8
+ - Fix a bad readonly assignement
+
+Version 0.1.8:
  - Fix a bad readonly assignement
 
 Version 0.1.7:
