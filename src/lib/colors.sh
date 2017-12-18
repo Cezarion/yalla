@@ -59,7 +59,7 @@ function clr_layer
     local ARG=""
     local firstletter=""
 
-    readonly ARGS=("$@")
+    local ARGS=("$@")
 
     # iterate over arguments in reverse
     for ((i=$#; i>=0; i--)); do
