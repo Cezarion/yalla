@@ -1,3 +1,6 @@
+Version 0.1.8:
+ - Fix a bad readonly assignement
+
 Version 0.1.7:
  - Fix bad uri
 
