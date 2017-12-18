@@ -147,11 +147,9 @@ function _yalla_init_project() {
     [Yy] | yes | Yes)
       _br
       printf "Ok, continue ! \xF0\x9F\x98\x8B\n"
-      break
       ;;
     *)
       _notice "Ok, you must do it later"
-      break
       ;;
     esac
   fi
