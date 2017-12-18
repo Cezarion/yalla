@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # works with a file called VERSION in the current directory,
 # the contents of which should be a semantic version number
@@ -39,8 +39,8 @@ if [ ! -a BASE_VERSION ]; then
     echo "" >> tmpfile
     echo "" >> tmpfile
     cat CHANGELOG >> tmpfile
-    sed -i '' "s/YALLA_VERSION=${BASE_VERSION}/YALLA_VERSION=${INPUT_STRING=}/g" src/lib/variables.sh
-    sed -i '' "s/YALLA_VERSION=${BASE_VERSION}/YALLA_VERSION=${INPUT_STRING=}/g" src/cli/yalla
+    sed -i "s/YALLA_VERSION=${BASE_VERSION}/YALLA_VERSION=${INPUT_STRING=}/g" ./src/lib/variables.sh
+    sed -i "s/YALLA_VERSION=${BASE_VERSION}/YALLA_VERSION=${INPUT_STRING=}/g" ./src/cli/yalla
     mv tmpfile CHANGELOG
     git add CHANGELOG
     git commit -m "Version bump to $INPUT_STRING" VERSION src/cli/yalla src/lib/variables.sh CHANGELOG
