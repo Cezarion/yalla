@@ -2,9 +2,11 @@
 > Make sure you have all the dependencies installed
 > See [Installing dependencies](./installing-dependencies.md)
 
+
+
 **Yalla is:**
-- a cli interface
-- a set of tools orchestrated by the cli interface
+* a cli interface
+* a set of tools orchestrated by the cli interface
 
 
 ## 1 Install yalla cli
@@ -19,7 +21,7 @@ $ yalla -h # for a detailed help
 
 ## 2.	Init a new Yalla project
 
-<br/>
+
 **1. Load Devilbox params : **
 ```
 $ . ~/.devilbox
@@ -39,7 +41,7 @@ $ $user@machine:www-docker/new-project: mkdir new-project && cd $_
 $ $user@machine:www-docker/new-project: yalla init
 ```
 
-**`yalla init` does the following actions :**
+#####`yalla init` does the following actions :
 
 * Clone latest version of `yalla` into a `yalla` dir
 * Create directories and add .gitkeep in this directories as follow :
@@ -56,7 +58,7 @@ $ $user@machine:www-docker/new-project: yalla init
 
 
 
-**`yalla init` will ask you a few things:**
+#####`yalla init` will ask you a few things:
 
 1. Edit .env file
   * This file contain all available docker image version per services (php 5.6, php 7.1, ... mysql or mariadb, ...)
@@ -104,7 +106,7 @@ $ $user@machine:www-docker/new-project: yalla init
 10. Now, it will ask you if you want to import an existing mysql dump
   * if yes : copy desired sql file into the `backup/` project path
 
-** Bravo ! it's finished
+##### Bravo ! it's finished
 It may be a bit long, but you have laid the foundations of the project and especially its sharing with the rest of the devs.
 
 ### 4. Commit configuration
