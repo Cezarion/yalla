@@ -40,7 +40,7 @@ $ $user@machine:www-docker: mkdir new-project && cd $_
 $ $user@machine:www-docker/new-project: yalla init
 ```
 
-#####`yalla init` does the following actions :
+#### `yalla init` does the following actions :
 
 * Clone latest version of `yalla` into a `yalla` dir
 * Create directories and add .gitkeep in this directories as follow :
@@ -57,7 +57,7 @@ $ $user@machine:www-docker/new-project: yalla init
 
 
 
-#####`yalla init` will ask you a few things:
+#### `yalla init` will ask you a few things:
 
 1. Edit .env file
   * This file contain all available docker image version per services (php 5.6, php 7.1, ... mysql or mariadb, ...)
@@ -123,7 +123,7 @@ $ $user@machine:www-docker/new-project: git push origin master
 
 ##### Start to configure and setup your project :
 
-Devilbox and the php docker container arrives wih many known php project cli tools preinstalled.
+Devilbox and the php docker container arrives with many known php project cli tools preinstalled.
 So, it's not necessary to install this tools on your host.
 
 See bellow :
@@ -132,4 +132,44 @@ See bellow :
 # Go to docker container into project path
 $ $user@machine:www-docker/new-project: yalla connect
 $ devilbox@php-7.2.0 in /shared/httpd/new-project: composer create-project symfony/skeleton application
+$ devilbox@php-7.2.0 in /shared/httpd/new-project: exit
+# Create apache docroot :
+$ $user@machine:www-docker/new-project: ln -s application/web htdocs
 ```
+
+#### 4.2 It's an existing project :
+
+For example Mgen Mmmieux (git@bitbucket.org:buzzaka/mgen-mmmieux.git)
+
+Yalla create some defaults directory. If it's not necessary for your project delete it.       
+For example in mgen-mmmieux, this directory is not necessary `application`.  
+Just do an `rm -r application`
+
+
+> TODO
+> Show how to setup vault and run database sync
+```
+# Go to docker container into project path
+$ $user@machine:www-docker/mgen-mmmieux: ln -s app/
+$ $user@machine:www-docker/mgen-mmmieux: yalla connect
+$ devilbox@php-7.2.0 in /shared/httpd/mgen-mmmieux: ./code install dev fabernovel
+$ devilbox@php-7.2.0 in /shared/httpd/new-project: exit
+# Create apache docroot :
+$ $user@machine:www-docker/new-project: ln -s application/web htdocs
+```
+
+## 3.	Install a Yalla project
+
+> TODO
+> Show how to setup vault and run database sync
+
+
+##### `yalla install` will ask you a few things:
+
+1. Create local user and database
+  * If mysql params are set, it will work, else it failed
+2. Import an existing dump :
+  * if yes : copy desired sql file into the `backup/` project path
+  * answer with path/to-file.sql from project
+3. That's all
+  * Now connect to project into devilbox and run project scripts install
